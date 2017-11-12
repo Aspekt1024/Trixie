@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Projectile
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - 
   - 
   - Terrain
-  - 
-  - 
-  - 
+  - Projectile
+  - Shield
+  - Player
   - 
   - 
   - 

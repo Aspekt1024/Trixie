@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicTurret : MonoBehaviour {
-
-    public GameObject ProjectilePrefab;
+    
     public float ProjectileCooldown;
     public float ProjectileSpeed;
 
@@ -13,10 +12,6 @@ public class BasicTurret : MonoBehaviour {
     private void Start()
     {
         timeLastShot = Time.deltaTime;
-        if (ProjectilePrefab == null)
-        {
-            Debug.LogError("No projectile prefab set for Basic Turret");
-        }
     }
 
     private void Update()
@@ -29,7 +24,7 @@ public class BasicTurret : MonoBehaviour {
     
     private void Shoot()
     {
-        GameObject projectile = ObjectPooler.Instance.GetPooledObject("Projectile");
+        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(Projectile.ProjectileType.Blue);
         if (projectile == null) return;
 
         projectile.SetActive(true);

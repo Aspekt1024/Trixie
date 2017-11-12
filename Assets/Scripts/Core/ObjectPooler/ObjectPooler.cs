@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObjectPooler : MonoBehaviour {
 
     public static ObjectPooler Instance;
 
     public List<ObjectPoolItem> ObjectPools;
+    public List<ProjectilePoolItem> ProjectilePools;
 
     private void Start()
     {
@@ -25,6 +27,22 @@ public class ObjectPooler : MonoBehaviour {
         {
             pool.Initialise(transform);
         }
+        foreach (ProjectilePoolItem pool in ProjectilePools)
+        {
+            pool.Initialise(transform);
+        }
+    }
+
+    public GameObject GetPooledProjectile(Projectile.ProjectileType type)
+    {
+        foreach (ProjectilePoolItem pool in ProjectilePools)
+        {
+            if (pool.Type == type)
+            {
+                return pool.GetPooledObject();
+            }
+        }
+        return null;
     }
 
     public GameObject GetPooledObject(string tag)
