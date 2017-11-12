@@ -7,12 +7,7 @@ public class Player : MonoBehaviour {
     public GameObject Jetpacks;
     public Transform GroundCheckObj;
     public Transform BulletPoint;
-
-
-
-
-    private Rigidbody2D body;
-
+    
     private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
@@ -22,10 +17,9 @@ public class Player : MonoBehaviour {
         Idle, Jumping
     }
     private States _state;
-
-    // Use this for initialization
-    void Start () {
-        body = GetComponent<Rigidbody2D>();
+    
+    private void Start ()
+    {
         moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();

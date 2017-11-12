@@ -14,7 +14,7 @@ public class MoveComponent : MonoBehaviour {
         body = GetComponent<Rigidbody2D>();
 	}
 
-    private void Update()
+    private void FixedUpdate()
     {
         body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, targetSpeed, 8 * Time.deltaTime), body.velocity.y);
     }

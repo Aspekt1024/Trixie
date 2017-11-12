@@ -9,9 +9,9 @@ public class CameraFollow : MonoBehaviour {
     private Rigidbody2D followBody;
 
     private float xMin = 0f;
-    private float xMax = 100f;
+    private float xMax = 1000f;
     private float yMin = 0f;
-    private float yMax = 30f;
+    private float yMax = 40f;
 
 
     private float xOffset = 0f;
@@ -22,12 +22,12 @@ public class CameraFollow : MonoBehaviour {
         followBody = ObjectToFollow.GetComponent<Rigidbody2D>();
     }
 	
-	private void Update ()
+	private void FixedUpdate ()
     {
         if (followBody != null)
         {
             xOffset = Mathf.Lerp(xOffset, followBody.velocity.x, Time.deltaTime * 2f);
-            yOffset = Mathf.Lerp(yOffset, followBody.velocity.y, Time.deltaTime * 2f);
+            yOffset = Mathf.Lerp(yOffset, followBody.velocity.y * 0.75f, Time.deltaTime * 2f);
         }
 
         Vector2 targetPos = new Vector2();
