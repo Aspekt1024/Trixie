@@ -7,17 +7,20 @@ public class ShieldComponent : MonoBehaviour {
     public GameObject ShieldObject;
     public Transform CenterPoint;
 
-    private int shieldCharges;
-    private float shieldDistance;
+    private Shield shield;
     private Rigidbody2D body;
+    private Animator anim;
 
-    // TODO json!
-    private const int maxShieldCharges = 3;
+    private int shieldCharges;
+    private float rechargeTimer;
+
     private const float shootSpeed = 34f;
     private const float shieldShootDistance = 10f;
+    private float shieldDistance;
+
+    private const int maxShieldCharges = 3;
     private const float shieldRechargeTime = 3f;
     private const float distFromCenter = 2f;
-
 
     private enum States
     {
@@ -25,10 +28,19 @@ public class ShieldComponent : MonoBehaviour {
     }
     private States state;
 
+    // TODO remove this when anim is set
+    Vector3 maxSize;
+
     private void Start()
     {
+        anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
+        shield = ShieldObject.GetComponent<Shield>();
         ShieldObject.SetActive(false);
+        
+        shieldCharges = maxShieldCharges;
+
+        maxSize = ShieldObject.transform.localScale;
     }
 
     private void Update()
@@ -48,56 +60,39 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        switch (state)
+        
+        if (shieldCharges < maxShieldCharges)
         {
-            case States.Shielding:
-                BlockBullets(collision.collider.tag);
-                break;
-            case States.Firing:
-                DestroyEnemies(collision.gameObject);
-                break;
+            rechargeTimer += Time.deltaTime;
+            if (rechargeTimer >= shieldRechargeTime)
+            {
+                rechargeTimer = 0f;
+                AddCharge();
+            }
+        }
+        else
+        {
+            rechargeTimer = 0f;
         }
     }
-
-    private void BlockBullets(string tag)
-    {
-        if (tag == "Bullet")
-        {
-            RemoveCharge();
-        }
-    }
-
-    private void DestroyEnemies(GameObject other)
-    {
-        // TODO check if shield hits enemy
-    }
-
+    
     public void ShieldPressed()
     {
-        if (state == States.None)
-        {
-            state = States.Shielding;
-            body.isKinematic = true;
-            ShieldObject.SetActive(true);
-            SetShieldPosition();
-        }
+        if (state != States.None || shieldCharges == 0) return;
+
+        state = States.Shielding;
+        body.isKinematic = true;
+        ShieldObject.SetActive(true);
+        SetShieldPosition();
     }
 
     public void ShieldReleased()
     {
-        if (state == States.Shielding)
-        {
-            state = States.None;
-            body.isKinematic = true;
-            body.velocity = Vector2.zero;
-            ShieldObject.SetActive(false);
-        }
-    }
+        if (state != States.Shielding) return;
 
+        DisableShield();
+    }
+    
     public void Shoot()
     {
         if (state == States.Shielding)
@@ -109,6 +104,39 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
+    public void RemoveCharge(int chargesToRemove = 1)
+    {
+        shieldCharges = Mathf.Max(0, shieldCharges - chargesToRemove);
+        UpdateShieldSize();
+        if (state == States.Shielding && shieldCharges == 0)
+        {
+            DisableShield();
+        }
+    }
+
+    public bool IsShielding() { return state == States.Shielding; }
+    public bool IsFiring() { return state == States.Firing; }
+
+    private void AddCharge(int chargesToAdd = 1)
+    {
+        shieldCharges = Mathf.Min(maxShieldCharges, shieldCharges + chargesToAdd);
+        UpdateShieldSize();
+    }
+
+    public void DisableShield()
+    {
+        state = States.None;
+        body.isKinematic = true;
+        body.velocity = Vector2.zero;
+        ShieldObject.SetActive(false);
+    }
+
+    private void UpdateShieldSize()
+    {
+        if (shieldCharges == 0) return;
+        ShieldObject.transform.localScale = maxSize * shieldCharges / 3;
+    }
+
     private void SetShieldPosition()
     {
         Vector2 mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -118,13 +146,5 @@ public class ShieldComponent : MonoBehaviour {
         ShieldObject.transform.localEulerAngles = new Vector3(0f, 0f, angle);
     }
 
-    private void RemoveCharge(int chargesToRemove = 1)
-    {
-        shieldCharges = Mathf.Max(0, shieldCharges + chargesToRemove);
-    }
 
-    private void AddCharge(int chargesToAdd = 1)
-    {
-        shieldCharges = Mathf.Min(maxShieldCharges, shieldCharges + chargesToAdd);
-    }
 }
