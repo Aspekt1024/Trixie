@@ -12,26 +12,28 @@ public class PlayerJumpComponent : MonoBehaviour {
 
     private Rigidbody2D body;
 
-    private const float jumpForce = 1500f;
-    private const float additionalJumpForce = 60f;
-    private const float boostForce = 160;
+    private const float jumpVelocity = 15f;
+    private const float boostVelocity = 35f;
+    private const float fallVelocity = 15f;
+    private const float maxFallVelocity = 25f;
 
+    private float jumpTimer;
+    private const float maxJumpTime = 0.3f;
 
     private float boostTimer;
-    private float boostTimerTop;
-    private const float maxBoostTime = 1.4f;
-
-    private bool boostUsed;
+    private const float maxBoostTime = 1.2f;
+    
+    private float targetVerticalVelocity;
     
     private enum States
     {
-        None, JumpStart, Jumping, BoostStart, Boosting, PostBoost, Falling, Grounded
+        None, Jumping, PostJump, Boosting, PostBoost, Falling, Grounded
     }
     private States state;
 
     private void Awake()
     {
-        state = States.Grounded;
+        state = States.Falling;
         body = GetComponent<Rigidbody2D>();
         Jetpacks.SetActive(false);
         groundLayer = 1 << LayerMask.NameToLayer("Terrain");
@@ -41,11 +43,8 @@ public class PlayerJumpComponent : MonoBehaviour {
     {
         switch(state)
         {
-            case States.JumpStart:
-                state = States.Jumping;
-                break;
-            case States.BoostStart:
-                state = States.Boosting;
+            case States.Grounded:
+                CheckNotGrounded();
                 break;
             case States.Falling:
                 CheckGrounded();
@@ -56,59 +55,71 @@ public class PlayerJumpComponent : MonoBehaviour {
                 {
                     SetPostBoostState();
                 }
-                CheckFalling();
                 break;
             case States.Jumping:
-                CheckFalling();
+                jumpTimer += Time.deltaTime;
+                if (jumpTimer > maxJumpTime)
+                {
+                    SetPostJumpState();
+                }
                 break;
             case States.PostBoost:
-                AddPostBoostForce();
-                CheckFalling();
                 break;
+            case States.PostJump:
+                break;
+        }
+
+        UpdateVelocity();
+        if (state != States.Grounded)
+        {
+            CheckFalling();
         }
     }
     
     public void Jump()
     {
-        if (state == States.Jumping || state == States.Falling)
+        if (state == States.Jumping || state == States.Falling || state == States.PostJump || state == States.PostBoost)
         {
-            if (!boostUsed)
-            {
-                UseBoost();
-            }
+            UseBoost();
         }
         else if (state == States.Grounded)
         {
-            state = States.JumpStart;
-            body.AddForce(jumpForce * Vector2.up);
+            state = States.Jumping;
+            jumpTimer = 0f;
+            body.velocity = new Vector2(body.velocity.x, jumpVelocity);
+            targetVerticalVelocity = jumpVelocity;
         }
     }
-
-    public void JumpHeld()
-    {
-        if (state == States.Boosting)
-        {
-            body.AddForce(Vector2.up * boostForce);
-        }
-        else if (state == States.Jumping)
-        {
-            body.AddForce(additionalJumpForce * Vector2.up);
-        }
-    }
-
+    
     public void JumpReleased()
     {
+        if (state == States.Jumping)
+        {
+            SetPostJumpState();
+        }
         if (state == States.Boosting)
         { 
             SetPostBoostState();
         }
     }
 
+    private void SetPostJumpState()
+    {
+        body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2f);
+        targetVerticalVelocity = -fallVelocity;
+        state = States.PostJump;
+    }
+
     private void SetPostBoostState()
     {
-        boostTimerTop = boostTimer;
         state = States.PostBoost;
+        targetVerticalVelocity = -fallVelocity / 4f;
         Jetpacks.SetActive(false);
+    }
+
+    private void UpdateVelocity()
+    {
+        body.velocity = new Vector2(body.velocity.x, Mathf.Lerp(body.velocity.y, targetVerticalVelocity, 2f * Time.deltaTime));
     }
     
     private void CheckGrounded()
@@ -116,35 +127,40 @@ public class PlayerJumpComponent : MonoBehaviour {
         Collider2D collider = Physics2D.OverlapCircle(GroundCheckObj.position, groundCheckRadius, groundLayer);
         if (collider != null)
         {
+            boostTimer = 0f;    // TODO move to update - add cooldown
             state = States.Grounded;
-            boostUsed = false;
+        }
+    }
+
+    private void CheckNotGrounded()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(GroundCheckObj.position, groundCheckRadius, groundLayer);
+        if (collider == null)
+        {
+            if (body.velocity.y > 0f)
+            {
+                state = States.Jumping;
+            }
+            else
+            {
+                state = States.Falling;
+            }
         }
     }
 
     private void CheckFalling()
     {
-        if (body.velocity.y <= 0f)
+        if (body.velocity.y <= 0f && state != States.Boosting)
         {
+            targetVerticalVelocity = -maxFallVelocity;
             state = States.Falling;
-        }
-    }
-
-    private void AddPostBoostForce()
-    {
-        if (boostTimer > 0f)
-        {
-            boostTimer -= Time.deltaTime * 2f;
-            body.AddForce(Vector2.up * boostForce * 2 * (boostTimer / boostTimerTop));
         }
     }
 
     private void UseBoost()
     {
-        boostUsed = true;
-        boostTimer = 0f;
-        state = States.BoostStart;
-        body.velocity = new Vector2(body.velocity.x, 0.1f);
-        body.AddForce(jumpForce / 4f * Vector2.up);
+        state = States.Boosting;
+        targetVerticalVelocity = boostVelocity;
         Jetpacks.SetActive(true);
     }
 }

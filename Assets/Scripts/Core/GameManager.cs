@@ -88,18 +88,18 @@ public class GameManager : MonoBehaviour {
             Player.MoveRight();
         }
     }
+    public void MoveReleased()
+    {
+        if (state == States.Playing)
+        {
+            Player.MoveReleased();
+        }
+    }
     public void JumpPressed()
     {
         if (state == States.Playing)
         {
             Player.Jump();
-        }
-    }
-    public void JumpHeld()
-    {
-        if (state == States.Playing)
-        {
-            Player.JumpHeld();
         }
     }
 

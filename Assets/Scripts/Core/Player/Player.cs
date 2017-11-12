@@ -8,12 +8,12 @@ public class Player : MonoBehaviour {
     public Transform GroundCheckObj;
     public Transform BulletPoint;
 
-    private const float speed = 15f;
 
 
 
     private Rigidbody2D body;
 
+    private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
 
@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start () {
         body = GetComponent<Rigidbody2D>();
+        moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
     }
@@ -36,18 +37,21 @@ public class Player : MonoBehaviour {
 
     public void MoveLeft()
     {
-        body.velocity = new Vector2(-speed, body.velocity.y);
+        moveComponent.MoveLeft();
     }
     public void MoveRight()
     {
-        body.velocity = new Vector2(speed, body.velocity.y);
+        moveComponent.MoveRight();
+    }
+    public void MoveReleased()
+    {
+        moveComponent.MoveReleased();
     }
     public void Jump()
     {
         jumpComponent.Jump();
     }
-
-    public void JumpHeld() { jumpComponent.JumpHeld(); }
+    
     public void JumpReleased() { jumpComponent.JumpReleased(); }
     public void ShieldPressed() { shieldComponent.ShieldPressed(); }
     public void ShieldReleased() { shieldComponent.ShieldReleased(); }

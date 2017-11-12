@@ -27,15 +27,22 @@ public class InputHandler {
     
     public void ProcessInput()
     {
-        if (Input.GetKey(JUMP_1) || Input.GetKey(JUMP_2)) gameManager.JumpHeld();
         if (Input.GetKeyDown(JUMP_1) || Input.GetKeyDown(JUMP_2)) gameManager.JumpPressed();
         if (Input.GetKeyUp(JUMP_1) || Input.GetKeyUp(JUMP_2)) gameManager.JumpReleased();
 
         if (Input.GetKeyDown(SHIELD)) gameManager.ShieldPressed();
         if (Input.GetKeyUp(SHIELD)) gameManager.ShieldReleased();
 
-        if (Input.GetKey(MOVE_LEFT)) gameManager.MoveLeftPressed();
-        if (Input.GetKey(MOVE_RIGHT)) gameManager.MoveRightPressed();
+        if (Input.GetKeyDown(MOVE_LEFT)) gameManager.MoveLeftPressed();
+        if (Input.GetKeyDown(MOVE_RIGHT)) gameManager.MoveRightPressed();
+        if (Input.GetKeyUp(MOVE_RIGHT) || Input.GetKeyUp(MOVE_LEFT))
+        {
+            if (!Input.GetKey(MOVE_LEFT) && !Input.GetKey(MOVE_RIGHT))
+            {
+                gameManager.MoveReleased();
+            }
+        }
+        
         if (Input.GetKey(MELEE)) gameManager.MeleePressed();
         if (Input.GetKey(INTERACT)) gameManager.InteractPressed();
         if (Input.GetKey(CYCLE_ITEMS)) gameManager.CycleItemsPressed();
