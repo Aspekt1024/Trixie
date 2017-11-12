@@ -5,20 +5,25 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour {
 
     public Transform ObjectToFollow;
+    public float FollowSpeed;
 
     private Rigidbody2D followBody;
-
+    
     private float xMin = 0f;
     private float xMax = 1000f;
     private float yMin = 0f;
     private float yMax = 40f;
-
-
+    
     private float xOffset = 0f;
     private float yOffset = 0f;
 
     private void Start ()
     {
+        if (FollowSpeed == 0f && ObjectToFollow != null)
+        {
+            Debug.LogWarning("Camera follow object set but speed is zero");
+        }
+
         followBody = ObjectToFollow.GetComponent<Rigidbody2D>();
     }
 	
@@ -26,8 +31,8 @@ public class CameraFollow : MonoBehaviour {
     {
         if (followBody != null)
         {
-            xOffset = Mathf.Lerp(xOffset, followBody.velocity.x, Time.deltaTime * 2f);
-            yOffset = Mathf.Lerp(yOffset, followBody.velocity.y * 0.75f, Time.deltaTime * 2f);
+            xOffset = Mathf.Lerp(xOffset, followBody.velocity.x, Time.deltaTime * FollowSpeed);
+            yOffset = Mathf.Lerp(yOffset, followBody.velocity.y * 0.75f, Time.deltaTime * FollowSpeed);
         }
 
         Vector2 targetPos = new Vector2();
