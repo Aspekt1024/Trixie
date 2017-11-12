@@ -7,7 +7,9 @@ public class Player : MonoBehaviour {
     public GameObject Jetpacks;
     public Transform GroundCheckObj;
     public Transform BulletPoint;
-    
+
+    public static Player Instance;
+
     private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
@@ -18,8 +20,19 @@ public class Player : MonoBehaviour {
     }
     private States _state;
     
-    private void Start ()
+    private void Awake ()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple Player classes found in scene. There can only be one");
+            Destroy(gameObject);
+            return;
+        }
+
         moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
