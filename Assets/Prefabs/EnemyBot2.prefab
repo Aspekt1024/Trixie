@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4016528135214666}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4803829701915456}
   - component: {fileID: 212854705170851706}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: EnemyBot2Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4980944960865112}
   - component: {fileID: 212402626553373586}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: EnemyBot2Turret (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,8 @@ GameObject:
   - component: {fileID: 4420650357779520}
   - component: {fileID: 212337840139004356}
   - component: {fileID: 114703674488373236}
-  m_Layer: 0
+  - component: {fileID: 114984798351845636}
+  m_Layer: 12
   m_Name: FlameGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,9 +87,11 @@ GameObject:
   - component: {fileID: 212992250419335268}
   - component: {fileID: 114401286834598858}
   - component: {fileID: 114861734976218324}
-  m_Layer: 0
+  - component: {fileID: 114586276619732180}
+  - component: {fileID: 58418724458934954}
+  m_Layer: 12
   m_Name: EnemyBot2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,8 +130,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1956489234289242}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.51, y: -0.49, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.815556, y: 9.796162, z: 0.091796875}
   m_LocalScale: {x: 1.9529712, y: 1.9529717, z: 1.9529717}
   m_Children:
   - {fileID: 4420650357779520}
@@ -162,6 +165,21 @@ Transform:
   m_Father: {fileID: 4016528135214666}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -151.31601}
+--- !u!58 &58418724458934954
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1956489234289242}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.06, y: -0.03}
+  serializedVersion: 2
+  m_Radius: 0.3
 --- !u!114 &114401286834598858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,6 +194,19 @@ MonoBehaviour:
   Turrets: {fileID: 1211384274911946}
   ProjectileCooldown: 0.2
   ProjectileSpeed: 10
+--- !u!114 &114586276619732180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1956489234289242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5a2ae5db394784c9fa1b0e92d07abc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HoverDistance: 0.16
+  HoverFrequency: 0.6
 --- !u!114 &114703674488373236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -202,6 +233,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HoverDistance: 0.16
   HoverFrequency: 0.6
+--- !u!114 &114984798351845636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1827504098925884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a25a827be81f944b9795b1e3a262a38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PulseSize: 1.1
+  PulseFrequency: 2
 --- !u!212 &212337840139004356
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -233,8 +277,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1978376989
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0018f297dea7dd048b50647cd9e7907f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -277,8 +321,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1978376989
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2d3f639343397e64fb77e4311078c8c4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -321,8 +365,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1978376989
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2d3f639343397e64fb77e4311078c8c4, type: 3}
   m_Color: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 0.822}
@@ -365,8 +409,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1978376989
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bde62dcadfcca444383a7886a492db0e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

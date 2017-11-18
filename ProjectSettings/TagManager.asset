@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - Shield
   - BouncyBulb
+  - Enemy
   layers:
   - Default
   - TransparentFX

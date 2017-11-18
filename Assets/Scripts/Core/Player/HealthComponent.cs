@@ -52,6 +52,11 @@ public class HealthComponent : MonoBehaviour {
         return health <= 0;
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     private IEnumerator DamageAnimation()
     {
         float timeDamageTaken = Time.time;

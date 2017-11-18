@@ -95,6 +95,7 @@ public class Player : MonoBehaviour {
     private void TakeDamage()
     {
         healthComponent.TakeDamage();
+        GameUIManager.UpdateHealth(healthComponent.GetHealth());
         if (healthComponent.IsDead())
         {
             Debug.Log("you are dead");
