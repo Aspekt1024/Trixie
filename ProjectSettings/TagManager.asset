@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Projectile
   - Shield
+  - BouncyBulb
   layers:
   - Default
   - TransparentFX
@@ -20,9 +21,9 @@ TagManager:
   - Projectile
   - Shield
   - Player
-  - 
-  - 
-  - 
+  - Enemy
+  - Interactable
+  - EnvironmentObject
   - 
   - 
   - 
@@ -41,8 +42,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 4196605335
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Terrain
+    uniqueID: 339542137
+    locked: 0
+  - name: Enemy
+    uniqueID: 2316590307
+    locked: 0
+  - name: Shield
+    uniqueID: 1883581843
     locked: 0
   - name: Player
     uniqueID: 165297545

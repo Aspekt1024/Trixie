@@ -24,12 +24,12 @@ public class InputHandler {
     public void ProcessInput()
     {
         keyboardInput.ProcessInput();
-        controllerInput.ProcessInput();
+        //controllerInput.ProcessInput();
     }
 
     public Vector2 GetAimDirection()
     {
-        return controllerInput.GetAimDirection();
+        //return controllerInput.GetAimDirection();
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
     

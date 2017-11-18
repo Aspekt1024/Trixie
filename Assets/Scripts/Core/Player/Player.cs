@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
+    private HealthComponent healthComponent;
 
     private enum States
     {
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour {
         moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
+        healthComponent = GetComponent<HealthComponent>();
     }
 
     public void MoveLeft()
@@ -73,4 +75,29 @@ public class Player : MonoBehaviour {
         bullet.GetComponent<Rigidbody2D>().velocity = BulletPoint.right * 15f;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "BouncyBulb")
+        {
+            Rigidbody2D body = GetComponent<Rigidbody2D>();
+            body.velocity = new Vector2(body.velocity.x, 30f);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy" || collision.tag == "Projectile")
+        {
+            TakeDamage();
+        }
+    }
+
+    private void TakeDamage()
+    {
+        healthComponent.TakeDamage();
+        if (healthComponent.IsDead())
+        {
+            Debug.Log("you are dead");
+        }
+    }
 }

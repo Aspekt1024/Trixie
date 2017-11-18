@@ -1,11 +1,16 @@
 fileFormatVersion: 2
-guid: 6c4212e0599a2d94abe4e54c9c40d452
-timeCreated: 1511002557
+guid: 3c4e8e519512c55418de4241e09d6748
+timeCreated: 1511008470
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Untitled_0
-    21300002: Untitled_1
+    21300000: BulbSpike
+    21300002: Bulb
+    21300004: Guy
+    21300006: RockGuardian
+    21300008: spikeyGuyGrounded
+    21300010: SpikeyGuyWalking
+    21300012: brokenGuardian
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -98,42 +103,102 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_0
+      name: BulbSpike
       rect:
         serializedVersion: 2
-        x: 17
-        y: 283
-        width: 294
-        height: 155
+        x: 1517
+        y: 1199
+        width: 620
+        height: 1214
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -147, y: 77.5}
-        - {x: -147, y: -77.5}
-        - {x: 147, y: -77.5}
-        - {x: 147, y: 77.5}
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Untitled_1
+      name: Bulb
       rect:
         serializedVersion: 2
-        x: 252
-        y: 599
-        width: 453
-        height: 61
+        x: 883
+        y: 1891
+        width: 275
+        height: 458
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -226.5, y: -30.5}
-        - {x: 226.5, y: -30.5}
-        - {x: 226.5, y: 11.5}
-        - {x: 225.5, y: 30.5}
-        - {x: -208.5, y: 30.5}
-        - {x: -226.5, y: 19.5}
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Guy
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 65
+        width: 796
+        height: 1009
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RockGuardian
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 50
+        width: 1238
+        height: 977
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spikeyGuyGrounded
+      rect:
+        serializedVersion: 2
+        x: 2636
+        y: 803
+        width: 668
+        height: 594
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SpikeyGuyWalking
+      rect:
+        serializedVersion: 2
+        x: 2588
+        y: 99
+        width: 691
+        height: 697
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: brokenGuardian
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 1044
+        width: 508
+        height: 332
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
       tessellationDetail: 0
     outline: []
     physicsShape: []
