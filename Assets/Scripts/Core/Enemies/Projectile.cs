@@ -5,11 +5,12 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     private Animator anim;
-
-    public enum ProjectileType
+    
+    public EnergyTypes.Colours Colour
     {
-        Blue, Yellow, Red, Pink, Green
+        get { return projectileColour; }
     }
+    private EnergyTypes.Colours projectileColour;
 
     private void Awake()
     {
@@ -23,6 +24,11 @@ public class Projectile : MonoBehaviour {
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void SetType(EnergyTypes.Colours colour)
+    {
+        projectileColour = colour;
     }
 
     public void DestroyByCollision()

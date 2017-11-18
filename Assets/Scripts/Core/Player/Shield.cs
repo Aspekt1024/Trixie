@@ -21,13 +21,17 @@ public class Shield : MonoBehaviour {
     {
         if (other.tag == "Projectile")
         {
-            if (shieldComponent.IsShielding())
+            Projectile projectile = other.gameObject.GetComponent<Projectile>();
+            if (projectile.Colour != shieldComponent.GetColour())
             {
-                shieldComponent.RemoveCharge();
-            }
-            else if (shieldComponent.IsFiring())
-            {
-                shieldComponent.DisableShield();
+                if (shieldComponent.IsShielding())
+                {
+                    shieldComponent.RemoveCharge();
+                }
+                else if (shieldComponent.IsFiring())
+                {
+                    shieldComponent.DisableShield();
+                }
             }
             other.GetComponent<Projectile>().DestroyByCollision();
         }

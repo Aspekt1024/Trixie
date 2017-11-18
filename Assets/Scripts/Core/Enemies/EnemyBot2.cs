@@ -36,9 +36,9 @@ public class EnemyBot2 : BaseEnemy {
 
     private void Shoot()
     {
-        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(Projectile.ProjectileType.Pink);
+        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(EnergyTypes.Colours.Pink);
         if (projectile == null) return;
-
+        
         projectile.SetActive(true);
         projectile.transform.position = Turrets.transform.position;
         projectile.transform.localRotation = Turrets.transform.rotation;

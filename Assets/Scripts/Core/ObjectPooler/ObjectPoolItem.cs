@@ -16,7 +16,7 @@ public class ObjectPoolItem {
     {
         poolItemParent = new GameObject(ObjectPrefab.name + " Pool").transform;
         poolItemParent.SetParent(parentPool);
-        
+
         PooledObjects = new List<GameObject>();
         for (int i = 0; i < PoolSize; i++)
         {
@@ -48,6 +48,9 @@ public class ObjectPoolItem {
         GameObject obj = Object.Instantiate(ObjectPrefab, poolItemParent);
         obj.SetActive(false);
         PooledObjects.Add(obj);
+        SetPoolSpecificAttributes(obj);
         return obj;
     }
+
+    protected virtual void SetPoolSpecificAttributes(GameObject obj) { }
 }
