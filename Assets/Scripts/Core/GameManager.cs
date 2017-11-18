@@ -147,7 +147,19 @@ public class GameManager : MonoBehaviour {
             Player.ShieldReleased();
         }
     }
-
-
+    public void CycleShieldColourPressed()
+    {
+        if (state == States.Playing)
+        {
+            Player.CycleShieldColourPressed();
+        }
+    }
+    
     #endregion
+
+
+    public static Vector2 GetAimDirection()
+    {
+        return Instance.inputHandler.GetAimDirection();
+    }
 }

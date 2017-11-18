@@ -38,10 +38,6 @@ public class Player : MonoBehaviour {
         shieldComponent = GetComponent<ShieldComponent>();
     }
 
-    private void FixedUpdate()
-    {
-    }
-
     public void MoveLeft()
     {
         moveComponent.MoveLeft();
@@ -62,6 +58,7 @@ public class Player : MonoBehaviour {
     public void JumpReleased() { jumpComponent.JumpReleased(); }
     public void ShieldPressed() { shieldComponent.ShieldPressed(); }
     public void ShieldReleased() { shieldComponent.ShieldReleased(); }
+    public void CycleShieldColourPressed() { shieldComponent.CycleShieldColourPressed(); }
 
     public void Shoot()
     {
