@@ -10,16 +10,12 @@ public class Player : MonoBehaviour {
 
     public static Player Instance;
 
+    private Animator anim;
+
     private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
     private HealthComponent healthComponent;
-
-    private enum States
-    {
-        Idle, Jumping
-    }
-    private States _state;
     
     private void Awake ()
     {
@@ -34,10 +30,21 @@ public class Player : MonoBehaviour {
             return;
         }
 
+        anim = GetComponent<Animator>();
+
         moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
         healthComponent = GetComponent<HealthComponent>();
+    }
+
+    private void Update()
+    {
+        Vector2 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+        if (viewportPos.y < -0.2f)
+        {
+            GameManager.RespawnPlayerStart();
+        }
     }
 
     public void MoveLeft()
@@ -56,11 +63,25 @@ public class Player : MonoBehaviour {
     {
         jumpComponent.Jump();
     }
-    
+
+    public void ShieldPressed()
+    {
+        if (shieldComponent.ActivateShield())
+        {
+            anim.SetBool("shieldEnabled", true);
+        }
+    }
+    public void ShieldReleased()
+    {
+        if (shieldComponent.DeactivateShield())
+        {
+            anim.SetBool("shieldEnabled", false);
+        }
+    }
+
     public void JumpReleased() { jumpComponent.JumpReleased(); }
-    public void ShieldPressed() { shieldComponent.ShieldPressed(); }
-    public void ShieldReleased() { shieldComponent.ShieldReleased(); }
     public void CycleShieldColourPressed() { shieldComponent.CycleShieldColourPressed(); }
+    
 
     public void Shoot()
     {

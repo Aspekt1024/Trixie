@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trixie", "Trixie.csproj", "{B3CAA405-50A2-A400-2871-FFF5623ED674}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trixie.Editor", "Trixie.Editor.csproj", "{4558EF19-C95F-E6AF-E4BB-89E020513809}"

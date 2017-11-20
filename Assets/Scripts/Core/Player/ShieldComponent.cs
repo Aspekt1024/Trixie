@@ -10,6 +10,7 @@ public class ShieldComponent : MonoBehaviour {
     private Shield shield;
     private Rigidbody2D body;
     private Animator anim;
+    private Animator playerAnim;
 
     private int shieldCharges;
     private float rechargeTimer;
@@ -39,7 +40,9 @@ public class ShieldComponent : MonoBehaviour {
         body = ShieldObject.GetComponent<Rigidbody2D>();
         shield = ShieldObject.GetComponent<Shield>();
         ShieldObject.SetActive(false);
-        
+
+        playerAnim = Player.Instance.GetComponent<Animator>();
+
         shieldCharges = maxShieldCharges;
         SetShieldColour(EnergyTypes.Colours.Blue);
 
@@ -95,21 +98,23 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
     
-    public void ShieldPressed()
+    public bool ActivateShield()
     {
-        if (state != States.None || shieldCharges == 0) return;
+        if (state != States.None || shieldCharges == 0) return false;
 
         state = States.Shielding;
         body.isKinematic = true;
         ShieldObject.SetActive(true);
         SetShieldPosition();
+        return true;
     }
 
-    public void ShieldReleased()
+    public bool DeactivateShield()
     {
-        if (state != States.Shielding) return;
+        if (state != States.Shielding) return true;
 
         DisableShield();
+        return true;
     }
     
     public void Shoot()
@@ -181,6 +186,8 @@ public class ShieldComponent : MonoBehaviour {
         ShieldObject.transform.position = CenterPoint.position + (Vector3)distVector;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);
         ShieldObject.transform.localEulerAngles = new Vector3(0f, 0f, angle);
+
+        playerAnim.SetFloat("lookAngle", angle / 360f);
     }
 
 

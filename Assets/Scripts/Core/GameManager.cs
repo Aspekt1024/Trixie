@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     
     public Camera MainCamera;
     public MenuControl MenuControl;
+    public RespawnHandler RespawnHandler;
 
     public Player Player;
 
@@ -161,5 +162,10 @@ public class GameManager : MonoBehaviour {
     public static Vector2 GetAimDirection()
     {
         return Instance.inputHandler.GetAimDirection();
+    }
+
+    public static void RespawnPlayerStart()
+    {
+        Instance.RespawnHandler.SetObjectToPoint(Instance.Player.transform);
     }
 }
