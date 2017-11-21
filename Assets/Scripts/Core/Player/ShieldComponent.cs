@@ -106,6 +106,7 @@ public class ShieldComponent : MonoBehaviour {
         body.isKinematic = true;
         ShieldObject.SetActive(true);
         SetShieldPosition();
+        anim.Play("Static", 0, 0f);
         return true;
     }
 
@@ -125,6 +126,7 @@ public class ShieldComponent : MonoBehaviour {
             shieldDistance = 0f;
             body.isKinematic = false;
             body.velocity = shootSpeed * body.transform.right;
+            anim.Play("Shoot", 0, 0f);
         }
     }
 

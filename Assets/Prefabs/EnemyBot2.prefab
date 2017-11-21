@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 114861734976218324}
   - component: {fileID: 114586276619732180}
   - component: {fileID: 58418724458934954}
+  - component: {fileID: 95537106025121594}
   m_Layer: 12
   m_Name: EnemyBot2
   m_TagString: Enemy
@@ -180,6 +181,23 @@ CircleCollider2D:
   m_Offset: {x: 0.06, y: -0.03}
   serializedVersion: 2
   m_Radius: 0.3
+--- !u!95 &95537106025121594
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1956489234289242}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: db739837d293c1146ad018e074d3a483, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114401286834598858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -192,6 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Turrets: {fileID: 1211384274911946}
+  Flame: {fileID: 1827504098925884}
   ProjectileCooldown: 0.2
   ProjectileSpeed: 10
 --- !u!114 &114586276619732180

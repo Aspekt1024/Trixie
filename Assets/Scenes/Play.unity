@@ -1759,11 +1759,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpVelocity: 15
-  BoostVelocity: 18
+  BoostVelocity: 20
   FallVelocity: 15
   MaxFallVelocity: 25
   MaxJumpTime: 0.4
-  MaxBoostTime: 1.2
+  MaxBoostTime: 18
   Jetpacks: {fileID: 2079595806}
   GroundCheckObj: {fileID: 713640833}
 --- !u!60 &1113490588
@@ -1920,6 +1920,7 @@ GameObject:
   - component: {fileID: 1132916824}
   - component: {fileID: 1132916825}
   - component: {fileID: 1132916826}
+  - component: {fileID: 1132916828}
   m_Layer: 10
   m_Name: Shield
   m_TagString: Shield
@@ -2045,6 +2046,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75aab81f32baff5419b3f2a0544b3527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1132916828
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1132916822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 40866ee5454e7d94b808914fa3fa8f0a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1143123411
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,8 +5,17 @@ using UnityEngine;
 public class EnemyBot2 : BaseEnemy {
 
     public GameObject Turrets;
+    public GameObject Flame;
     public float ProjectileCooldown;
     public float ProjectileSpeed;
+
+    private Collider2D enemyCollider;
+
+    private enum States
+    {
+        Normal, Dead
+    }
+    private States state;
 
     private const float playerInRangeDistance = 10f;
 
@@ -14,14 +23,29 @@ public class EnemyBot2 : BaseEnemy {
 
     private void Start()
     {
+        enemyCollider = GetComponent<CircleCollider2D>();
         timeLastShot = Time.deltaTime;
     }
 
     private void Update()
     {
+        switch(state)
+        {
+            case States.Normal:
+                AimAndShoot();
+                break;
+            case States.Dead:
+                break;
+        }
+    }
+
+    // TODO enable
+
+    private void AimAndShoot()
+    {
         Vector2 distVector = Player.Instance.transform.position - transform.position;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, playerInRangeDistance, 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain"));
-        
+
         if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
@@ -46,6 +70,15 @@ public class EnemyBot2 : BaseEnemy {
         projectile.GetComponent<Rigidbody2D>().velocity = Turrets.transform.right * ProjectileSpeed;
 
         timeLastShot = Time.time;
+    }
+
+    protected override void DestroyEnemy()
+    {
+        Turrets.SetActive(false);
+        Flame.SetActive(false);
+        enemyCollider.enabled = false;
+        anim.Play("Explosion", 0, 0f);
+        state = States.Dead;
     }
 
 }
