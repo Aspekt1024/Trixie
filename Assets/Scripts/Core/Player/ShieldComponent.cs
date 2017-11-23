@@ -5,9 +5,9 @@ using UnityEngine;
 public class ShieldComponent : MonoBehaviour {
 
     public GameObject ShieldObject;
-    public Transform CenterPoint;
+    
+    private ShieldPositioner positioner;
 
-    private Shield shield;
     private Rigidbody2D body;
     private Animator anim;
     private Animator playerAnim;
@@ -21,7 +21,6 @@ public class ShieldComponent : MonoBehaviour {
 
     private const int maxShieldCharges = 3;
     private const float shieldRechargeTime = 3f;
-    private const float distFromCenter = 1.2f;
     
     private EnergyTypes.Colours shieldColour;
 
@@ -38,7 +37,7 @@ public class ShieldComponent : MonoBehaviour {
     {
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
-        shield = ShieldObject.GetComponent<Shield>();
+        positioner = ShieldObject.GetComponent<ShieldPositioner>();
         ShieldObject.SetActive(false);
 
         playerAnim = Player.Instance.GetComponent<Animator>();
@@ -56,7 +55,7 @@ public class ShieldComponent : MonoBehaviour {
             case States.None:
                 break;
             case States.Shielding:
-                SetShieldPosition();
+                positioner.SetShieldPosition();
                 break;
             case States.Firing:
                 shieldDistance += Time.deltaTime * shootSpeed;
@@ -105,7 +104,7 @@ public class ShieldComponent : MonoBehaviour {
         state = States.Shielding;
         body.isKinematic = true;
         ShieldObject.SetActive(true);
-        SetShieldPosition();
+        positioner.SetShieldPosition();
         anim.Play("Static", 0, 0f);
         return true;
     }
@@ -170,27 +169,15 @@ public class ShieldComponent : MonoBehaviour {
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
-                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                 break;
             case EnergyTypes.Colours.Pink:
-                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, .7f, 1f);
+                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, .7f, 1f);
                 break;
             case EnergyTypes.Colours.Yellow:
-                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 1f);
+                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 1f);
                 break;
         }
     }
-
-    private void SetShieldPosition()
-    {
-        Vector2 aimDirection = GameManager.GetAimDirection();
-        Vector2 distVector = (aimDirection - (Vector2)CenterPoint.position).normalized * distFromCenter;
-        ShieldObject.transform.position = CenterPoint.position + (Vector3)distVector;
-        float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);
-        ShieldObject.transform.localEulerAngles = new Vector3(0f, 0f, angle);
-
-        playerAnim.SetFloat("lookAngle", angle / 360f);
-    }
-
 
 }

@@ -1673,7 +1673,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShieldObject: {fileID: 1132916822}
-  CenterPoint: {fileID: 1691434671}
 --- !u!4 &1113490585
 Transform:
   m_ObjectHideFlags: 0
@@ -1831,6 +1830,7 @@ MonoBehaviour:
   Jetpacks: {fileID: 2079595806}
   GroundCheckObj: {fileID: 713640833}
   BulletPoint: {fileID: 1472282825}
+  TrixieRenderer: {fileID: 1228041801}
 --- !u!114 &1113490591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1917,6 +1917,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132916823}
   - component: {fileID: 1132916827}
+  - component: {fileID: 1132916829}
   - component: {fileID: 1132916824}
   - component: {fileID: 1132916825}
   - component: {fileID: 1132916826}
@@ -2063,6 +2064,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &1132916829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1132916822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4c5dc3a73a6e24ebac1ffb1bea2dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CenterPoint: {fileID: 1691434671}
 --- !u!1 &1143123411
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,7 +2300,7 @@ GameObject:
   - component: {fileID: 1228041800}
   - component: {fileID: 1228041801}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: TrixieRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

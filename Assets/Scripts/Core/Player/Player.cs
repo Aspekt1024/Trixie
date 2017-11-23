@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public GameObject Jetpacks;
     public Transform GroundCheckObj;
     public Transform BulletPoint;
+    public SpriteRenderer TrixieRenderer;
 
     public static Player Instance;
 
@@ -86,6 +87,16 @@ public class Player : MonoBehaviour {
     public void Shoot()
     {
         shieldComponent.Shoot();
+    }
+
+    public SpriteRenderer GetPlayerRenderer()
+    {
+        return TrixieRenderer;
+    }
+
+    public bool IsLookingRight()
+    {
+        return moveComponent.IsLookingRight();
     }
 
     private IEnumerator ShootAnim()

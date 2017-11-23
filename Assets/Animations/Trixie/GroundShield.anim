@@ -35,7 +35,7 @@ AnimationClip:
     - time: 3.5
       value: {fileID: 21300000, guid: e128c13c688a7c7428eecd2b5a517cb1, type: 3}
     attribute: m_Sprite
-    path: New Sprite
+    path: TrixieRenderer
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 2
@@ -46,7 +46,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2673217936
+      path: 2456151635
       attribute: 0
       script: {fileID: 0}
       typeID: 212

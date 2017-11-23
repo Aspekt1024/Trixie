@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shield : MonoBehaviour {
+public class ShieldCollisionHandler : MonoBehaviour {
     
     private ShieldComponent shieldComponent;
     

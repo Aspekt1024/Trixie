@@ -7,37 +7,54 @@ public class MoveComponent : MonoBehaviour {
     public float MoveSpeed = 10f;
 
     private Rigidbody2D body;
-    private Animator anim;
+    private Animator playerAnim;
+    private SpriteRenderer playerRenderer;
 
     private float targetSpeed;
 
     private void Start ()
     {
         body = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        playerAnim = GetComponent<Animator>();
+        playerRenderer = Player.Instance.GetPlayerRenderer();
 	}
 
     private void FixedUpdate()
     {
-        anim.SetFloat("MoveSpeed", Mathf.Abs(body.velocity.x));
+        playerAnim.SetFloat("MoveSpeed", Mathf.Abs(body.velocity.x));
         body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, targetSpeed, 8 * Time.deltaTime), body.velocity.y);
     }
 
     public void MoveRight()
     {
         targetSpeed = MoveSpeed;
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        playerRenderer.transform.localScale = new Vector3()
+        {
+            x = Mathf.Abs(playerRenderer.transform.localScale.x),
+            y = playerRenderer.transform.localScale.y,
+            z = playerRenderer.transform.localScale.z
+        };
     }
 
     public void MoveLeft()
     {
         targetSpeed = -MoveSpeed;
-        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        playerRenderer.transform.localScale = new Vector3()
+        {
+            x = -Mathf.Abs(playerRenderer.transform.localScale.x),
+            y = playerRenderer.transform.localScale.y,
+            z = playerRenderer.transform.localScale.z
+        };
     }
 
     public void MoveReleased()
     {
         targetSpeed = 0f;
+    }
+
+    public bool IsLookingRight()
+    {
+        return playerRenderer.transform.localScale.x >= 0f;
     }
 
 }
