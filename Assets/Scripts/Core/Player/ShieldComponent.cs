@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShieldComponent : MonoBehaviour {
 
     public GameObject ShieldObject;
+    public Transform ShieldCenterPoint;
     
     private ShieldPositioner positioner;
 
@@ -44,6 +45,7 @@ public class ShieldComponent : MonoBehaviour {
 
         shieldCharges = maxShieldCharges;
         SetShieldColour(EnergyTypes.Colours.Blue);
+        positioner.Setup(ShieldCenterPoint);
 
         maxSize = ShieldObject.transform.localScale;
     }
@@ -160,7 +162,7 @@ public class ShieldComponent : MonoBehaviour {
     private void UpdateShieldSize()
     {
         if (shieldCharges == 0) return;
-        ShieldObject.transform.localScale = maxSize * shieldCharges / 3;
+        ShieldObject.transform.localScale = maxSize * (3 + shieldCharges) / 6f;
     }
 
     private void SetShieldColour(EnergyTypes.Colours colour)

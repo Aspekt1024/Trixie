@@ -1731,6 +1731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShieldObject: {fileID: 1132916822}
+  ShieldCenterPoint: {fileID: 1691434671}
 --- !u!4 &1113490585
 Transform:
   m_ObjectHideFlags: 0
@@ -2133,7 +2134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4c5dc3a73a6e24ebac1ffb1bea2dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenterPoint: {fileID: 1691434671}
 --- !u!1 &1143123411
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class ShieldPositioner : MonoBehaviour {
 
-    public Transform CenterPoint;
+    private Transform centerPoint;
 
     private Animator playerAnim;
     private bool directionReversed;
 
     private const float distFromCenter = 1.2f;
 
-    private void Start()
+    public void Setup(Transform centerPointReference)
     {
+        centerPoint = centerPointReference;
         playerAnim = Player.Instance.GetComponent<Animator>();
         directionReversed = false;
     }
@@ -20,8 +21,8 @@ public class ShieldPositioner : MonoBehaviour {
     public void SetShieldPosition()
     {
         Vector2 aimDirection = GameManager.GetAimDirection();
-        Vector2 distVector = (aimDirection - (Vector2)CenterPoint.position).normalized * distFromCenter;
-        transform.position = CenterPoint.position + (Vector3)distVector;
+        Vector2 distVector = (aimDirection - (Vector2)centerPoint.position).normalized * distFromCenter;
+        transform.position = centerPoint.position + (Vector3)distVector;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);
         transform.localEulerAngles = new Vector3(0f, 0f, angle);
 
