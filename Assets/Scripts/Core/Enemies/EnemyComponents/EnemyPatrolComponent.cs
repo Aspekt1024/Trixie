@@ -15,7 +15,7 @@ public class EnemyPatrolComponent : MonoBehaviour {
     private float moveSpeed = 1f;
     private float timePointReached;
 
-    // TODO interface with EnemyMoveComponent
+    // TODO interface with EnemyMoveComponent??
 
     private enum States
     {
@@ -23,13 +23,13 @@ public class EnemyPatrolComponent : MonoBehaviour {
     }
     private States state;
 
-    public void Begin()
+    public void Activate()
     {
         targetPointIndex = 0;
         state = States.Active;
     }
 
-    public void Stop()
+    public void Deactivate()
     {
         state = States.None;
     }
@@ -65,9 +65,15 @@ public class EnemyPatrolComponent : MonoBehaviour {
     private void MoveTowardsPoint()
     {
         if (timePointReached + WaitTimeAtEachPoint > Time.time) return;
-
+        
         float xMovement = Mathf.Clamp(points[targetPointIndex].x - transform.position.x, -Time.deltaTime * moveSpeed, Time.deltaTime * moveSpeed);
-        transform.position += Vector3.right * xMovement;
+        float yMovement = 0f;
+        if (!GroundOnly)
+        {
+            yMovement = Mathf.Clamp(points[targetPointIndex].y - transform.position.y, -Time.deltaTime * moveSpeed, Time.deltaTime * moveSpeed);  // todo need to calc magnitude
+        }
+
+        transform.position += new Vector3(xMovement, yMovement, 0f);
 
         if (Vector2.Distance(transform.position, points[targetPointIndex]) < 0.01f)
         {

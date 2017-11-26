@@ -34,12 +34,15 @@ public class HealthComponent : MonoBehaviour {
 
         health -= damage;
         health = Mathf.Max(0, health);
+        
+        GameUIManager.UpdateHealth(health);
     }
 
     public void AddHealth(int additionalHealth = 1)
     {
         health += additionalHealth;
         health = Mathf.Min(MaxHealth, health);
+        GameUIManager.UpdateHealth(health);
     }
 
     public bool IsAlive()

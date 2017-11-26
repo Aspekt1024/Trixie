@@ -19,5 +19,13 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Shield")
+        {
+            DestroyEnemy();
+        }
+    }
+
     protected virtual void DestroyEnemy() { }
 }

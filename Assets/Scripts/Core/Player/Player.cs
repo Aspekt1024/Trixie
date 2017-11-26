@@ -114,10 +114,15 @@ public class Player : MonoBehaviour {
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             body.velocity = new Vector2(body.velocity.x, 30f);
         }
+        else if (collision.collider.tag == "Enemy")
+        {
+            TakeDamage();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.tag);
         if (collision.tag == "Enemy" || collision.tag == "Projectile")
         {
             TakeDamage();
@@ -127,10 +132,10 @@ public class Player : MonoBehaviour {
     private void TakeDamage()
     {
         healthComponent.TakeDamage();
-        GameUIManager.UpdateHealth(healthComponent.GetHealth());
         if (healthComponent.IsDead())
         {
-            Debug.Log("you are dead");
+            healthComponent.AddHealth(healthComponent.MaxHealth);
+            GameManager.RespawnPlayerStart();
         }
     }
 }

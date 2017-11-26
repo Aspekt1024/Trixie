@@ -18,7 +18,7 @@ public class EnemyGuy : BaseEnemy {
     {
         patrolComponent = GetComponent<EnemyPatrolComponent>();
         state = States.Patrolling;
-        patrolComponent.Begin();
+        patrolComponent.Activate();
         patrolComponent.SetMoveSpeed(MovementSpeed);
     }
 
@@ -41,7 +41,7 @@ public class EnemyGuy : BaseEnemy {
     protected override void DestroyEnemy()
     {
         state = States.Dead;
-        patrolComponent.Stop();
+        patrolComponent.Deactivate();
     }
 
 }
