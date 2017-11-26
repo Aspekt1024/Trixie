@@ -9,21 +9,7 @@ public class Player : MonoBehaviour {
     public Transform BulletPoint;
     public SpriteRenderer TrixieRenderer;
 
-    private static Player instance;
-    public static Player Instance
-    {
-        get { if (instance == null)
-            {
-                instance = FindObjectOfType<Player>();
-            }
-            if (instance == null)
-            {
-                Debug.Log("Could not find player in scene. Please add one!");
-                return null;
-            }
-            return instance;
-        }
-    }
+    public static Player Instance;
 
     private Animator anim;
 
@@ -34,9 +20,9 @@ public class Player : MonoBehaviour {
     
     private void Awake ()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

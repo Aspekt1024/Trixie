@@ -1,9 +1,23 @@
 fileFormatVersion: 2
 guid: 3be0dac6dff8da94ba43b2426e0c9642
-timeCreated: 1510974933
+timeCreated: 1511580439
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: alien_dirt
+    21300002: alien_wall
+    21300004: alien assets2_2
+    21300006: alien_floor
+    21300008: alien roof
+    21300010: alien_broken_wall
+    21300012: alien_dirt_edge_1
+    21300014: alien adirt_edge_2
+    21300016: alien_platform
+    21300018: alien_pillar
+    21300020: alien pillar_short
+    21300022: alien_pillar_broken
+    21300024: alien pillar_broken_top
+    21300026: alien_pillar_broken_bottom
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -40,7 +54,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -65,9 +79,324 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: alien_dirt
+      rect:
+        serializedVersion: 2
+        x: 1326
+        y: 35
+        width: 1113
+        height: 746
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -556.5, y: 373}
+        - {x: -556.5, y: -372.668}
+        - {x: 556.5, y: -372.668}
+        - {x: 556.5, y: 373}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_wall
+      rect:
+        serializedVersion: 2
+        x: 1312
+        y: 815
+        width: 1130
+        height: 863
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -565, y: 431.5}
+        - {x: -565, y: -431.12796}
+        - {x: 565, y: -431.12796}
+        - {x: 565, y: 431.5}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien assets2_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 922
+        width: 960
+        height: 510
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -479.92264, y: 255}
+        - {x: -479.92264, y: -255}
+        - {x: 480, y: -255}
+        - {x: 480, y: 255}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_floor
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 1956
+        width: 1459
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -680.8704, y: 71.11499}
+        - {x: -679.7391, y: -84.37781}
+        - {x: 729.5, y: -94.330055}
+        - {x: 729.5, y: 69.12427}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien roof
+      rect:
+        serializedVersion: 2
+        x: 1232
+        y: 2181
+        width: 1099
+        height: 191
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -549.5, y: 95.5}
+        - {x: -549.5, y: -67.565674}
+        - {x: 499.77124, y: -65.575195}
+        - {x: 503.71997, y: 95.5}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_broken_wall
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 1485
+        width: 290
+        height: 898
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -110.27073, y: 449}
+        - {x: -142.81216, y: 34.1816}
+        - {x: -142.81216, y: -262.1485}
+        - {x: -139.38675, y: -448.85358}
+        - {x: 145, y: -448.85358}
+        - {x: 145, y: 449}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_dirt_edge_1
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 1497
+        width: 41
+        height: 599
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -20.5, y: 285.1298}
+        - {x: -20.5, y: -297.25302}
+        - {x: 17.044176, y: -297.25302}
+        - {x: 17.044176, y: 297.12003}
+        - {x: -3.508311, y: 297.12003}
+        - {x: -15.497262, y: 293.69424}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien adirt_edge_2
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 1491
+        width: 54
+        height: 778
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -7.8895183, y: 380.19043}
+        - {x: -23.303885, y: 359.63574}
+        - {x: -23.303885, y: -327.23343}
+        - {x: -18.165762, y: -380.33304}
+        - {x: 9.237554, y: -380.33304}
+        - {x: 14.375676, y: -378.62015}
+        - {x: 24.651918, y: -359.77835}
+        - {x: 24.651918, y: 380.19043}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_platform
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 2179
+        width: 378
+        height: 144
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 168.71823, y: 57.584866}
+        - {x: -137.85637, y: 57.584866}
+        - {x: -173.82321, y: 55.871975}
+        - {x: -177.24863, y: 49.020412}
+        - {x: -177.24863, y: -69.169044}
+        - {x: 132.75137, y: -69.169044}
+        - {x: 172.14365, y: -36.62412}
+        - {x: 180.70718, y: -14.356542}
+        - {x: 180.70718, y: 37.030178}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_pillar
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 2429
+        width: 161
+        height: 781
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -80.1768, y: 389.80368}
+        - {x: -80.1768, y: -390.5}
+        - {x: 77.392265, y: -390.5}
+        - {x: 79.10497, y: -343.3135}
+        - {x: 79.10497, y: 389.80368}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien pillar_short
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 3160
+        width: 170
+        height: 276
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -78.35364, y: 131.60925}
+        - {x: -78.35364, y: -133.8888}
+        - {x: 65.51377, y: -133.8888}
+        - {x: 85, y: -120.18567}
+        - {x: 85, y: 128.18347}
+        - {x: 63.801064, y: 131.60925}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_pillar_broken
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 3159
+        width: 175
+        height: 278
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -53.066326, y: -2.1396496}
+        - {x: -70.1934, y: -15.842775}
+        - {x: -82.18235, y: -27.83301}
+        - {x: -82.18235, y: -135.74512}
+        - {x: 68.53589, y: -135.74512}
+        - {x: 83.95025, y: -113.47755}
+        - {x: 83.95025, y: -34.684574}
+        - {x: 12.016548, y: -2.1396496}
+      - - {x: -82.18235, y: 129.75293}
+        - {x: -82.18235, y: 71.51465}
+        - {x: -42.790085, y: 54.385742}
+        - {x: -32.51384, y: 52.67285}
+        - {x: 42.84528, y: 52.67285}
+        - {x: 82.23754, y: 71.51465}
+        - {x: 82.23754, y: 117.762695}
+        - {x: 68.53589, y: 129.75293}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien pillar_broken_top
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 3342
+        width: 173
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -81.326, y: 42.5}
+        - {x: -81.326, y: -20.40435}
+        - {x: -35.0829, y: -34.107475}
+        - {x: 47.127045, y: -34.107475}
+        - {x: 60.828705, y: -28.968803}
+        - {x: 77.95578, y: -11.839897}
+        - {x: 83.093895, y: -1.5625527}
+        - {x: 83.093895, y: 42.5}
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: alien_pillar_broken_bottom
+      rect:
+        serializedVersion: 2
+        x: 1268
+        y: 3160
+        width: 176
+        height: 137
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -52.49724, y: 68.5}
+        - {x: -69.624306, y: 55.385624}
+        - {x: -81.61326, y: 43.39539}
+        - {x: -81.61326, y: -64.51672}
+        - {x: 69.10498, y: -64.51672}
+        - {x: 84.51934, y: -42.24914}
+        - {x: 84.51934, y: 36.543827}
+        - {x: 12.585638, y: 68.5}
+      tessellationDetail: 0
     outline: []
     physicsShape: []
   spritePackingTag: 

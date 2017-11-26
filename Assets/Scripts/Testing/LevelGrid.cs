@@ -62,8 +62,8 @@ public class LevelGrid : MonoBehaviour
 
         while (sceneCam.WorldToViewportPoint(Vector2.right * GridSpacing * gridNumX).x < 1f)
         {
-            Vector3 startPos = new Vector3(GridSpacing * gridNumX, sceneCam.transform.position.y - Screen.height / (2 * sceneCam.orthographicSize));
-            Vector3 endPos = startPos + Vector3.up * Screen.height / (sceneCam.orthographicSize);
+            Vector3 startPos = new Vector3(GridSpacing * gridNumX, sceneCam.transform.position.y - Screen.height * sceneCam.orthographicSize / 2);
+            Vector3 endPos = startPos + Vector3.up * Screen.height * sceneCam.orthographicSize;
 
             Gizmos.DrawLine(startPos, endPos);
             gridNumX++;
@@ -71,8 +71,8 @@ public class LevelGrid : MonoBehaviour
         
         while (sceneCam.WorldToViewportPoint(Vector2.up * GridSpacing * gridNumY).y < 1f)
         {
-            Vector3 startPos = new Vector3(sceneCam.transform.position.x - Screen.width / (2 * sceneCam.orthographicSize), GridSpacing * gridNumY);
-            Vector3 endPos = startPos + Vector3.right * Screen.width / (sceneCam.orthographicSize);
+            Vector3 startPos = new Vector3(sceneCam.transform.position.x - Screen.width * sceneCam.orthographicSize / 2, GridSpacing * gridNumY);
+            Vector3 endPos = startPos + Vector3.right * Screen.width * sceneCam.orthographicSize;
 
             Gizmos.DrawLine(startPos, endPos);
             gridNumY++;
