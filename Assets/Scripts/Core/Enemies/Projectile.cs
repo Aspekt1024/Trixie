@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+    public EnergyTypes.Colours ProjectileColour;
+
     private Animator anim;
     
     public EnergyTypes.Colours Colour
