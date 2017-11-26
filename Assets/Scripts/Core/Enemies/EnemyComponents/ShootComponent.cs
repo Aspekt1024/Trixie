@@ -11,7 +11,6 @@ public class ShootComponent : MonoBehaviour {
     public float VisibleRange;
     public Transform ShootPoint;
     public LayerMask[] TargetLayers;
-    public bool ShootsThroughTerrain;
 
     private Transform aimTarget;
     private float timeLastShot;
@@ -117,8 +116,13 @@ public class ShootComponent : MonoBehaviour {
         projectile.SetActive(true);
         projectile.transform.position = ShootPoint.transform.position;
         projectile.transform.localRotation = Turrets.transform.rotation;
-        projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z - 90f);
+        projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
         projectile.GetComponent<Rigidbody2D>().velocity = Turrets.transform.right * ProjectileSpeed;
+
+        if (projectilePrefabScript.Behaviour == Projectile.ProjectileBehaviours.Homing)
+        {
+            projectile.GetComponent<Projectile>().SetTarget(aimTarget);
+        }
 
         timeLastShot = Time.time;
         return true;
@@ -130,9 +134,6 @@ public class ShootComponent : MonoBehaviour {
         {
             layerMask |= TargetLayers[i];
         }
-        if (!ShootsThroughTerrain)
-        {
-            layerMask |= 1 << LayerMask.NameToLayer("Terrain");
-        }
+        layerMask |= 1 << LayerMask.NameToLayer("Terrain");
     }
 }
