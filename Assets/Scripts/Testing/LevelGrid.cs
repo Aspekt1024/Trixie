@@ -6,19 +6,38 @@ using UnityEngine;
 public class LevelGrid : MonoBehaviour
 {
     public Color GridColor;
-    public int GridSpacing;
+    public float GridSpacing;
+
+    public static LevelGrid Instance;
 
     private Texture2D texture;
 
     private Vector2 worldCenter;
 
-    private void Start()
+    public static float GetGridSpacing()
     {
-        SetTexture();
+        return Instance.GridSpacing;
     }
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple LevelGrids found in scene. There should only be one!");
+            Destroy(gameObject);
+        }
+
+        SetTexture();
+    }
+    
     private void OnGUI()
     {
+        ChecKGridSpacing();
+
         int gridNumX = Mathf.RoundToInt(Camera.main.ViewportToWorldPoint(Vector2.zero).x / GridSpacing);
         int gridNumY = Mathf.RoundToInt(Camera.main.ViewportToWorldPoint(Vector2.zero).y / GridSpacing);
         
@@ -54,6 +73,8 @@ public class LevelGrid : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        ChecKGridSpacing();
+
         Gizmos.color = GridColor;
         Camera sceneCam = UnityEditor.SceneView.currentDrawingSceneView.camera;
 
@@ -85,5 +106,13 @@ public class LevelGrid : MonoBehaviour
         texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, GridColor);
         texture.Apply();
+    }
+
+    private void ChecKGridSpacing()
+    {
+        if (GridSpacing < 0.5f)
+        {
+            GridSpacing = 0.5f;
+        }
     }
 }
