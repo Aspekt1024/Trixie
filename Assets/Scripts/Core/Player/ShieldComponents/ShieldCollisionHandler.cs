@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShieldCollisionHandler : MonoBehaviour {
-    
+
+    [SerializeField]
+    private PolygonCollider2D[] shieldColliders;
+    private int currentColliderIndex;
+
     private ShieldComponent shieldComponent;
     
     private void Start ()

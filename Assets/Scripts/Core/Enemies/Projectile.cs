@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour {
     {
         Normal, Homing
     }
-
+    
     public EnergyTypes.Colours ProjectileColour;
     public ProjectileBehaviours Behaviour;
 

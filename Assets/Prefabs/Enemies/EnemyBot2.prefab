@@ -160,7 +160,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1956489234289242}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.14, y: 2.5, z: 0.091796875}
+  m_LocalPosition: {x: -0.7, y: 23.35, z: 0.091796875}
   m_LocalScale: {x: 4, y: 4, z: 1.9529717}
   m_Children:
   - {fileID: 4420650357779520}
@@ -276,17 +276,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f19f0e98d83ed41a8def3358600216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProjectilePrefab: {fileID: 1932205769554448, guid: 95ee73037aec9ab479907b9c7c3e3105,
+  ProjectilePrefab: {fileID: 1489662761907546, guid: a698657fe11549f4b89102582e8d8f46,
     type: 2}
   Turrets: {fileID: 1211384274911946}
-  ProjectileCooldown: 0.5
-  ProjectileSpeed: 10
+  ProjectileCooldown: 0.8
+  ProjectileSpeed: 5
   VisibleRange: 20
   ShootPoint: {fileID: 4213129305614848}
   TargetLayers:
   - serializedVersion: 2
     m_Bits: 2048
-  ShootsThroughTerrain: 0
 --- !u!114 &114984798351845636
 MonoBehaviour:
   m_ObjectHideFlags: 1

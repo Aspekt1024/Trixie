@@ -110,7 +110,7 @@ public class ShootComponent : MonoBehaviour {
     {
         if (timeLastShot + ProjectileCooldown > Time.time) return false;
         
-        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.ProjectileColour);
+        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
         if (projectile == null) return false;
 
         projectile.SetActive(true);

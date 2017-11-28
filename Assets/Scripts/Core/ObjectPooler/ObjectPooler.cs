@@ -33,11 +33,11 @@ public class ObjectPooler : MonoBehaviour {
         }
     }
 
-    public GameObject GetPooledProjectile(EnergyTypes.Colours colour)
+    public GameObject GetPooledProjectile(string projectileName)
     {
         foreach (ProjectilePoolItem pool in ProjectilePools)
         {
-            if (pool.Colour == colour)
+            if (pool.PrefabName == projectileName)
             {
                 return pool.GetPooledObject();
             }

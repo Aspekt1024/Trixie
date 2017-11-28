@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileColour: 2
-  Behaviour: 0
+  Behaviour: 1
 --- !u!212 &212082920994728446
 SpriteRenderer:
   m_ObjectHideFlags: 1

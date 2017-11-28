@@ -24,7 +24,7 @@ public class BasicTurret : MonoBehaviour {
     
     private void Shoot()
     {
-        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(EnergyTypes.Colours.Blue);
+        GameObject projectile = null; // ObjectPooler.Instance.GetPooledProjectile(EnergyTypes.Colours.Blue);
         if (projectile == null) return;
 
         projectile.SetActive(true);

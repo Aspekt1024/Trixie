@@ -24,6 +24,11 @@ public class ObjectPoolItem {
         }
     }
 
+    public string PrefabName
+    {
+        get { return ObjectPrefab.name; }
+    }
+
     public GameObject GetPooledObject()
     {
         for (int i = 0; i < PoolSize; i++)
