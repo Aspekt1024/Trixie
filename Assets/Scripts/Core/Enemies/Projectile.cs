@@ -12,12 +12,6 @@ public class Projectile : MonoBehaviour {
     public EnergyTypes.Colours ProjectileColour;
     public ProjectileBehaviours Behaviour;
 
-    public EnergyTypes.Colours Colour
-    {
-        get { return projectileColour; }
-    }
-    private EnergyTypes.Colours projectileColour;
-
     private Animator anim;
     private Rigidbody2D body;
     private Transform homingTarget;
@@ -46,12 +40,7 @@ public class Projectile : MonoBehaviour {
     {
         homingTarget = newTarget;
     }
-
-    public void SetType(EnergyTypes.Colours colour, ProjectileBehaviours behaviour = ProjectileBehaviours.Normal)
-    {
-        projectileColour = colour;
-    }
-
+    
     public void DestroyByCollision()
     {
         gameObject.SetActive(false);

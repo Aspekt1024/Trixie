@@ -14,7 +14,13 @@ public class ShieldCollisionHandler : MonoBehaviour {
     {
         shieldComponent = Player.Instance.GetComponent<ShieldComponent>();
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        BlockProjectiles(collision.collider.gameObject);
+        DestroyEnemies(collision.collider.gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         BlockProjectiles(collision.gameObject);
@@ -26,7 +32,7 @@ public class ShieldCollisionHandler : MonoBehaviour {
         if (other.tag == "Projectile")
         {
             Projectile projectile = other.gameObject.GetComponent<Projectile>();
-            if (projectile.Colour != shieldComponent.GetColour())
+            if (projectile.ProjectileColour != shieldComponent.GetColour())
             {
                 if (shieldComponent.IsShielding())
                 {
@@ -43,7 +49,15 @@ public class ShieldCollisionHandler : MonoBehaviour {
 
     private void DestroyEnemies(GameObject other)
     {
-        // TODO check if shield hits enemy
+        if (other.tag == "Enemy")
+        {
+            BaseEnemy baseEnemy = other.GetComponent<BaseEnemy>();
+            if (baseEnemy)
+            {
+                other.GetComponent<BaseEnemy>().DamageEnemy();
+                shieldComponent.DisableShield();
+            }
+        }
     }
 
     

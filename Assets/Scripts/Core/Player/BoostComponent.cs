@@ -11,8 +11,8 @@ public class BoostComponent : MonoBehaviour {
     public BoostRechargeTypes RechargeType;
 
     public GameObject Jetpacks;
-    public float MaxBoostTime = 1.2f;
-    public float BoostVelocity = 10f;
+    public float MaxBoostTime = 2f;
+    public float BoostVelocity = 18f;
 
     public float RechargeRate; // over time only
 
@@ -28,6 +28,7 @@ public class BoostComponent : MonoBehaviour {
 
     private void Start ()
     {
+        boostAvailable = MaxBoostTime;
         Jetpacks.SetActive(false);
     }
 

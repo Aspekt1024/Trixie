@@ -15,7 +15,7 @@ public class BaseEnemy : MonoBehaviour {
     {
         if (collision.tag == "Shield")
         {
-            DestroyEnemy();
+            //DestroyEnemy();
         }
     }
 
@@ -23,8 +23,13 @@ public class BaseEnemy : MonoBehaviour {
     {
         if (collision.collider.tag == "Shield")
         {
-            DestroyEnemy();
+            //DestroyEnemy();
         }
+    }
+
+    public virtual void DamageEnemy(int damage = 1)
+    {
+        DestroyEnemy();
     }
 
     protected virtual void DestroyEnemy() { }
