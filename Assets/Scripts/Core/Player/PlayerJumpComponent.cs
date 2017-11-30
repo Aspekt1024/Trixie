@@ -5,14 +5,11 @@ using UnityEngine;
 public class PlayerJumpComponent : MonoBehaviour {
 
     public float JumpVelocity = 15f;
-    public float BoostVelocity = 10f;
     public float FallVelocity = 15f;
     public float MaxFallVelocity = 25f;
 
     public float MaxJumpTime = 0.4f;
-    public float MaxBoostTime = 1.2f;
 
-    public GameObject Jetpacks;
     public Transform GroundCheckObj;
 
     private const float groundCheckRadius = 0.1f;
@@ -20,10 +17,9 @@ public class PlayerJumpComponent : MonoBehaviour {
 
     private Rigidbody2D body;
     private Animator anim;
+    private BoostComponent boostComponent;
 
     private float jumpTimer;
-
-    private float boostTimer;
     
     private float targetVerticalVelocity;
     
@@ -38,23 +34,28 @@ public class PlayerJumpComponent : MonoBehaviour {
         state = States.Falling;
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        Jetpacks.SetActive(false);
+        boostComponent = GetComponent<BoostComponent>();
         groundLayer = 1 << LayerMask.NameToLayer("Terrain");
     }
 
     private void FixedUpdate()
     {
-        switch(state)
+        boostComponent.CanRecharge = false;
+        switch (state)
         {
             case States.Grounded:
+                boostComponent.CanRecharge = true;
                 CheckNotGrounded();
                 break;
             case States.Falling:
                 CheckGrounded();
                 break;
             case States.Boosting:
-                boostTimer += Time.deltaTime;
-                if (boostTimer > MaxBoostTime)
+                if (boostComponent.UseBoost(Time.deltaTime))
+                {
+                    // all okay! boost being used :)
+                }
+                else
                 {
                     SetPostBoostState();
                 }
@@ -123,7 +124,7 @@ public class PlayerJumpComponent : MonoBehaviour {
             body.velocity = new Vector2(body.velocity.x, body.velocity.y / 3f);
         }
         targetVerticalVelocity = -FallVelocity / 4f;
-        Jetpacks.SetActive(false);
+        boostComponent.DeactivateBoosters();
         anim.SetBool("jetpacking", false);
     }
 
@@ -137,7 +138,6 @@ public class PlayerJumpComponent : MonoBehaviour {
         Collider2D collider = Physics2D.OverlapCircle(GroundCheckObj.position, groundCheckRadius, groundLayer);
         if (collider != null)
         {
-            boostTimer = 0f;    // TODO move to update - add cooldown
             state = States.Grounded;
             anim.SetBool("grounded", true);
         }
@@ -177,7 +177,7 @@ public class PlayerJumpComponent : MonoBehaviour {
     private void UseBoost()
     {
         state = States.Boosting;
-        targetVerticalVelocity = BoostVelocity;
+        targetVerticalVelocity = boostComponent.BoostVelocity;
         anim.SetBool("jetpacking", true);
         //Jetpacks.SetActive(true);
     }

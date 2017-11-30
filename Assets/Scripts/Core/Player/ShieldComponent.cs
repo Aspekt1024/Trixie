@@ -168,6 +168,8 @@ public class ShieldComponent : MonoBehaviour {
     private void SetShieldColour(EnergyTypes.Colours colour)
     {
         shieldColour = colour;
+        GameUIManager.SetShieldColour(shieldColour);
+
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:

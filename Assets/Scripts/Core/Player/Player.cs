@@ -122,7 +122,6 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.tag);
         if (collision.tag == "Enemy" || collision.tag == "Projectile")
         {
             TakeDamage();

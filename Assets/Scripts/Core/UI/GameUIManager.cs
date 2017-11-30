@@ -7,6 +7,8 @@ public class GameUIManager : MonoBehaviour {
     public static GameUIManager Instance;
 
     public HealthUI HealthUI;
+    public BoostUI BoostUI;
+    public ShieldUI ShieldUI;
 
     private void Awake()
     {
@@ -22,8 +24,13 @@ public class GameUIManager : MonoBehaviour {
         }
     }
 
-    public static void UpdateHealth(int health)
-    {
-        Instance.HealthUI.UpdateHealth(health);
-    }
+    public static void UpdateHealth(int health) { Instance.HealthUI.UpdateHealth(health); }
+    public static void UpdateBoostPercentage(float percentage) { Instance.BoostUI.UpdateBoostPercentage(percentage); }
+    public static void SetShieldColour(EnergyTypes.Colours shieldColour) { Instance.ShieldUI.SetShieldColour(shieldColour); }
+
+    //TODO hide health show health
+    public static void HideBoostIndicator() { Instance.BoostUI.HideBoostIndicator(); }
+    public static void ShowBoostIndicator() { Instance.BoostUI.ShowBoostIndicator(); }
+    public static void HideShieldIndicator() { Instance.ShieldUI.HideShieldIndicator(); }
+    public static void ShowShieldIndicator() { Instance.ShieldUI.ShowShieldIndicator(); }
 }
