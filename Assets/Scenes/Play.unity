@@ -2590,6 +2590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddbd1b706746144b90f0dee8f6a4d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Triggers: 0
   SwitchType: 0
   TargetObject: {fileID: 1894162967}
   OnValue: 20
@@ -5629,10 +5630,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddbd1b706746144b90f0dee8f6a4d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Triggers: 0
   SwitchType: 1
   TargetObject: {fileID: 1288499710}
   OnValue: 20
-  OffValue: -15
+  OffValue: -10
   SwitchIndicator: {fileID: 324713416}
 --- !u!1 &2124579864
 GameObject:

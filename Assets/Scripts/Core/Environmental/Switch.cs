@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour {
 
+    public enum TriggerTypes
+    {
+        Player, Projectiles, PlayerAndProjectiles
+    }
+    public TriggerTypes Triggers;
+
     public enum SwitchTypes
     {
         Toggle, OnOnly
@@ -28,9 +34,28 @@ public class Switch : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" || collision.tag == "Projectile")
+        switch (Triggers)
         {
-            SwitchHit();
+            case TriggerTypes.Player:
+                if (collision.tag == "Player")
+                {
+                    SwitchHit();
+                }
+                break;
+            case TriggerTypes.Projectiles:
+                if (collision.tag == "Projectile")
+                {
+                    SwitchHit();
+                }
+                break;
+            case TriggerTypes.PlayerAndProjectiles:
+                if (collision.tag == "Player" || collision.tag == "Projectile")
+                {
+                    SwitchHit();
+                }
+                break;
+            default:
+                break;
         }
     }
 
