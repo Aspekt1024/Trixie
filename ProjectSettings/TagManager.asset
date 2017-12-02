@@ -10,6 +10,7 @@ TagManager:
   - BouncyBulb
   - Enemy
   - GravityField
+  - CameraFocusField
   layers:
   - Default
   - TransparentFX

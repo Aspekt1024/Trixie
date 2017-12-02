@@ -18,14 +18,20 @@ public class Projectile : MonoBehaviour {
     private Animator anim;
     private Rigidbody2D body;
     private Transform homingTarget;
+
+    private bool inGravityField;
+    private List<GravityField> gravityFields;
+    private float currentFieldStrength;
+    private float currentModifiedVelocity;
     
     private void Awake()
     {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+        gravityFields = new List<GravityField>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Behaviour == ProjectileBehaviours.Homing)
         {
@@ -37,6 +43,8 @@ public class Projectile : MonoBehaviour {
         {
             gameObject.SetActive(false);
         }
+
+        UpdateModifiedVelocity();
     }
 
     public void SetTarget(Transform newTarget)
@@ -49,7 +57,7 @@ public class Projectile : MonoBehaviour {
         if (BounceOffShield)
         {
             body.velocity = shieldDirection * body.velocity.magnitude;
-            transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(shieldDirection.y, shieldDirection.x) * Mathf.Rad2Deg);
+            transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
         }
         else
         {
@@ -62,14 +70,21 @@ public class Projectile : MonoBehaviour {
         gameObject.SetActive(false);
         // TODO hit object animation
     }
-
-
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Shield")
+        if (collision.tag == "GravityField")
         {
-            // Do nothing. This is handled by the shield component
+            gravityFields.Add(collision.GetComponent<GravityField>());
+            if (!inGravityField)
+            {
+                inGravityField = true;
+                SetModifiedVelocity();
+            }
+        }
+        else if (collision.tag == "Shield")
+        {
+            // Do nothing. This is handled by the shield / gravity field components
         }
         else
         {
@@ -78,10 +93,50 @@ public class Projectile : MonoBehaviour {
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "GravityField")
+        {
+            gravityFields.Remove(collision.GetComponent<GravityField>());
+            if (gravityFields.Count > 0)
+            {
+                SetModifiedVelocity();
+            }
+            else
+            {
+                inGravityField = false;
+                RemoveModifiedVelocty();
+            }
+        }
+    }
+
+    private void UpdateModifiedVelocity()
+    {
+        body.velocity -= Vector2.up * currentModifiedVelocity / 3f;
+        currentModifiedVelocity += currentFieldStrength * Time.deltaTime / 2;
+        body.velocity += Vector2.up * currentModifiedVelocity /3f;
+        transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
+    }
+
+    private void SetModifiedVelocity()
+    {
+        currentFieldStrength = gravityFields[0].Strength;
+    }
+
+    private void RemoveModifiedVelocty()
+    {
+        body.velocity -= Vector2.up * currentModifiedVelocity / 3f;
+        currentFieldStrength = 0f;
+        currentModifiedVelocity = 0f;
+    }
+
     private void OnEnable()
     {
-        // TODO set initial state (animations etc)
         homingTarget = null;
+        inGravityField = false;
+        currentFieldStrength = 0f;
+        currentModifiedVelocity = 0f;
+        gravityFields = new List<GravityField>();
     }
 
     private void FollowTarget()

@@ -130,6 +130,10 @@ public class Player : MonoBehaviour {
         {
             jumpComponent.EnterGravityField(collision.GetComponent<GravityField>());
         }
+        else if (collision.tag == "CameraFocusField")
+        {
+            Camera.main.GetComponent<CameraFollow>().SetCameraFocus(collision.transform);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -137,6 +141,10 @@ public class Player : MonoBehaviour {
         if (collision.tag == "GravityField")
         {
             jumpComponent.ExitGravityField(collision.GetComponent<GravityField>());
+        }
+        else if (collision.tag == "CameraFocusField")
+        {
+            Camera.main.GetComponent<CameraFollow>().SetCameraFollow();
         }
     }
 

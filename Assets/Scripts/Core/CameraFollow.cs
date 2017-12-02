@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour {
     public float FollowSpeed;
 
     private Rigidbody2D followBody;
+    private Vector2 focusPoint;
     
     private float xMin = 0f;
     private float xMax = 1000f;
@@ -16,6 +17,8 @@ public class CameraFollow : MonoBehaviour {
     
     private float xOffset = 0f;
     private float yOffset = 0f;
+
+    private bool isFocusMode;
 
     private void Start ()
     {
@@ -29,6 +32,24 @@ public class CameraFollow : MonoBehaviour {
 	
 	private void FixedUpdate ()
     {
+        if (isFocusMode)
+        {
+            GotoFocusPoint();
+        }
+        else
+        {
+            FollowBody();
+        }
+	}
+
+    private void GotoFocusPoint()
+    {
+        Vector2 newPos = Vector2.Lerp(transform.position, focusPoint, 2 * Time.deltaTime);
+        transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
+    }
+
+    private void FollowBody()
+    {
         if (followBody != null)
         {
             xOffset = Mathf.Lerp(xOffset, followBody.velocity.x, Time.deltaTime * FollowSpeed);
@@ -38,8 +59,24 @@ public class CameraFollow : MonoBehaviour {
         Vector2 targetPos = new Vector2();
         targetPos.x = Mathf.Clamp(ObjectToFollow.position.x + xOffset, xMin, xMax);
         targetPos.y = Mathf.Clamp(ObjectToFollow.position.y + yOffset, yMin, yMax);
-        
+
         Vector2 newPos = Vector2.Lerp(transform.position, targetPos, 2 * Time.deltaTime);
         transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
-	}
+    }
+
+    public void SetCameraFocus(Transform focusTf)
+    {
+        isFocusMode = true;
+        focusPoint = focusTf.position;
+    }
+
+    public void SetCameraFollow(Transform newObjectToFollow = null)
+    {
+        if (newObjectToFollow)
+        {
+            ObjectToFollow = newObjectToFollow;
+            followBody = ObjectToFollow.GetComponent<Rigidbody2D>();
+        }
+        isFocusMode = false;
+    }
 }

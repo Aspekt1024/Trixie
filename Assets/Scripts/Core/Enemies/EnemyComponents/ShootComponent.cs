@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ShootComponent : MonoBehaviour {
 
+    public enum ShootTargets
+    {
+        Player, None, CustomPoint
+    }
+    public ShootTargets ShootTarget;
+
     public enum ShootTypes
     {
         OneShot, Radial
@@ -24,6 +30,8 @@ public class ShootComponent : MonoBehaviour {
     public Transform ShootPoint;
     public LayerMask[] TargetLayers;
 
+    public Transform CustomTarget;
+
     private Transform aimTarget;
     private float timeLastShot;
 
@@ -40,6 +48,11 @@ public class ShootComponent : MonoBehaviour {
 
     private void Start()
     {
+        if (ShootTarget == ShootTargets.CustomPoint)
+        {
+            aimTarget = CustomTarget;
+        }
+
         state = States.Aiming;
         timeLastShot = Time.deltaTime;
         projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
@@ -109,6 +122,8 @@ public class ShootComponent : MonoBehaviour {
 
     private bool TargetInLineOfSight()
     {
+        if (ShootTarget == ShootTargets.None || ShootTarget == ShootTargets.CustomPoint) return true;
+
         if (aimTarget == null) return false;
 
         Vector2 distVector = aimTarget.position - transform.position;

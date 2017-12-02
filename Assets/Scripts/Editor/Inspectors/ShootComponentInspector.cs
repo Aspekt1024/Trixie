@@ -52,13 +52,11 @@ public class ShootComponentInspector : Editor {
 
     private void ShowOneShotUI()
     {
-    //        
-    //public GameObject Turrets;
-    //public float ProjectileCooldown;
-    //public float ProjectileSpeed;
-    //public float VisibleRange;
-    //public Transform ShootPoint;
-    //public LayerMask[] TargetLayers;
+        current.ShootTarget = (ShootComponent.ShootTargets)EditorGUILayout.EnumPopup("Shoot Target", current.ShootTarget);
+        if (current.ShootTarget == ShootComponent.ShootTargets.CustomPoint)
+        {
+            current.CustomTarget = (Transform)EditorGUILayout.ObjectField("Custom Target", current.CustomTarget, typeof(Transform), true);
+        }
     }
 
     private void ShowRadialUI()
