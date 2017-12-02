@@ -113,7 +113,7 @@ public class Projectile : MonoBehaviour {
     private void UpdateModifiedVelocity()
     {
         body.velocity -= Vector2.up * currentModifiedVelocity / 3f;
-        currentModifiedVelocity += currentFieldStrength * Time.deltaTime / 2;
+        currentModifiedVelocity += currentFieldStrength * Time.deltaTime;
         body.velocity += Vector2.up * currentModifiedVelocity /3f;
         transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
     }
@@ -136,6 +136,7 @@ public class Projectile : MonoBehaviour {
         inGravityField = false;
         currentFieldStrength = 0f;
         currentModifiedVelocity = 0f;
+        body.velocity = Vector2.zero;
         gravityFields = new List<GravityField>();
     }
 

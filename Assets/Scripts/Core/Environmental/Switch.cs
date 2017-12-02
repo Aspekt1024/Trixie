@@ -36,9 +36,12 @@ public class Switch : MonoBehaviour {
 
     private void SwitchHit()
     {
-        if (SwitchType == SwitchTypes.OnOnly && state == States.Off)
+        if (SwitchType == SwitchTypes.OnOnly)
         {
-            SwitchOn();
+            if (state == States.Off)
+            {
+                SwitchOn();
+            }
         }
         else
         {
