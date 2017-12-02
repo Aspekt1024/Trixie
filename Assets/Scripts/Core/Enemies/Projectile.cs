@@ -8,6 +8,9 @@ public class Projectile : MonoBehaviour {
     {
         Normal, Homing
     }
+
+    public bool BounceOffShield;
+    //public bool BounceOffWalls;
     
     public EnergyTypes.Colours ProjectileColour;
     public ProjectileBehaviours Behaviour;
@@ -39,6 +42,19 @@ public class Projectile : MonoBehaviour {
     public void SetTarget(Transform newTarget)
     {
         homingTarget = newTarget;
+    }
+
+    public void HitByShield(Vector2 shieldDirection)
+    {
+        if (BounceOffShield)
+        {
+            body.velocity = shieldDirection * body.velocity.magnitude;
+            transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(shieldDirection.y, shieldDirection.x) * Mathf.Rad2Deg);
+        }
+        else
+        {
+            DestroyByCollision();
+        }
     }
     
     public void DestroyByCollision()

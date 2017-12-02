@@ -43,7 +43,15 @@ public class ShieldCollisionHandler : MonoBehaviour {
                     shieldComponent.DisableShield();
                 }
             }
-            other.GetComponent<Projectile>().DestroyByCollision();
+
+            if (shieldComponent.IsFiring())
+            {
+                other.GetComponent<Projectile>().DestroyByCollision();
+            }
+            else
+            {
+                other.GetComponent<Projectile>().HitByShield(transform.right);
+            }
         }
     }
 

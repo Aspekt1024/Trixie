@@ -126,6 +126,18 @@ public class Player : MonoBehaviour {
         {
             TakeDamage();
         }
+        else if (collision.tag == "GravityField")
+        {
+            jumpComponent.EnterGravityField(collision.GetComponent<GravityField>());
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "GravityField")
+        {
+            jumpComponent.ExitGravityField(collision.GetComponent<GravityField>());
+        }
     }
 
     private void TakeDamage()

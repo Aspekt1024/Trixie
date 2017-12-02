@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcaa9f10f75dd148904a0fd44bb35e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BounceOffShield: 1
   ProjectileColour: 2
   Behaviour: 0
 --- !u!212 &212082920994728446

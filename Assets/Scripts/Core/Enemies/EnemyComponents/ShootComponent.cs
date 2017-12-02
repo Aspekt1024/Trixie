@@ -93,6 +93,10 @@ public class ShootComponent : MonoBehaviour {
 
     public void Deactivate()
     {
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+        }
         state = States.None;
         Turrets.SetActive(false);
     }

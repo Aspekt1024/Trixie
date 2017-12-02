@@ -9,6 +9,7 @@ TagManager:
   - Shield
   - BouncyBulb
   - Enemy
+  - GravityField
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Enemy
   - Interactable
   - EnvironmentObject
-  - 
+  - GravityField
   - 
   - 
   - 

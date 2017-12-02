@@ -29,6 +29,9 @@ public class PlayerJumpComponent : MonoBehaviour {
     }
     private States state;
 
+    private bool inGravityField;
+    private List<GravityField> gravityFields;
+
     private void Awake()
     {
         state = States.Falling;
@@ -36,11 +39,17 @@ public class PlayerJumpComponent : MonoBehaviour {
         anim = GetComponent<Animator>();
         boostComponent = GetComponent<BoostComponent>();
         groundLayer = 1 << LayerMask.NameToLayer("Terrain");
+        gravityFields = new List<GravityField>();
     }
 
     private void FixedUpdate()
     {
         boostComponent.CanRecharge = false;
+        if (inGravityField)
+        {
+            UpdateVelocity();
+            return;
+        }
         switch (state)
         {
             case States.Grounded:
@@ -79,9 +88,39 @@ public class PlayerJumpComponent : MonoBehaviour {
             CheckFalling();
         }
     }
+
+    public void EnterGravityField(GravityField field)
+    {
+        inGravityField = true;
+        gravityFields.Add(field);
+        if (state == States.Boosting)
+        {
+            SetPostBoostState();
+        }
+        else
+        {
+            SetPostJumpState();
+        }
+        targetVerticalVelocity = field.Strength;
+    }
+
+    public void ExitGravityField(GravityField field)
+    {
+        gravityFields.Remove(field);
+        if (gravityFields.Count > 0)
+        {
+            targetVerticalVelocity = gravityFields[0].Strength;
+        }
+        else
+        {
+            inGravityField = false;
+            SetPostJumpState();
+        }
+    }
     
     public void Jump()
     {
+        if (inGravityField) return;
         if (state == States.Jumping || state == States.Falling || state == States.PostJump || state == States.PostBoost)
         {
             UseBoost();
@@ -99,6 +138,7 @@ public class PlayerJumpComponent : MonoBehaviour {
     
     public void JumpReleased()
     {
+        if (inGravityField) return;
         if (state == States.Jumping)
         {
             SetPostJumpState();
