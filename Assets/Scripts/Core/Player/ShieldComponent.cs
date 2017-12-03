@@ -8,6 +8,7 @@ public class ShieldComponent : MonoBehaviour {
     public Transform ShieldCenterPoint;
     
     private ShieldPositioner positioner;
+    private ShieldStats shieldStats;
 
     private Rigidbody2D body;
     private Animator anim;
@@ -36,6 +37,8 @@ public class ShieldComponent : MonoBehaviour {
 
     private void Start()
     {
+        shieldStats = new ShieldStats();
+
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
         positioner = ShieldObject.GetComponent<ShieldPositioner>();
@@ -83,25 +86,60 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
+    public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
+    {
+        shieldStats.ObtainedUnlock(unlockType);
+        if (!shieldStats.ColourUnlocked(shieldColour))
+        {
+            CycleShieldColourPressed();
+        }
+    }
+
     public void CycleShieldColourPressed()
     {
+        if (!shieldStats.ShieldUnlocked()) return;
+
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
-                SetShieldColour(EnergyTypes.Colours.Pink);
+                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Pink))
+                {
+                    SetShieldColour(EnergyTypes.Colours.Pink);
+                }
+                else
+                {
+                    shieldColour = EnergyTypes.Colours.Pink;
+                    CycleShieldColourPressed();
+                }
                 break;
             case EnergyTypes.Colours.Pink:
-                SetShieldColour(EnergyTypes.Colours.Yellow);
+                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Yellow))
+                {
+                    SetShieldColour(EnergyTypes.Colours.Yellow);
+                }
+                else
+                {
+                    shieldColour = EnergyTypes.Colours.Yellow;
+                    CycleShieldColourPressed();
+                }
                 break;
             case EnergyTypes.Colours.Yellow:
-                SetShieldColour(EnergyTypes.Colours.Blue);
+                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Blue))
+                {
+                    SetShieldColour(EnergyTypes.Colours.Blue);
+                }
+                else
+                {
+                    shieldColour = EnergyTypes.Colours.Blue;
+                    CycleShieldColourPressed();
+                }
                 break;
         }
     }
     
     public bool ActivateShield()
     {
-        if (state != States.None || shieldCharges == 0) return false;
+        if (state != States.None || shieldCharges == 0 || !shieldStats.ShieldUnlocked()) return false;
 
         state = States.Shielding;
         body.isKinematic = true;
@@ -121,6 +159,7 @@ public class ShieldComponent : MonoBehaviour {
     
     public void Shoot()
     {
+        if (!shieldStats.ShootUnlocked()) return;
         if (state == States.Shielding)
         {
             state = States.Firing;
@@ -168,7 +207,15 @@ public class ShieldComponent : MonoBehaviour {
     private void SetShieldColour(EnergyTypes.Colours colour)
     {
         shieldColour = colour;
-        GameUIManager.SetShieldColour(shieldColour);
+        if (shieldStats.ShieldUnlocked())
+        {
+            GameUIManager.ShowShieldIndicator();
+            GameUIManager.SetShieldColour(shieldColour);
+        }
+        else
+        {
+            GameUIManager.HideShieldIndicator();
+        }
 
         switch (shieldColour)
         {

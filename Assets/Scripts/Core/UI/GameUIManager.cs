@@ -10,6 +10,8 @@ public class GameUIManager : MonoBehaviour {
     public BoostUI BoostUI;
     public ShieldUI ShieldUI;
 
+    public ItemCollectOverlay ItemCollectOverlay;
+
     private void Awake()
     {
         if (Instance == null)
@@ -33,4 +35,6 @@ public class GameUIManager : MonoBehaviour {
     public static void ShowBoostIndicator() { Instance.BoostUI.ShowBoostIndicator(); }
     public static void HideShieldIndicator() { Instance.ShieldUI.HideShieldIndicator(); }
     public static void ShowShieldIndicator() { Instance.ShieldUI.ShowShieldIndicator(); }
+
+    public static void ItemCollected(string itemName) { Instance.ItemCollectOverlay.ShowItemText(itemName); }
 }

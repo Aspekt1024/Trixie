@@ -32,17 +32,17 @@ public class ShieldUI : MonoBehaviour {
 
     public void HideShieldIndicator()
     {
-        foreach (RectTransform rt in GetComponentsInChildren<RectTransform>())
+        foreach (Image img in GetComponentsInChildren<Image>())
         {
-            rt.gameObject.SetActive(false);
+            img.enabled = false;
         }
     }
 
     public void ShowShieldIndicator()
     {
-        foreach (RectTransform rt in GetComponentsInChildren<RectTransform>())
+        foreach (Image img in GetComponentsInChildren<Image>())
         {
-            rt.gameObject.SetActive(true);
+            img.enabled = true;
         }
     }
     
