@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour {
         UpdateModifiedVelocity();
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetHomingTarget(Transform newTarget)
     {
         homingTarget = newTarget;
     }

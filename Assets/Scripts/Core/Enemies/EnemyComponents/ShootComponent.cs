@@ -99,9 +99,16 @@ public class ShootComponent : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Set externally by e.g. an enemy script on startup
+    /// </summary>
+    /// <param name="newTarget"></param>
     public void SetTarget(Transform newTarget)
     {
-        aimTarget = newTarget;
+        if (ShootTarget != ShootTargets.CustomPoint)
+        {
+            aimTarget = newTarget;
+        }
     }
 
     public void Deactivate()
@@ -213,7 +220,7 @@ public class ShootComponent : MonoBehaviour {
 
         if (projectilePrefabScript.Behaviour == Projectile.ProjectileBehaviours.Homing)
         {
-            projectile.GetComponent<Projectile>().SetTarget(aimTarget);
+            projectile.GetComponent<Projectile>().SetHomingTarget(aimTarget);
         }
 
     }
