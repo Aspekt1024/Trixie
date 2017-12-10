@@ -13,6 +13,8 @@ public class EnemyAITest : MonoBehaviour {
     public ForceMode2D ForceMode;
 
     public float nextWaypointDistance = 3f;
+    public float MinDistToTarget = 5f;
+    public float MaxDistToTarget = 18f;
 
     [HideInInspector] public Path Path;
     [HideInInspector] public bool PathIsEnded = false;
@@ -37,11 +39,13 @@ public class EnemyAITest : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if (Target == null) return;
+        if (Target == null || Path == null) return;
 
-        // TODO: Always look at player
-
-        if (Path == null) return;
+        if (InSweetSpot())
+        {
+            // TODO: Randomise path
+            return;
+        }
 
         if (currentWaypoint >= Path.vectorPath.Count)
         {
@@ -62,6 +66,28 @@ public class EnemyAITest : MonoBehaviour {
             currentWaypoint++;
             return;
         }
+    }
+
+    private bool InSweetSpot()
+    {
+        if (!TargetInLineOfSight()) return false;
+
+        float dist = Vector2.Distance(Target.position, transform.position);
+        Debug.Log(dist);
+        return dist > MinDistToTarget && dist < MaxDistToTarget;
+    }
+
+    private bool TargetInLineOfSight()
+    {
+        Vector2 distVector = Target.position - transform.position;
+        
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, 500, 1 << Target.gameObject.layer | 1 << LayerMask.NameToLayer("Terrain"));
+
+        if (hit.collider != null && hit.collider.gameObject.layer != LayerMask.NameToLayer("Terrain"))
+        {
+            return true;
+        }
+        return false;
     }
 
     private void OnPathComplete(Path p)
