@@ -17,6 +17,21 @@ public class Player : MonoBehaviour {
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
     private HealthComponent healthComponent;
+
+    private bool isGrounded;
+    private bool isAgainstWall;
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+        set { isGrounded = value; }
+    }
+
+    public bool IsAgainstWall
+    {
+        get { return isAgainstWall; }
+        set { isAgainstWall = value; }
+    }
     
     private void Awake ()
     {

@@ -17,6 +17,12 @@ public class BallisticsComponent : MonoBehaviour
     }
     public ShootTypes ShootType;
 
+    public enum AimTypes
+    {
+        TurretRotation, LeftRightOnly,
+    }
+    public AimTypes AimType;
+
     // TODO barrage target points
     public float DelayBetweenRadialShots;
 
@@ -50,8 +56,12 @@ public class BallisticsComponent : MonoBehaviour
         {
             aimTarget = CustomTarget;
         }
+        else if (ShootTarget == ShootTargets.Player)
+        {
+            aimTarget = Player.Instance.transform;
+        }
 
-        state = States.Aiming;
+        state = States.None;
         timeLastShot = Time.deltaTime;
         projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
 
@@ -119,13 +129,19 @@ public class BallisticsComponent : MonoBehaviour
             StopCoroutine(shootCoroutine);
         }
         state = States.None;
-        Turrets.SetActive(false);
+        if (Turrets != null)
+        {
+            Turrets.SetActive(false);
+        }
     }
 
     public void Activate()
     {
         state = States.FindingTarget;
-        Turrets.SetActive(true);
+        if (Turrets != null)
+        {
+            Turrets.SetActive(true);
+        }
     }
 
     private bool TargetInLineOfSight()
@@ -134,6 +150,7 @@ public class BallisticsComponent : MonoBehaviour
 
         if (aimTarget == null) return false;
 
+        Debug.Log(aimTarget);
         Vector2 distVector = aimTarget.position - transform.position;
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, VisibleRange, layerMask);
@@ -204,7 +221,10 @@ public class BallisticsComponent : MonoBehaviour
 
         projectile.SetActive(true);
         projectile.transform.position = ShootPoint.transform.position;
-        projectile.transform.localRotation = Turrets.transform.rotation;
+        if (Turrets != null)
+        {
+            projectile.transform.localRotation = Turrets.transform.rotation;
+        }
         projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
         projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
 

@@ -35,7 +35,12 @@ public class ShootComponentInspector : Editor {
         current.ProjectileCooldown = EditorGUILayout.FloatField("Projectile Cooldown", current.ProjectileCooldown);
         current.VisibleRange = EditorGUILayout.FloatField("Visible Range", current.VisibleRange);
 
-        current.ShootPoint = (Transform)EditorGUILayout.ObjectField("Shoot Point", current.ShootPoint, typeof(GameObject), false);
+        GameObject currentShootObject = current.ShootPoint == null ? null : current.ShootPoint.gameObject;
+        GameObject newShootPoint = ((GameObject)EditorGUILayout.ObjectField("Shoot Point", currentShootObject, typeof(GameObject), true));
+        if (newShootPoint != null)
+        {
+            current.ShootPoint = newShootPoint.transform;
+        }
         current.Turrets = (GameObject)EditorGUILayout.ObjectField("Turrets", current.Turrets, typeof(GameObject), true);
 
         for (int i = 0; i < current.TargetLayers.Length; i++)
@@ -43,7 +48,7 @@ public class ShootComponentInspector : Editor {
             //current.TargetLayers[i] = EditorGUILayout.
         }
 
-
+        current.TargetLayers = new LayerMask[1];
         current.TargetLayers[0] = 1 << LayerMask.NameToLayer("Player");
 
         //current.TargetLayers = EditorGUILayout.

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyGuy : BaseEnemy {
-
-    public float MovementSpeed = 7f;
-
-    private EnemyPatrolComponent patrolComponent;
+    
+    private BasicPatrolComponent patrolComponent;
 
     private enum States
     {
@@ -16,10 +14,9 @@ public class EnemyGuy : BaseEnemy {
 
     private void Start()
     {
-        patrolComponent = GetComponent<EnemyPatrolComponent>();
+        patrolComponent = GetComponent<BasicPatrolComponent>();
         state = States.Patrolling;
         patrolComponent.Activate();
-        patrolComponent.SetMoveSpeed(MovementSpeed);
     }
 
     private void Update()

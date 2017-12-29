@@ -52,6 +52,10 @@ public class ShootComponent : MonoBehaviour {
         {
             aimTarget = CustomTarget;
         }
+        else if (ShootTarget == ShootTargets.Player)
+        {
+            aimTarget = Player.Instance.transform;
+        }
 
         state = States.Aiming;
         timeLastShot = Time.deltaTime;
@@ -118,13 +122,19 @@ public class ShootComponent : MonoBehaviour {
             StopCoroutine(shootCoroutine);
         }
         state = States.None;
-        Turrets.SetActive(false);
+        if (Turrets != null)
+        {
+            Turrets.SetActive(false);
+        }
     }
 
     public void Activate()
     {
         state = States.FindingTarget;
-        Turrets.SetActive(true);
+        if (Turrets != null)
+        {
+            Turrets.SetActive(true);
+        }
     }
 
     private bool TargetInLineOfSight()
@@ -214,8 +224,13 @@ public class ShootComponent : MonoBehaviour {
 
         projectile.SetActive(true);
         projectile.transform.position = ShootPoint.transform.position;
-        projectile.transform.localRotation = Turrets.transform.rotation;
+
+        if (Turrets != null)
+        {
+            projectile.transform.localRotation = Turrets.transform.rotation;
+        }
         projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
+
         projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
 
         if (projectilePrefabScript.Behaviour == Projectile.ProjectileBehaviours.Homing)

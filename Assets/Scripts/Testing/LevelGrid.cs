@@ -31,12 +31,18 @@ public class LevelGrid : MonoBehaviour
             Destroy(gameObject);
         }
 
+        LevelConfigData levelConfig = ConfigHandler.LoadConfig();
+        if (levelConfig != null)
+        {
+            GridSpacing = levelConfig.GridSize;
+        }
+
         SetTexture();
     }
     
     private void OnGUI()
     {
-        ChecKGridSpacing();
+        CheckGridSpacing();
 
         int gridNumX = Mathf.RoundToInt(Camera.main.ViewportToWorldPoint(Vector2.zero).x / GridSpacing);
         int gridNumY = Mathf.RoundToInt(Camera.main.ViewportToWorldPoint(Vector2.zero).y / GridSpacing);
@@ -73,7 +79,7 @@ public class LevelGrid : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        ChecKGridSpacing();
+        CheckGridSpacing();
 
         Gizmos.color = GridColor;
         Camera sceneCam = UnityEditor.SceneView.currentDrawingSceneView.camera;
@@ -99,7 +105,13 @@ public class LevelGrid : MonoBehaviour
             gridNumY++;
         }
     }
+
+    public void GetCellCenter(Vector3 pos)
+    {
+
+    }
 #endif
+
 
     private void SetTexture()
     {
@@ -108,7 +120,7 @@ public class LevelGrid : MonoBehaviour
         texture.Apply();
     }
 
-    private void ChecKGridSpacing()
+    private void CheckGridSpacing()
     {
         if (GridSpacing < 0.5f)
         {

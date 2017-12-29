@@ -73,7 +73,6 @@ public class EnemyAITest : MonoBehaviour {
         if (!TargetInLineOfSight()) return false;
 
         float dist = Vector2.Distance(Target.position, transform.position);
-        Debug.Log(dist);
         return dist > MinDistToTarget && dist < MaxDistToTarget;
     }
 

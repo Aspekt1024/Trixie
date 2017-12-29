@@ -9,10 +9,11 @@ public class PlayerJumpComponent : MonoBehaviour {
     public float MaxFallVelocity = 25f;
 
     public float MaxJumpTime = 0.4f;
+    public float JumpEaseOutTime = 0.4f;
 
     public Transform GroundCheckObj;
 
-    private const float groundCheckRadius = 0.1f;
+    private const float groundCheckRadius = 0.7f;
     private LayerMask groundLayer;
 
     private Rigidbody2D body;
@@ -20,6 +21,7 @@ public class PlayerJumpComponent : MonoBehaviour {
     private BoostComponent boostComponent;
 
     private float jumpTimer;
+    private float timeNotGrounded;
     
     private float targetVerticalVelocity;
     
@@ -57,6 +59,7 @@ public class PlayerJumpComponent : MonoBehaviour {
                 CheckNotGrounded();
                 break;
             case States.Falling:
+                timeNotGrounded += Time.deltaTime;
                 CheckGrounded();
                 break;
             case States.Boosting:
@@ -73,7 +76,14 @@ public class PlayerJumpComponent : MonoBehaviour {
                 jumpTimer += Time.deltaTime;
                 if (jumpTimer > MaxJumpTime)
                 {
-                    SetPostJumpState();
+                    if (jumpTimer > JumpEaseOutTime + MaxJumpTime)
+                    {
+                        SetPostBoostState();
+                    }
+                    else
+                    {
+                        EaseOutOfJump();
+                    }
                 }
                 break;
             case States.PostBoost:
@@ -121,18 +131,17 @@ public class PlayerJumpComponent : MonoBehaviour {
     public void Jump()
     {
         if (inGravityField) return;
-        if (state == States.Jumping || state == States.Falling || state == States.PostJump || state == States.PostBoost)
+        if (state == States.Falling && timeNotGrounded < 0.1f)
+        {
+            StartJump();
+        }
+        else if (state == States.Jumping || state == States.Falling || state == States.PostJump || state == States.PostBoost)
         {
             UseBoost();
         }
         else if (state == States.Grounded)
         {
-            state = States.Jumping;
-            anim.Play("Jump");
-            anim.SetBool("grounded", false);
-            jumpTimer = 0f;
-            body.velocity = new Vector2(body.velocity.x, JumpVelocity);
-            targetVerticalVelocity = JumpVelocity * 0.5f;
+            StartJump();
         }
     }
     
@@ -149,9 +158,24 @@ public class PlayerJumpComponent : MonoBehaviour {
         }
     }
 
+    private void StartJump()
+    {
+        state = States.Jumping;
+        anim.Play("Jump");
+        anim.SetBool("grounded", false);
+        jumpTimer = 0f;
+        body.velocity = new Vector2(body.velocity.x, JumpVelocity);
+        targetVerticalVelocity = JumpVelocity * 0.5f;
+    }
+
+    private void EaseOutOfJump()
+    {
+        targetVerticalVelocity = -FallVelocity;
+    }
+
     private void SetPostJumpState()
     {
-        body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2f);
+        body.velocity = new Vector2(body.velocity.x, body.velocity.y / 3f - FallVelocity / 3f);
         targetVerticalVelocity = -FallVelocity;
         state = States.PostJump;
     }
@@ -172,11 +196,10 @@ public class PlayerJumpComponent : MonoBehaviour {
     {
         body.velocity = new Vector2(body.velocity.x, Mathf.Lerp(body.velocity.y, targetVerticalVelocity, 2f * Time.deltaTime));
     }
-    
+
     private void CheckGrounded()
     {
-        Collider2D collider = Physics2D.OverlapCircle(GroundCheckObj.position, groundCheckRadius, groundLayer);
-        if (collider != null)
+        if (IsGrounded())
         {
             state = States.Grounded;
             anim.SetBool("grounded", true);
@@ -185,8 +208,7 @@ public class PlayerJumpComponent : MonoBehaviour {
 
     private void CheckNotGrounded()
     {
-        Collider2D collider = Physics2D.OverlapCircle(GroundCheckObj.position, groundCheckRadius, groundLayer);
-        if (collider == null)
+        if (!IsGrounded())
         {
             if (body.velocity.y > 0f)
             {
@@ -194,10 +216,18 @@ public class PlayerJumpComponent : MonoBehaviour {
             }
             else
             {
+                timeNotGrounded = 0f;
                 state = States.Falling;
             }
             anim.SetBool("grounded", false);
         }
+    }
+
+    private bool IsGrounded()
+    {
+        return Player.Instance.IsGrounded;
+        Collider2D coll = Physics2D.OverlapBox(GroundCheckObj.position - Vector3.right * groundCheckRadius, new Vector2(groundCheckRadius * 2f, 0.4f), 0f, 1 << LayerMask.NameToLayer("Terrain"));
+        return coll != null;
     }
 
     private void CheckFalling()
