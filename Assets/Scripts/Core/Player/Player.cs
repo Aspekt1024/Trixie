@@ -69,6 +69,7 @@ public class Player : MonoBehaviour {
     {
         if (shieldComponent.HasShield())
         {
+            shieldComponent.DisableShield();
             meleeComponent.Activate();
         }
     }

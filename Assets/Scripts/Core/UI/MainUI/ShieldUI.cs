@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ShieldUI : MonoBehaviour {
-
-    public Image ShieldIndicatorImage;
     
-	private void Start ()
+    public ShieldUIModule BlueShieldModule;
+    public ShieldUIModule PinkShieldModule;
+    public ShieldUIModule YellowShieldModule;
+
+    private void Start ()
     {
         SetShieldColour(EnergyTypes.Colours.Blue);
 	}
@@ -17,13 +19,37 @@ public class ShieldUI : MonoBehaviour {
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
-                ShieldIndicatorImage.color = Color.blue;
+                BlueShieldModule.SelectShield();
+                PinkShieldModule.DeselectShield();
+                YellowShieldModule.DeselectShield();
                 break;
             case EnergyTypes.Colours.Pink:
-                ShieldIndicatorImage.color = Color.red;
+                PinkShieldModule.SelectShield();
+                BlueShieldModule.DeselectShield();
+                YellowShieldModule.DeselectShield();
                 break;
             case EnergyTypes.Colours.Yellow:
-                ShieldIndicatorImage.color = Color.yellow;
+                YellowShieldModule.SelectShield();
+                PinkShieldModule.DeselectShield();
+                BlueShieldModule.DeselectShield();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetShieldPower(EnergyTypes.Colours colour, int power)
+    {
+        switch (colour)
+        {
+            case EnergyTypes.Colours.Blue:
+                BlueShieldModule.SetShieldPower(power);
+                break;
+            case EnergyTypes.Colours.Pink:
+                PinkShieldModule.SetShieldPower(power);
+                break;
+            case EnergyTypes.Colours.Yellow:
+                YellowShieldModule.SetShieldPower(power);
                 break;
             default:
                 break;
@@ -32,18 +58,12 @@ public class ShieldUI : MonoBehaviour {
 
     public void HideShieldIndicator()
     {
-        foreach (Image img in GetComponentsInChildren<Image>())
-        {
-            img.enabled = false;
-        }
+        // TODO hide shields when not available
     }
 
     public void ShowShieldIndicator()
     {
-        foreach (Image img in GetComponentsInChildren<Image>())
-        {
-            img.enabled = true;
-        }
+        // TODO show shields when available
     }
-    
+
 }

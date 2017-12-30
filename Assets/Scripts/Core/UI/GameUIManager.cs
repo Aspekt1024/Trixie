@@ -29,6 +29,7 @@ public class GameUIManager : MonoBehaviour {
     public static void UpdateHealth(int health) { Instance.HealthUI.UpdateHealth(health); }
     public static void UpdateBoostPercentage(float percentage) { Instance.BoostUI.UpdateBoostPercentage(percentage); }
     public static void SetShieldColour(EnergyTypes.Colours shieldColour) { Instance.ShieldUI.SetShieldColour(shieldColour); }
+    public static void SetShieldPower(EnergyTypes.Colours colour, int power) { Instance.ShieldUI.SetShieldPower(colour, power); }
 
     //TODO hide health show health
     public static void HideBoostIndicator() { Instance.BoostUI.HideBoostIndicator(); }

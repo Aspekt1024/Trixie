@@ -9,6 +9,7 @@ public class ShieldComponent : MonoBehaviour {
     
     private ShieldPositioner positioner;
     private ShieldStats shieldStats;
+    public ShieldPower shieldPower;
 
     private Rigidbody2D body;
     private Animator anim;
@@ -38,6 +39,7 @@ public class ShieldComponent : MonoBehaviour {
     private void Start()
     {
         shieldStats = new ShieldStats();
+        shieldPower = new ShieldPower();
 
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
@@ -91,12 +93,26 @@ public class ShieldComponent : MonoBehaviour {
         return shieldStats.ShieldUnlocked();
     }
 
+    public void AddShieldPower(int powerToAdd = 1)
+    {
+        shieldPower.AddPower(shieldColour, powerToAdd);
+    }
+
+    public void ReduceShieldPower(int powerToRemove = 1)
+    {
+        shieldPower.ReducePower(shieldColour, powerToRemove);
+    }
+
     public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
     {
         shieldStats.ObtainedUnlock(unlockType);
         if (!shieldStats.ColourUnlocked(shieldColour))
         {
             CycleShieldColourPressed();
+        }
+        else
+        {
+            SetShieldColour(shieldColour);
         }
     }
 
@@ -164,15 +180,15 @@ public class ShieldComponent : MonoBehaviour {
     
     public void Shoot()
     {
-        if (!shieldStats.ShootUnlocked()) return;
-        if (state == States.Shielding)
-        {
-            state = States.Firing;
-            shieldDistance = 0f;
-            body.isKinematic = false;
-            body.velocity = shootSpeed * body.transform.right;
-            anim.Play("Shoot", 0, 0f);
-        }
+        if (state != States.Shielding) return;
+        //if (!shieldStats.ShootUnlocked()) return;
+        if (!shieldPower.ShieldFullyCharged(shieldColour)) return;
+        
+        state = States.Firing;
+        shieldDistance = 0f;
+        body.isKinematic = false;
+        body.velocity = shootSpeed * body.transform.right;
+        anim.Play("Shoot", 0, 0f);
     }
 
     public void RemoveCharge(int chargesToRemove = 1)

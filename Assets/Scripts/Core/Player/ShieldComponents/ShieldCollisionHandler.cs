@@ -18,13 +18,13 @@ public class ShieldCollisionHandler : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         BlockProjectiles(collision.collider.gameObject);
-        DestroyEnemies(collision.collider.gameObject);
+        HitEnemies(collision.collider.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         BlockProjectiles(collision.gameObject);
-        DestroyEnemies(collision.gameObject);
+        HitEnemies(collision.gameObject);
     }
 
     private void BlockProjectiles(GameObject other)
@@ -43,6 +43,10 @@ public class ShieldCollisionHandler : MonoBehaviour {
                     shieldComponent.DisableShield();
                 }
             }
+            else
+            {
+                shieldComponent.AddShieldPower();
+            }
 
             if (shieldComponent.IsFiring())
             {
@@ -55,14 +59,17 @@ public class ShieldCollisionHandler : MonoBehaviour {
         }
     }
 
-    private void DestroyEnemies(GameObject other)
+    private void HitEnemies(GameObject other)
     {
         if (other.tag == "Enemy")
         {
             BaseEnemy baseEnemy = other.GetComponent<BaseEnemy>();
             if (baseEnemy)
             {
-                other.GetComponent<BaseEnemy>().DamageEnemy();
+                if (shieldComponent.IsFiring())
+                {
+                    baseEnemy.DamageEnemy();
+                }
                 shieldComponent.DisableShield();
             }
         }
