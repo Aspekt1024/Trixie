@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
     private HealthComponent healthComponent;
+    private MeleeComponent meleeComponent;
 
     private bool isGrounded;
     private bool isAgainstWall;
@@ -52,6 +53,7 @@ public class Player : MonoBehaviour {
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
         healthComponent = GetComponent<HealthComponent>();
+        meleeComponent = GetComponent<MeleeComponent>();
     }
 
     private void Update()
@@ -60,6 +62,14 @@ public class Player : MonoBehaviour {
         if (viewportPos.y < -0.2f)
         {
             GameManager.RespawnPlayerStart();
+        }
+    }
+
+    public void Melee()
+    {
+        if (shieldComponent.HasShield())
+        {
+            meleeComponent.Activate();
         }
     }
 
@@ -139,7 +149,10 @@ public class Player : MonoBehaviour {
     {
         if (collision.tag == "Enemy" || collision.tag == "Projectile")
         {
-            TakeDamage();
+            if (!meleeComponent.MeleeIsActive())
+            {
+                TakeDamage();
+            }
         }
         else if (collision.tag == "GravityField")
         {

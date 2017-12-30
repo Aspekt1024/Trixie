@@ -86,6 +86,11 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
+    public bool HasShield()
+    {
+        return shieldStats.ShieldUnlocked();
+    }
+
     public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
     {
         shieldStats.ObtainedUnlock(unlockType);

@@ -226,8 +226,6 @@ public class PlayerJumpComponent : MonoBehaviour {
     private bool IsGrounded()
     {
         return Player.Instance.IsGrounded;
-        Collider2D coll = Physics2D.OverlapBox(GroundCheckObj.position - Vector3.right * groundCheckRadius, new Vector2(groundCheckRadius * 2f, 0.4f), 0f, 1 << LayerMask.NameToLayer("Terrain"));
-        return coll != null;
     }
 
     private void CheckFalling()

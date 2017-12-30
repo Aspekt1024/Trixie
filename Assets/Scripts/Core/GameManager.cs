@@ -113,7 +113,10 @@ public class GameManager : MonoBehaviour {
     }
     public void MeleePressed()
     {
-
+        if (state == States.Playing)
+        {
+            Player.Melee();
+        }
     }
     public void InteractPressed()
     {
