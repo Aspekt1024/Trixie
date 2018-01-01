@@ -11,7 +11,7 @@ public class BasicPatrolComponent : MonoBehaviour {
 
     private enum States
     {
-        None, Moving, Waiting
+        None, Moving, SwitchingDirection
     }
     private States state;
 
@@ -25,6 +25,7 @@ public class BasicPatrolComponent : MonoBehaviour {
     private Rigidbody2D body;
     private SpriteRenderer sr;
     private Vector2 originalScale;
+    private float waitTime;
 
     private GameObject startingPlatform;
 
@@ -47,6 +48,7 @@ public class BasicPatrolComponent : MonoBehaviour {
 
     public void Deactivate()
     {
+        targetVelocity = 0f;
         state = States.None;
     }
 
@@ -55,11 +57,26 @@ public class BasicPatrolComponent : MonoBehaviour {
         switch (state)
         {
             case States.None:
+                UpdateVelocity();
                 break;
             case States.Moving:
-                Move();
+                if (AtWallOrEdge())
+                {
+                    waitTime = 0f;
+                    state = States.SwitchingDirection;
+                }
+                else
+                {
+                    UpdateVelocity();
+                }
                 break;
-            case States.Waiting:
+            case States.SwitchingDirection:
+                waitTime += Time.deltaTime;
+                if (waitTime >= WaitTimeAtEdge)
+                {
+                    SwitchDirection();
+                    state = States.Moving;
+                }
                 break;
             default:
                 break;
@@ -77,16 +94,16 @@ public class BasicPatrolComponent : MonoBehaviour {
         }
     }
 
-    private void Move()
+    private void UpdateVelocity()
     {
         float velocityDireciton = currentDirection == MoveDirections.Left ? -1f : 1f;
         body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, targetVelocity * velocityDireciton, Time.deltaTime * Acceleration), body.velocity.y);
-        CheckForEdge();
     }
 
-    private void CheckForEdge()
+    private bool AtWallOrEdge()
     {
-
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * (currentDirection == MoveDirections.Right ? 1 : -1), GetComponent<CapsuleCollider2D>().bounds.extents.x, 1 << LayerMask.NameToLayer("Terrain"));
+        return hit.collider != null;
     }
 
     private void SwitchDirection()

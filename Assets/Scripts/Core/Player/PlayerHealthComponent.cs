@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthComponent : MonoBehaviour {
+public class PlayerHealthComponent : MonoBehaviour {
 
     public int MaxHealth = 5;
     public bool InvincibilityMode = false;
 
     public float InvincibilityTimeAfterDamaged = 3f;
-    public float FlashFrequency;
+    public float FlashFrequency = 10f;
 
     public SpriteRenderer SpriteRenderer;
     

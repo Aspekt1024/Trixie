@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
     private MoveComponent moveComponent;
     private PlayerJumpComponent jumpComponent;
     private ShieldComponent shieldComponent;
-    private HealthComponent healthComponent;
+    private PlayerHealthComponent healthComponent;
     private MeleeComponent meleeComponent;
 
     private bool isGrounded;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
         moveComponent = GetComponent<MoveComponent>();
         jumpComponent = GetComponent<PlayerJumpComponent>();
         shieldComponent = GetComponent<ShieldComponent>();
-        healthComponent = GetComponent<HealthComponent>();
+        healthComponent = GetComponent<PlayerHealthComponent>();
         meleeComponent = GetComponent<MeleeComponent>();
     }
 

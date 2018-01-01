@@ -24,7 +24,7 @@ public class ShieldUIModule : MonoBehaviour {
     private int powerLevel;
     private bool selected;
     
-	private void Start ()
+	private void Awake ()
     {
         shieldImage = GetComponent<Image>();
 	}
