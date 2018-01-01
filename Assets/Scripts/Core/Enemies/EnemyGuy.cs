@@ -42,7 +42,7 @@ public class EnemyGuy : BaseEnemy {
         }
     }
 
-    public override void DamageEnemy(int damage = 1)
+    public override void DamageEnemy(Vector2 direction, int damage = 1)
     {
         healthComponent.TakeDamage(damage);
         if (healthComponent.IsDead())
@@ -52,13 +52,14 @@ public class EnemyGuy : BaseEnemy {
         else
         {
             if (damageRoutine != null) StopCoroutine(damageRoutine);
-            damageRoutine = StartCoroutine(ShowDamaged());
+            damageRoutine = StartCoroutine(ShowDamaged(direction));
         }
     }
 
     protected override void DestroyEnemy()
     {
         state = States.Dead;
+        body.velocity = Vector2.zero;
         if (damageRoutine != null) StopCoroutine(damageRoutine);
         patrolComponent.Deactivate();
         anim.Play("Explosion", 0, 0f);
@@ -67,10 +68,13 @@ public class EnemyGuy : BaseEnemy {
         transform.localScale = Vector3.one * 1.8f;
     }
 
-    private IEnumerator ShowDamaged()
+    private IEnumerator ShowDamaged(Vector2 direction)
     {
         state = States.TakingDamage;
         patrolComponent.Deactivate();
+
+        body.velocity = direction.normalized * 14f;
+
         yield return new WaitForSeconds(1.2f);
         patrolComponent.Activate();
         state = States.Patrolling;

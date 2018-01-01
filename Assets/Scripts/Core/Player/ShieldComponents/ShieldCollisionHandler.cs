@@ -68,7 +68,7 @@ public class ShieldCollisionHandler : MonoBehaviour {
             {
                 if (shieldComponent.IsFiring())
                 {
-                    baseEnemy.DamageEnemy();
+                    baseEnemy.DamageEnemy(Vector2.zero);
                 }
                 shieldComponent.DisableShield();
             }

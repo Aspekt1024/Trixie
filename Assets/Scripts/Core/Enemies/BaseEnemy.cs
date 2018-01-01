@@ -27,10 +27,10 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
 
-    public virtual void DamageEnemy(int damage = 1)
+    public virtual void DamageEnemy(Vector2 direction, int damage = 1)
     {
         DestroyEnemy();
     }
-
+    
     protected virtual void DestroyEnemy() { }
 }

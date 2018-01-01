@@ -57,7 +57,7 @@ public class BasicPatrolComponent : MonoBehaviour {
         switch (state)
         {
             case States.None:
-                UpdateVelocity();
+                //UpdateVelocity();
                 break;
             case States.Moving:
                 if (AtWallOrEdge())

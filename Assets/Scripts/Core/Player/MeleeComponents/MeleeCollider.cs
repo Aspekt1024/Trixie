@@ -26,7 +26,7 @@ public class MeleeCollider : MonoBehaviour {
     {
         if (collision.tag == "Enemy")
         {
-            collision.GetComponent<BaseEnemy>().DamageEnemy();
+            collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, 1);
         }
     }
 }
