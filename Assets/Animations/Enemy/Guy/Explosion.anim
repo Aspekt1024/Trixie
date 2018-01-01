@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Explosion 1
+  m_Name: Explosion
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -38,8 +38,20 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: 53f9ce3f0d893514285a0246acb3a87a, type: 3}
+    - {fileID: 21300000, guid: c3d360af49e97a34fa796ebe284d2d25, type: 3}
+    - {fileID: 21300000, guid: 470ece662610e2b4e99322f826996e4d, type: 3}
+    - {fileID: 21300000, guid: 2a25cf1be34b706468b3cb0a5df41286, type: 3}
+    - {fileID: 21300000, guid: 0efe3300a374d4a42a38ec0c4b39516a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
