@@ -22,7 +22,7 @@ public class FlavourBot : BaseEnemy {
         sr = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
         TurretUpper.Activate();
-        TurretLower.Activate();
+        //TurretLower.Activate();
     }
 
     private void Update()

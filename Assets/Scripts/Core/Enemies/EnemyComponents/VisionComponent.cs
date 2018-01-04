@@ -61,7 +61,6 @@ public class VisionComponent : MonoBehaviour {
             }
             else
             {
-                Debug.Log(hit.collider.gameObject.layer);
                 canSeePlayer = true;
             }
         }

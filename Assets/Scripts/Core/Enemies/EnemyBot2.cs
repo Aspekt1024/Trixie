@@ -7,7 +7,7 @@ public class EnemyBot2 : BaseEnemy {
     public GameObject Flame;
 
     private Collider2D enemyCollider;
-    private ShootComponent shootComponent;
+    private BallisticsComponent ballisticsComponent;
 
     private enum States
     {
@@ -18,9 +18,9 @@ public class EnemyBot2 : BaseEnemy {
     private void Start()
     {
         enemyCollider = GetComponent<CircleCollider2D>();
-        shootComponent = GetComponent<ShootComponent>();
-        shootComponent.SetTarget(Player.Instance.transform);
-        shootComponent.Activate();
+        ballisticsComponent = GetComponent<BallisticsComponent>();
+        ballisticsComponent.SetTarget(Player.Instance.transform);
+        ballisticsComponent.Activate();
     }
 
     private void Update()
@@ -42,7 +42,7 @@ public class EnemyBot2 : BaseEnemy {
 
     protected override void DestroyEnemy()
     {
-        shootComponent.Deactivate();
+        ballisticsComponent.Deactivate();
         Flame.SetActive(false);
         enemyCollider.enabled = false;
         anim.Play("Explosion", 0, 0f);

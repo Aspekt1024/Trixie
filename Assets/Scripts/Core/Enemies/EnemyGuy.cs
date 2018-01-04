@@ -8,6 +8,7 @@ public class EnemyGuy : BaseEnemy {
     private HealthComponent healthComponent;
     private CapsuleCollider2D coll;
     private Rigidbody2D body;
+    private SpriteRenderer spriteRenderer;
 
     private enum States
     {
@@ -21,6 +22,7 @@ public class EnemyGuy : BaseEnemy {
     {
         coll = GetComponent<CapsuleCollider2D>();
         body = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         healthComponent = GetComponent<HealthComponent>();
         patrolComponent = GetComponent<BasicPatrolComponent>();
         patrolComponent.Activate();
@@ -75,7 +77,11 @@ public class EnemyGuy : BaseEnemy {
 
         body.velocity = direction.normalized * 14f;
 
-        yield return new WaitForSeconds(1.2f);
+        spriteRenderer.color = new Color(1f, 0f, 0f, 0.5f);
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = Color.white;
+
+        yield return new WaitForSeconds(0.8f);
         patrolComponent.Activate();
         state = States.Patrolling;
     }
