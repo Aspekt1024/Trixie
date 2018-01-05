@@ -8,10 +8,11 @@ public class SauceRobot : BaseEnemy, IGoap {
 
     private Transform movementTf;
     private bool isShrunk;
-    private EnemyAITest pathFinder;
     private Vector2 startPosition;
-
+    
+    private EnemyAITest pathFinder;
     private VisionComponent vision;
+    private SpriteRenderer spriteRenderer;
     
     public void SetShrunkState()
     {
@@ -22,10 +23,11 @@ public class SauceRobot : BaseEnemy, IGoap {
     {
         movementTf = new GameObject("MovementTf").transform;
         
-        vision = GetComponent<VisionComponent>();
-        vision.Activate();
 
         pathFinder = GetComponent<EnemyAITest>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        vision = GetComponent<VisionComponent>();
+        vision.Activate();
 
         startPosition = transform.position;
     }
@@ -105,5 +107,32 @@ public class SauceRobot : BaseEnemy, IGoap {
     public void PlanFound(Dictionary<GoapLabels, object> goal, Queue<GoapAction> actions)
     {
         pathFinder.CancelPath();
+    }
+
+    public override void DamageEnemy(Vector2 direction, int damage = 1)
+    {
+        HealthComponent healthComponent = GetComponent<HealthComponent>();
+        healthComponent.TakeDamage(damage);
+        if (healthComponent.IsDead())
+        {
+            DestroyEnemy();
+        }
+        else
+        {
+            // TODO can't overlap!
+            StartCoroutine(ShowDamaged());
+        }
+    }
+    
+    private IEnumerator ShowDamaged()
+    {
+        spriteRenderer.color = new Color(1f, 0f, 0f, 0.5f);
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = Color.white;
+    }
+
+    protected override void DestroyEnemy()
+    {
+        gameObject.SetActive(false);
     }
 }
