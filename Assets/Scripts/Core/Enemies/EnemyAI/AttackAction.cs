@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO requirecomponent(typeof(shootcomponent))
+[RequireComponent(typeof(ShootComponent))]
 public class AttackAction : GoapAction {
 
     public float CooldownDuration = 1f;
 
     private float cooldownTimer;
-    private BallisticsComponent ballistics;
+    private ShootComponent shootComponent;
 
     private enum States
     {
@@ -26,7 +26,7 @@ public class AttackAction : GoapAction {
 
     private void Start()
     {
-        ballistics = GetComponent<BallisticsComponent>();
+        shootComponent = GetComponent<ShootComponent>();
     }
 
     private void Update()
@@ -65,7 +65,7 @@ public class AttackAction : GoapAction {
             shootTimer += Time.deltaTime;
             yield return null;
         }
-        ballistics.Activate();
+        shootComponent.Shoot(Player.Instance.gameObject);
 
         cooldownTimer = 0f;
         state = States.HasShot;

@@ -935,7 +935,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 145175962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -871.2, y: 465.9, z: -0}
+  m_LocalPosition: {x: -410.7, y: 253.9, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 538234558}
@@ -1077,7 +1077,7 @@ RectTransform:
   m_GameObject: {fileID: 195317697}
   m_LocalRotation: {x: 0, y: 0.00000009243867, z: 0, w: 1}
   m_LocalPosition: {x: 0.00000036975467, y: 0, z: -8}
-  m_LocalScale: {x: 0.020263424, y: 0.020263424, z: 0.020263424}
+  m_LocalScale: {x: 0.035523977, y: 0.035523977, z: 0.035523977}
   m_Children:
   - {fileID: 726248262}
   - {fileID: 1704698976}
@@ -3747,7 +3747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 788046528}
   m_Layer: 12
-  m_Name: Turret
+  m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8843,6 +8843,11 @@ MonoBehaviour:
     PoolSize: 10
     PoolCanGrow: 1
   - PooledObjects: []
+    ObjectPrefab: {fileID: 1603930829032656, guid: 0d1f8340f1f5692458d79f8e587f3a3b,
+      type: 2}
+    PoolSize: 3
+    PoolCanGrow: 1
+  - PooledObjects: []
     ObjectPrefab: {fileID: 1603930829032656, guid: 61d4aae017885b44c9c9c40a25384c23,
       type: 2}
     PoolSize: 3
@@ -9582,13 +9587,12 @@ GameObject:
   - component: {fileID: 1710643589}
   - component: {fileID: 1710643588}
   - component: {fileID: 1710643591}
-  - component: {fileID: 1710643590}
   - component: {fileID: 1710643594}
   - component: {fileID: 1710643593}
   - component: {fileID: 1710643584}
   - component: {fileID: 1710643583}
   - component: {fileID: 1710643582}
-  - component: {fileID: 1710643595}
+  - component: {fileID: 1710643590}
   - component: {fileID: 1710643586}
   - component: {fileID: 1710643592}
   m_Layer: 12
@@ -9745,11 +9749,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1710643581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 402ebed0029895941a244a6188204f8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1efbdecca9f535d4d9e9794be552fc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
-  target: {fileID: 0}
+  ProjectilePrefab: {fileID: 1603930829032656, guid: 0d1f8340f1f5692458d79f8e587f3a3b,
+    type: 2}
+  ProjectileSpeed: 15
+  Target: {fileID: 0}
+  ShootPoint: {fileID: 788046527}
 --- !u!114 &1710643591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9830,32 +9837,6 @@ MonoBehaviour:
     tagsChange: -1
     tagsSet: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
---- !u!114 &1710643595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1710643581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e7eed96ac16dfe43ae8f022178c7cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShootTarget: 0
-  ShootType: 0
-  AimType: 0
-  DelayBetweenRadialShots: 0
-  ProjectilePrefab: {fileID: 1603930829032656, guid: 61d4aae017885b44c9c9c40a25384c23,
-    type: 2}
-  Turrets: {fileID: 788046527}
-  ProjectileCooldown: 1
-  ProjectileSpeed: 12
-  VisibleRange: 20
-  ShootPoint: {fileID: 788046528}
-  TargetLayers:
-  - serializedVersion: 2
-    m_Bits: 2048
-  CustomTarget: {fileID: 0}
 --- !u!1001 &1721258725
 Prefab:
   m_ObjectHideFlags: 0
@@ -11477,7 +11458,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2005277001}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -769.4, y: 465.9, z: -0}
+  m_LocalPosition: {x: -308.90002, y: 253.9, z: -0}
   m_LocalScale: {x: 1.0000035, y: 1.0000035, z: 1.0000035}
   m_Children:
   - {fileID: 1703338727}
@@ -12476,7 +12457,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2127505061}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -871.20013, y: 430.5, z: -1.3197313e-18}
+  m_LocalPosition: {x: -410.70013, y: 218.5, z: -1.3197313e-18}
   m_LocalScale: {x: 1.0000035, y: 1.0000035, z: 1.0000035}
   m_Children:
   - {fileID: 1112495320}

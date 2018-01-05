@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ShootComponent))]
+using ShootTypes = ShootComponentOld.ShootTypes;
+using ShootTargets = ShootComponentOld.ShootTargets;
+
+[CustomEditor(typeof(ShootComponentOld))]
 public class ShootComponentInspector : Editor {
 
-    private ShootComponent current;
+    private ShootComponentOld current;
 
     public override void OnInspectorGUI()
     {
-        current = (ShootComponent)target;
+        current = (ShootComponentOld)target;
 
         ShowCommonUI();
 
         switch (current.ShootType)
         {
-            case ShootComponent.ShootTypes.OneShot:
+            case ShootTypes.OneShot:
                 ShowOneShotUI();
                 break;
-            case ShootComponent.ShootTypes.Radial:
+            case ShootTypes.Radial:
                 ShowRadialUI();
                 break;
             default:
@@ -29,7 +32,7 @@ public class ShootComponentInspector : Editor {
 
     private void ShowCommonUI()
     {
-        current.ShootType = (ShootComponent.ShootTypes)EditorGUILayout.EnumPopup("Shoot Type", current.ShootType);
+        current.ShootType = (ShootTypes)EditorGUILayout.EnumPopup("Shoot Type", current.ShootType);
         current.ProjectilePrefab = (GameObject)EditorGUILayout.ObjectField("Projectile Prefab", current.ProjectilePrefab, typeof(GameObject), false);
         current.ProjectileSpeed = EditorGUILayout.FloatField("Projectile Speed", current.ProjectileSpeed);
         current.ProjectileCooldown = EditorGUILayout.FloatField("Projectile Cooldown", current.ProjectileCooldown);
@@ -57,8 +60,8 @@ public class ShootComponentInspector : Editor {
 
     private void ShowOneShotUI()
     {
-        current.ShootTarget = (ShootComponent.ShootTargets)EditorGUILayout.EnumPopup("Shoot Target", current.ShootTarget);
-        if (current.ShootTarget == ShootComponent.ShootTargets.CustomPoint)
+        current.ShootTarget = (ShootTargets)EditorGUILayout.EnumPopup("Shoot Target", current.ShootTarget);
+        if (current.ShootTarget == ShootTargets.CustomPoint)
         {
             current.CustomTarget = (Transform)EditorGUILayout.ObjectField("Custom Target", current.CustomTarget, typeof(Transform), true);
         }
