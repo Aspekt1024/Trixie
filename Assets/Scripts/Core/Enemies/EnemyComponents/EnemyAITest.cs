@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
+[RequireComponent(typeof(VisionComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Seeker))]
 public class EnemyAITest : MonoBehaviour {
@@ -21,20 +22,42 @@ public class EnemyAITest : MonoBehaviour {
 
     private Seeker seeker;
     private Rigidbody2D body;
+    private VisionComponent vision;
     private int currentWaypoint = 0;
+
+    private bool currentlySeeking;
 
     private void Start()
     {
         seeker = GetComponent<Seeker>();
         body = GetComponent<Rigidbody2D>();
+        vision = GetComponent<VisionComponent>();
 
         if (Target == null)
         {
-            Debug.LogError("no target found on " + name);
             return;
         }
 
+        Activate(Target);
+    }
+
+    public void Activate(Transform target)
+    {
+        Target = target;
+        if (currentlySeeking) return;
+
+        currentlySeeking = true;
         InvokeRepeating("UpdatePath", 0f, 1f / UpdateFrequency);
+    }
+
+    public bool FinishedPathing()
+    {
+        return PathIsEnded;
+    }
+
+    public void CancelPath()
+    {
+        Path = null;
     }
 
     private void FixedUpdate()
@@ -44,6 +67,7 @@ public class EnemyAITest : MonoBehaviour {
         if (InSweetSpot())
         {
             // TODO: Randomise path
+            PathIsEnded = true;
             return;
         }
 
@@ -70,23 +94,10 @@ public class EnemyAITest : MonoBehaviour {
 
     private bool InSweetSpot()
     {
-        if (!TargetInLineOfSight()) return false;
+        if (!vision.CanSeePlayer()) return false;
 
         float dist = Vector2.Distance(Target.position, transform.position);
         return dist > MinDistToTarget && dist < MaxDistToTarget;
-    }
-
-    private bool TargetInLineOfSight()
-    {
-        Vector2 distVector = Target.position - transform.position;
-        
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, 500, 1 << Target.gameObject.layer | 1 << LayerMask.NameToLayer("Terrain"));
-
-        if (hit.collider != null && hit.collider.gameObject.layer != LayerMask.NameToLayer("Terrain"))
-        {
-            return true;
-        }
-        return false;
     }
 
     private void OnPathComplete(Path p)

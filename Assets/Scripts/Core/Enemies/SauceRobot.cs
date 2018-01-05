@@ -6,8 +6,12 @@ using GoapLabels = GoapAction.GoapLabels;
 
 public class SauceRobot : BaseEnemy, IGoap {
 
-    private VisionComponent vision;
+    private Transform movementTf;
     private bool isShrunk;
+    private EnemyAITest pathFinder;
+    private Vector2 startPosition;
+
+    private VisionComponent vision;
     
     public void SetShrunkState()
     {
@@ -16,48 +20,90 @@ public class SauceRobot : BaseEnemy, IGoap {
 
     private void Start()
     {
+        movementTf = new GameObject("MovementTf").transform;
+        
         vision = GetComponent<VisionComponent>();
         vision.Activate();
+
+        pathFinder = GetComponent<EnemyAITest>();
+
+        startPosition = transform.position;
+    }
+
+    public GameObject GetTargetObject()
+    {
+        return movementTf.gameObject;
+    }
+
+    public void SetTargetPosition(Vector2 position)
+    {
+        movementTf.position = position;
     }
     
     public void ActionsFinished()
     {
     }
 
-    public HashSet<KeyValuePair<GoapLabels, object>> CreateGoalState()
+    public Dictionary<GoapLabels, object> CreateGoalState()
     {
-        return new HashSet<KeyValuePair<GoapLabels, object>>()
+        Dictionary<GoapLabels, object> goals = new Dictionary<GoapLabels, object>();
+
+        if (vision.HasSeenPlayerRecenty() || vision.CanSeePlayer())
         {
-            new KeyValuePair<GoapLabels, object>(GoapLabels.KillPlayer, true),
-            //new KeyValuePair<GoapLabels, object>(GoapLabels.Survive, true),
-            //new KeyValuePair<GoapLabels, object>(GoapLabels.Idle, true)
-        };
+            goals.Add(GoapLabels.EliminateThreats, true);
+        }
+        else
+        {
+            goals.Add(GoapLabels.Survive, true);
+        }
+        
+        return goals;
     }
 
-    public HashSet<KeyValuePair<GoapLabels, object>> GetWorldState()
+    public Dictionary<GoapLabels, object> GetWorldState()
     {
-        return new HashSet<KeyValuePair<GoapLabels, object>>()
+        return new Dictionary<GoapLabels, object>()
         {
-            new KeyValuePair<GoapLabels, object>(GoapLabels.CanSeePlayer, vision.CanSeePlayer()),
-            //new KeyValuePair<GoapLabels, object>(GoapLabels.IsDying, GetComponent<HealthComponent>().GetHealth() == 1 && GetComponent<HealthComponent>().MaxHealth > 1),
+            { GoapLabels.CanSeePlayer, vision.CanSeePlayer() },
+            { GoapLabels.IsDying, GetComponent<HealthComponent>().GetHealth() == 1 && GetComponent<HealthComponent>().MaxHealth > 1 },
+            { GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty() },
+            { GoapLabels.TargetFound, vision.CanSeePlayer() }
         };
     }
 
     public bool MoveAgent(GoapAction nextAction)
     {
-        return false;
+        Transform target = null;
+        if (vision.CanSeePlayer())
+        {
+            target = Player.Instance.transform;
+        }
+        else if (vision.HasSeenPlayerRecenty())
+        {
+            movementTf.transform.position = vision.GetLastKnownPlayerPosition();
+            target = movementTf;
+        }
+        
+        if (target != null)
+        {
+            pathFinder.Activate(target.transform);
+        }
+        nextAction.SetInRange(pathFinder.FinishedPathing());
+        return pathFinder.FinishedPathing();
     }
 
     public void PlanAborted(GoapAction aborter)
     {
-        Debug.LogWarning("bailed on plan!");
+        movementTf.position = startPosition;
+        pathFinder.Activate(movementTf);
     }
 
-    public void PlanFailed(HashSet<KeyValuePair<GoapLabels, object>> failedGoal)
+    public void PlanFailed(Dictionary<GoapLabels, object> failedGoal)
     {
     }
 
-    public void PlanFound(HashSet<KeyValuePair<GoapLabels, object>> goal, Queue<GoapAction> actions)
+    public void PlanFound(Dictionary<GoapLabels, object> goal, Queue<GoapAction> actions)
     {
+        pathFinder.CancelPath();
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
+using GoapLabels = GoapAction.GoapLabels;
+
 /**
  * Collect the world data for this Agent that will be
  * used for GOAP planning.
@@ -18,29 +20,29 @@ using System.Collections.Generic;
  */
 public interface IGoap
 {
-	/**
+    /**
 	 * The starting state of the Agent and the world.
 	 * Supply what states are needed for actions to run.
 	 */
-	HashSet<KeyValuePair<GoapAction.GoapLabels, object>> GetWorldState ();
+    Dictionary<GoapLabels, object> GetWorldState ();
 
-	/**
+    /**
 	 * Give the planner a new goal so it can figure out 
 	 * the actions needed to fulfill it.
 	 */
-	HashSet<KeyValuePair<GoapAction.GoapLabels, object>> CreateGoalState ();
+    Dictionary<GoapLabels, object> CreateGoalState ();
 
 	/**
 	 * No sequence of actions could be found for the supplied goal.
 	 * You will need to try another goal
 	 */
-	void PlanFailed (HashSet<KeyValuePair<GoapAction.GoapLabels, object>> failedGoal);
+	void PlanFailed (Dictionary<GoapLabels, object> failedGoal);
 
 	/**
 	 * A plan was found for the supplied goal.
 	 * These are the actions the Agent will perform, in order.
 	 */
-	void PlanFound (HashSet<KeyValuePair<GoapAction.GoapLabels, object>> goal, Queue<GoapAction> actions);
+	void PlanFound (Dictionary<GoapLabels, object> goal, Queue<GoapAction> actions);
 
 	/**
 	 * All actions are complete and the goal was reached. Hooray!

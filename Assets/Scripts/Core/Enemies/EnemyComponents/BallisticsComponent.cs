@@ -70,6 +70,7 @@ public class BallisticsComponent : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(state);
         switch (state)
         {
             case States.None:
@@ -124,11 +125,14 @@ public class BallisticsComponent : MonoBehaviour
 
     public void Deactivate()
     {
+        state = States.None;
+
         if (shootCoroutine != null)
         {
+            Debug.Log("stopping");
             StopCoroutine(shootCoroutine);
         }
-        state = States.None;
+
         if (Turrets != null)
         {
             Turrets.SetActive(false);
@@ -178,6 +182,7 @@ public class BallisticsComponent : MonoBehaviour
 
     private bool Shoot()
     {
+        Debug.Log("shooting");
         if (!CanShoot()) return false;
 
         timeLastShot = Time.time;

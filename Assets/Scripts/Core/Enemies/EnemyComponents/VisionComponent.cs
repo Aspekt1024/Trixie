@@ -8,9 +8,13 @@ public class VisionComponent : MonoBehaviour {
     public float Arc = 75f;
     public float Radius = 10f;
     public float CheckFrequency = 5f;
+    public float VisionMemory = 2f;
 
     private bool canSeePlayer;
     private LayerMask layers;
+    private bool hasSeenPlayer;
+    private float timeLastSeenPlayer;
+    private Vector3 lastKnownPlayerPosition;
 
     private enum States
     {
@@ -37,6 +41,14 @@ public class VisionComponent : MonoBehaviour {
         CancelInvoke();
     }
 
+    public bool HasSeenPlayerRecenty()
+    {
+        if (canSeePlayer) return true;
+        if (!hasSeenPlayer) return false;
+
+        return timeLastSeenPlayer + VisionMemory > Time.time;
+    }
+    public Vector2 GetLastKnownPlayerPosition() { return lastKnownPlayerPosition; }
     public bool CanSeePlayer() { return canSeePlayer; }
     
     private void CheckForPlayer()
@@ -44,6 +56,7 @@ public class VisionComponent : MonoBehaviour {
         Vector2 distVector = (Player.Instance.transform.position - transform.position);
         if (!IsWithinDistance(distVector) || !IsWithinArc(distVector))
         {
+            SetPlayerUnseen();
             canSeePlayer = false;
             return;
         }
@@ -61,9 +74,20 @@ public class VisionComponent : MonoBehaviour {
             }
             else
             {
+                hasSeenPlayer = true;
                 canSeePlayer = true;
             }
         }
+    }
+
+    private void SetPlayerUnseen()
+    {
+        if (canSeePlayer)
+        {
+            lastKnownPlayerPosition = Player.Instance.transform.position;
+            timeLastSeenPlayer = Time.time;
+        }
+        canSeePlayer = false;
     }
 
     private bool IsWithinDistance(Vector2 distVector)

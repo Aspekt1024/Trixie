@@ -6,12 +6,12 @@ public abstract class GoapAction : MonoBehaviour {
 
     public enum GoapLabels
     {
-        KillPlayer, Survive, RunAway, Wander, Patrol, Idle,
-        CanSeePlayer, IsDying, CanAttack
+        EliminateThreats, Survive, RunAway, Wander, Patrol,
+        CanSeePlayer, IsDying, CanAttack, TargetFound, HasSeenPlayerRecently
     }
 
-	private HashSet<KeyValuePair<GoapLabels,object>> preconditions;
-	private HashSet<KeyValuePair<GoapLabels, object>> effects;
+	private Dictionary<GoapLabels, object> preconditions;
+	private Dictionary<GoapLabels, object> effects;
 
 	private bool inRange = false;
 
@@ -25,11 +25,11 @@ public abstract class GoapAction : MonoBehaviour {
 	public GameObject target;
 
 	public GoapAction() {
-		preconditions = new HashSet<KeyValuePair<GoapLabels, object>> ();
-		effects = new HashSet<KeyValuePair<GoapLabels, object>> ();
+        preconditions = new Dictionary<GoapLabels, object>();
+		effects = new Dictionary<GoapLabels, object>();
 	}
 
-	public void doReset() {
+	public void DoReset() {
 		inRange = false;
 		target = null;
 		ResetAction ();
@@ -70,54 +70,47 @@ public abstract class GoapAction : MonoBehaviour {
 	 * Are we in range of the target?
 	 * The MoveTo state will set this and it gets reset each time this action is performed.
 	 */
-	public bool isInRange () {
+	public bool IsInRange () {
 		return inRange;
 	}
 	
-	public void setInRange(bool inRange) {
+	public void SetInRange(bool inRange) {
 		this.inRange = inRange;
 	}
 
 
-	public void addPrecondition(GoapLabels key, object value) {
-		preconditions.Add (new KeyValuePair<GoapLabels, object>(key, value) );
+	public void AddPrecondition(GoapLabels key, object value) {
+		preconditions.Add (key, value);
 	}
 
 
-	public void removePrecondition(GoapLabels key) {
-		KeyValuePair<GoapLabels, object> remove = default(KeyValuePair<GoapLabels, object>);
-		foreach (KeyValuePair<GoapLabels, object> kvp in preconditions) {
-			if (kvp.Key.Equals (key)) 
-				remove = kvp;
-		}
-		if ( !default(KeyValuePair<GoapLabels, object>).Equals(remove) )
-			preconditions.Remove (remove);
+	public void RemovePrecondition(GoapLabels key) {
+        if (preconditions.ContainsKey(key))
+        {
+            preconditions.Remove(key);
+        }
 	}
 
 
-	public void addEffect(GoapLabels key, object value) {
-		effects.Add (new KeyValuePair<GoapLabels, object>(key, value) );
+	public void AddEffect(GoapLabels key, object value) {
+		effects.Add (key, value);
 	}
-
-
+    
 	public void removeEffect(GoapLabels key) {
-		KeyValuePair<GoapLabels, object> remove = default(KeyValuePair<GoapLabels, object>);
-		foreach (KeyValuePair<GoapLabels, object> kvp in effects) {
-			if (kvp.Key.Equals (key)) 
-				remove = kvp;
-		}
-		if ( !default(KeyValuePair<GoapLabels, object>).Equals(remove) )
-			effects.Remove (remove);
+        if (effects.ContainsKey(key))
+        {
+            effects.Remove(key);
+        }
 	}
 
 	
-	public HashSet<KeyValuePair<GoapLabels, object>> Preconditions {
+	public Dictionary<GoapLabels, object> Preconditions {
 		get {
 			return preconditions;
 		}
 	}
 
-	public HashSet<KeyValuePair<GoapLabels, object>> Effects {
+	public Dictionary<GoapLabels, object> Effects {
 		get {
 			return effects;
 		}

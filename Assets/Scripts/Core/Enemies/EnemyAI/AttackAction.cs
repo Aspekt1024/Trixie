@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO requirecomponent(typeof(shootcomponent))
 public class AttackAction : GoapAction {
 
     public float CooldownDuration = 1f;
 
     private float cooldownTimer;
+    private BallisticsComponent ballistics;
 
     private enum States
     {
@@ -18,8 +20,13 @@ public class AttackAction : GoapAction {
     {
         cooldownTimer = CooldownDuration;
 
-        addPrecondition(GoapLabels.CanSeePlayer, true);
-        addEffect(GoapLabels.KillPlayer, true);
+        AddPrecondition(GoapLabels.TargetFound, true);
+        AddEffect(GoapLabels.EliminateThreats, true);
+    }
+
+    private void Start()
+    {
+        ballistics = GetComponent<BallisticsComponent>();
     }
 
     private void Update()
@@ -58,7 +65,7 @@ public class AttackAction : GoapAction {
             shootTimer += Time.deltaTime;
             yield return null;
         }
-        Debug.Log("shot!");
+        ballistics.Activate();
 
         cooldownTimer = 0f;
         state = States.HasShot;
@@ -72,5 +79,6 @@ public class AttackAction : GoapAction {
     public override void ResetAction()
     {
         state = States.None;
+        //ballistics.Deactivate();
     }
 }
