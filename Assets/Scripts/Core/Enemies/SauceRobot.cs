@@ -58,6 +58,7 @@ public class SauceRobot : BaseEnemy, IGoap {
 
         if (vision.HasSeenPlayerRecenty() || vision.CanSeePlayer())
         {
+            Camera.main.GetComponent<CameraFollow>().AddObjectToFollow(transform);
             goals.Add(GoapLabels.EliminateThreats, true);
         }
         else
@@ -102,6 +103,7 @@ public class SauceRobot : BaseEnemy, IGoap {
 
     public void PlanAborted(GoapAction aborter)
     {
+        Camera.main.GetComponent<CameraFollow>().StopFollowingObject(transform);
         movementTf.position = startPosition;
         pathFinder.Activate(movementTf);
     }
