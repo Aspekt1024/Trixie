@@ -32,6 +32,11 @@ public class SauceRobot : BaseEnemy, IGoap {
         startPosition = transform.position;
     }
 
+    public void Update()
+    {
+        UpdateLookDirection();
+    }
+
     public GameObject GetTargetObject()
     {
         return movementTf.gameObject;
@@ -41,7 +46,8 @@ public class SauceRobot : BaseEnemy, IGoap {
     {
         movementTf.position = position;
     }
-    
+
+#region GOAP AI
     public void ActionsFinished()
     {
     }
@@ -108,6 +114,7 @@ public class SauceRobot : BaseEnemy, IGoap {
     {
         pathFinder.CancelPath();
     }
+#endregion GOAP AI
 
     public override void DamageEnemy(Vector2 direction, int damage = 1)
     {
@@ -129,6 +136,19 @@ public class SauceRobot : BaseEnemy, IGoap {
         spriteRenderer.color = new Color(1f, 0f, 0f, 0.5f);
         yield return new WaitForSeconds(0.2f);
         spriteRenderer.color = Color.white;
+    }
+
+    private void UpdateLookDirection()
+    {
+        if (pathFinder.Target == null) return;
+        if (transform.position.x > pathFinder.Target.position.x)
+        {
+            vision.FaceInitialDirection();
+        }
+        else
+        {
+            vision.FaceOppositeDirection();
+        }
     }
 
     protected override void DestroyEnemy()

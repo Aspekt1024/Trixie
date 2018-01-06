@@ -15,13 +15,14 @@ public class VisionComponent : MonoBehaviour {
     private bool hasSeenPlayer;
     private float timeLastSeenPlayer;
     private Vector3 lastKnownPlayerPosition;
+    private bool directionFlipped;
 
     private enum States
     {
         None, Active
     }
     private States state;
-
+    
     private void Start()
     {
         layers = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Player");
@@ -39,6 +40,29 @@ public class VisionComponent : MonoBehaviour {
     {
         state = States.None;
         CancelInvoke();
+    }
+
+    public void FaceInitialDirection()
+    {
+        if (directionFlipped)
+        {
+            directionFlipped = false;
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
+        }
+    }
+
+    public void FaceOppositeDirection()
+    {
+        if (!directionFlipped)
+        {
+            directionFlipped = true;
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
+        }
+    }
+
+    public bool DirectionFlipped
+    {
+        get { return directionFlipped; }
     }
 
     public bool HasSeenPlayerRecenty()
@@ -97,9 +121,15 @@ public class VisionComponent : MonoBehaviour {
 
     private bool IsWithinArc(Vector2 distVector)
     {
+        if (directionFlipped)
+        {
+            distVector.x *= -1;
+        }
+
         float angle = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
         float minAngle = StartingAngle;
         float maxAngle = StartingAngle + Arc;
+
 
         if (maxAngle > 180f)
         {
