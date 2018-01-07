@@ -100,6 +100,7 @@ public class VisionComponent : MonoBehaviour {
             {
                 hasSeenPlayer = true;
                 canSeePlayer = true;
+                lastKnownPlayerPosition = Player.Instance.transform.position;
             }
         }
     }
@@ -108,7 +109,6 @@ public class VisionComponent : MonoBehaviour {
     {
         if (canSeePlayer)
         {
-            lastKnownPlayerPosition = Player.Instance.transform.position;
             timeLastSeenPlayer = Time.time;
         }
         canSeePlayer = false;

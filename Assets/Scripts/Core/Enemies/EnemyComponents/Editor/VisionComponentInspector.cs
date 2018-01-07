@@ -25,7 +25,7 @@ public class VisionComponentInspector : Editor {
             startingAngle = Mathf.Sign(startingAngle) * (180f - Mathf.Abs(startingAngle)) - current.Arc;
         }
 
-        Handles.color = new Color(1f, 0.3f, 0.3f, 0.3f);
+        Handles.color = new Color(1f, 0.3f, 0.3f, 0.1f);
         Handles.DrawSolidArc(current.transform.position, Vector3.forward, Quaternion.AngleAxis(startingAngle, Vector3.forward) * Vector3.right, current.Arc, current.Radius);
         Handles.color = Color.white;
     }

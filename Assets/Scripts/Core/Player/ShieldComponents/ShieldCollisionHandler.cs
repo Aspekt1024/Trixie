@@ -45,7 +45,10 @@ public class ShieldCollisionHandler : MonoBehaviour {
             }
             else
             {
-                shieldComponent.AddShieldPower();
+                if (!shieldComponent.IsFiring())
+                {
+                    shieldComponent.AddShieldPower();
+                }
             }
 
             if (shieldComponent.IsFiring())

@@ -15,6 +15,7 @@ public class ItemCollectOverlay : MonoBehaviour {
 	private void Start ()
     {
         anim = GetComponent<Animator>();
+        anim.StopPlayback();
         DisableText();
         ItemParticleSystem.Stop();
     }

@@ -19,7 +19,7 @@ public class ShieldComponent : MonoBehaviour {
     private float rechargeTimer;
 
     private const float shootSpeed = 34f;
-    private const float shieldShootDistance = 10f;
+    private const float shieldShootDistance = 30f;
     private float shieldDistance;
 
     private const int maxShieldCharges = 3;
@@ -68,7 +68,7 @@ public class ShieldComponent : MonoBehaviour {
                 shieldDistance += Time.deltaTime * shootSpeed;
                 if (shieldDistance >= shieldShootDistance)
                 {
-                    state = States.None;
+                    DisableShield();
                 }
                 break;
         }

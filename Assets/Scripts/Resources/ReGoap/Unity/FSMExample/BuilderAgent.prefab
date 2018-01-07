@@ -1,0 +1,347 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1125005807267310}
+  m_IsPrefabParent: 1
+--- !u!1 &1125005807267310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4193476711173662}
+  - component: {fileID: 114750216515206370}
+  - component: {fileID: 114920905646716482}
+  - component: {fileID: 114013797583600590}
+  - component: {fileID: 114914069985609830}
+  - component: {fileID: 114551679422796716}
+  - component: {fileID: 114499356721944554}
+  - component: {fileID: 114213676409245320}
+  - component: {fileID: 114677860057467728}
+  - component: {fileID: 114080850121303144}
+  - component: {fileID: 114183626876889284}
+  - component: {fileID: 114339810744227078}
+  - component: {fileID: 114133309643165458}
+  - component: {fileID: 114771661801520948}
+  - component: {fileID: 114338603158517310}
+  - component: {fileID: 114073144445224372}
+  - component: {fileID: 114137335938146110}
+  m_Layer: 0
+  m_Name: BuilderAgent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1848442404087198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4327442457571814}
+  - component: {fileID: 33313113627531704}
+  - component: {fileID: 23738048272628064}
+  m_Layer: 0
+  m_Name: Capsule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4193476711173662
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20, y: 1, z: 59.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4327442457571814}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4327442457571814
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1848442404087198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4193476711173662}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23738048272628064
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1848442404087198}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 2100000, guid: d449267bccd39f14fa2c5aa541670ac1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33313113627531704
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1848442404087198}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114013797583600590
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d95086b0dea8f4687d23e79322f97b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AddResourceToBankAction
+  Cost: 1
+--- !u!114 &114073144445224372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c7a4c97e135ba45aad8c8c1c2b7b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: BuilderAgent
+  CalculationDelay: 0.5
+  BlackListGoalOnFailure: 0
+  WorkInFixedUpdate: 1
+  ValidateActiveAction: 0
+--- !u!114 &114080850121303144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce460444dc7e88643a84db5ef2885f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114133309643165458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fdc617d36f6d924fb69f52f7657f53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinPowDistanceToBeNear: 1
+--- !u!114 &114137335938146110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac001915cdb1153419827384af30bb85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SensorsUpdateDelay: 0.3
+--- !u!114 &114183626876889284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d62c59bea1bb104588c44feec312a5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114213676409245320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9d4aada00e65f4abd5e378bd40cc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+--- !u!114 &114338603158517310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0e8bdd8d651b846a335dd4b5c81ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CraftWoodAction
+  Cost: 1
+  RawRecipe: {fileID: 11400000, guid: c21256d68dffb8d41bb88f4a7f68c34d, type: 2}
+--- !u!114 &114339810744227078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0e8bdd8d651b846a335dd4b5c81ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CraftAxeAction
+  Cost: 1
+  RawRecipe: {fileID: 11400000, guid: 840fb7e1fe5d3a549960782374f40112, type: 2}
+--- !u!114 &114499356721944554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba45453f8f799b4988059b1116e8132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableStackedStates: 0
+  initialState: {fileID: 114213676409245320}
+  permitLoopTransistion: 1
+  orderTransistions: 0
+--- !u!114 &114551679422796716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd1a5ab2a29cc843b12ce7ac2b73829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinPowDistanceToBeNear: 1
+--- !u!114 &114677860057467728
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5892808cd870494781173f224be91fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  WorkInFixedUpdate: 1
+  UseRigidbodyVelocity: 0
+  Speed: 25
+  MinDistanceToObjective: 1
+  CheckForStuck: 0
+  StuckCheckDelay: 1
+  MaxStuckDistance: 0.1
+--- !u!114 &114750216515206370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2cc6b02248ad94eab213e8dca48b2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: GatherResourceAction
+  Cost: 1
+  TimeToGather: 0.5
+  ResourcePerAction: 1
+--- !u!114 &114771661801520948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6056c9b1b4e274e94fd164e6fa423d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: GoToAction
+  Cost: 1
+--- !u!114 &114914069985609830
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c184053ac77501d4d85cdd3e1a445c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinResourceValue: 1
+  MinPowDistanceToBeNear: 1
+--- !u!114 &114920905646716482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1125005807267310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea519775062c12f4387af1e6b9488507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CollectResourceGoal
+  Priority: 1
+  ErrorDelay: 0.5
+  WarnDelay: 2
+  ResourceName: Axe
