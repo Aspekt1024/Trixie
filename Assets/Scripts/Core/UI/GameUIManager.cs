@@ -11,6 +11,7 @@ public class GameUIManager : MonoBehaviour {
     public ShieldUI ShieldUI;
 
     public ItemCollectOverlay ItemCollectOverlay;
+    public ConversationUI ConversationUI;
 
     private void Awake()
     {
@@ -38,4 +39,7 @@ public class GameUIManager : MonoBehaviour {
     public static void ShowShieldIndicator() { Instance.ShieldUI.ShowShieldIndicator(); }
 
     public static void ItemCollected(string itemName) { Instance.ItemCollectOverlay.ShowItemText(itemName); }
+
+    public static void ShowConversation(string text) { Instance.ConversationUI.Show(text); }
+    public static void HideConversation() { Instance.ConversationUI.Hide(); }
 }

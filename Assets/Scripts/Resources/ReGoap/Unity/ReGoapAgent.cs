@@ -164,6 +164,18 @@ namespace ReGoap.Unity
 
         public virtual void WarnActionEnd(IReGoapAction<T, W> thisAction)
         {
+            if (currentActionState == null || currentActionState.Action == null)
+            {
+                if (currentActionState != null)
+                {
+                    Debug.LogError("WarnActionEnd: " + thisAction + " : " + currentActionState);
+                }
+                else
+                {
+                    Debug.LogError("WarnActionEnd: " + thisAction);
+                }
+                return;
+            }
             if (thisAction != currentActionState.Action)
                 return;
             PushAction();

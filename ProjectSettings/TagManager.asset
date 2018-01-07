@@ -28,7 +28,7 @@ TagManager:
   - Interactable
   - EnvironmentObject
   - GravityField
-  - 
+  - BouncyMaterial
   - 
   - 
   - 

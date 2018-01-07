@@ -22,5 +22,6 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
         worldState.Set(GoapLabels.CanSeePlayer, vision.CanSeePlayer());
         worldState.Set(GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty());
         worldState.Set(GoapLabels.NotSeenPlayerRecently, !vision.HasSeenPlayerRecenty());
+        //worldState.Set(GoapLabels.HasSameShieldColour, shieldCol == myCOlour);
     }
 }
