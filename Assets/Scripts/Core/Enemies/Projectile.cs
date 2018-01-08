@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour {
     
     public void DestroyByCollision()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         // TODO hit object animation
     }
     
@@ -88,6 +88,7 @@ public class Projectile : MonoBehaviour {
         }
         else
         {
+            GetComponent<TrailRenderer>().Clear();
             gameObject.SetActive(false);
             // TODO hit object animation
         }
@@ -150,5 +151,28 @@ public class Projectile : MonoBehaviour {
 
         float speed = body.velocity.magnitude;
         body.velocity = transform.right * speed;
+    }
+
+    public void NewSetColour(EnergyTypes.Colours energyColour)
+    {
+        ProjectileColour = energyColour;
+        Color color = new Color();
+        switch (energyColour)
+        {
+            case EnergyTypes.Colours.Blue:
+                color = Color.blue;
+                break;
+            case EnergyTypes.Colours.Pink:
+                color = Color.red;
+                break;
+            case EnergyTypes.Colours.Yellow:
+                color = Color.green;
+                break;
+            default:
+                break;
+        }
+        GetComponent<SpriteRenderer>().color = color;
+        GetComponent<TrailRenderer>().startColor = color;
+        GetComponent<TrailRenderer>().endColor = new Color(color.r, color.g, color.b, 0f);
     }
 }
