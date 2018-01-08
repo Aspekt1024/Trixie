@@ -55,7 +55,14 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     {
         cooldownTimer = 0f;
         shootComponent.Shoot(Player.Instance.gameObject);
-        doneCallback(this);
+        if (Player.Instance.GetComponent<PlayerHealthComponent>().IsAlive())
+        {
+            failCallback(this);
+        }
+        else
+        {
+            doneCallback(this);
+        }
     }
 
     private void OnFailCallback()

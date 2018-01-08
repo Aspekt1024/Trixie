@@ -46,7 +46,6 @@ public class PlayerJumpComponent : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        boostComponent.CanRecharge = false;
         if (inGravityField)
         {
             UpdateVelocity();
@@ -63,6 +62,7 @@ public class PlayerJumpComponent : MonoBehaviour {
                 CheckGrounded();
                 break;
             case States.Boosting:
+                boostComponent.CanRecharge = false;
                 if (boostComponent.UseBoost(Time.deltaTime))
                 {
                     // all okay! boost being used :)
