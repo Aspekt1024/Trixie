@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicShoot : ShootComponent {
-    
+public class BounceShoot : ShootComponent {
+
     public override void Shoot(GameObject target)
     {
         Target = target;
@@ -17,6 +17,10 @@ public class BasicShoot : ShootComponent {
 
     private void ActivateProjecile()
     {
+        Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
+        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
+        if (projectile == null) return;
+
         Vector2 distVector = transform.right;
         if (Target != null)
         {
@@ -24,17 +28,8 @@ public class BasicShoot : ShootComponent {
         }
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
 
-        Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
-
-        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
-        if (projectile == null) return;
-
         projectile.SetActive(true);
-        projectile.transform.position = ShootPoint.transform.position;
-        projectile.transform.eulerAngles = new Vector3(0f, 0f, targetRotation);
-        
-        projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
-        
+        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+        projectile.GetComponent<Projectile>().BouncesOffTerrain = true;
     }
-
 }

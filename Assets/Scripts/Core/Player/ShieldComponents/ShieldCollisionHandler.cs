@@ -50,15 +50,6 @@ public class ShieldCollisionHandler : MonoBehaviour {
                     shieldComponent.AddShieldPower();
                 }
             }
-
-            if (shieldComponent.IsFiring())
-            {
-                other.GetComponent<Projectile>().DestroyByCollision();
-            }
-            else
-            {
-                other.GetComponent<Projectile>().HitByShield(transform.right);
-            }
         }
     }
 

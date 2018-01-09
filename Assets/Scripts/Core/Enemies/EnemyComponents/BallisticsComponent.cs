@@ -232,12 +232,7 @@ public class BallisticsComponent : MonoBehaviour
         }
         projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
         projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
-
-        if (projectilePrefabScript.Behaviour == Projectile.ProjectileBehaviours.Homing)
-        {
-            projectile.GetComponent<Projectile>().SetHomingTarget(aimTarget);
-        }
-
+        
     }
 
     private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s, float gravityScale)

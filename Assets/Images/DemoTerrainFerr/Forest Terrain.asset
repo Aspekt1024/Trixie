@@ -16,7 +16,7 @@ MonoBehaviour:
   _descriptors:
   - applyTo: 0
     zOffset: -1
-    yOffset: 0.3
+    yOffset: 0.4
     leftCap:
       serializedVersion: 2
       x: 0

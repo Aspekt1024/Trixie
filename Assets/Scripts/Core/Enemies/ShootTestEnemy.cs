@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootTestEnemy : MonoBehaviour {
+public class ShootTestEnemy : BaseEnemy {
 
     public float ShootCooldown = 1f;
     public Transform Turrets;

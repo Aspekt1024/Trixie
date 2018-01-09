@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour {
     }
 
     public bool BounceOffShield;
-    //public bool BounceOffWalls;
+    public bool BouncesOffTerrain;
     
     public EnergyTypes.Colours ProjectileColour;
     public ProjectileBehaviours Behaviour;
@@ -23,6 +23,8 @@ public class Projectile : MonoBehaviour {
     private List<GravityField> gravityFields;
     private float currentFieldStrength;
     private float currentModifiedVelocity;
+
+    private Coroutine pathRoutine;
     
     private void Awake()
     {
@@ -41,57 +43,61 @@ public class Projectile : MonoBehaviour {
         Vector2 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
         if (viewportPos.x < -0.5f || viewportPos.x > 1.5f || viewportPos.y < -0.5f || viewportPos.y > 1.5f)
         {
-            gameObject.SetActive(false);
+            Deactivate();
         }
 
-        UpdateModifiedVelocity();
+        //UpdateModifiedVelocity();
     }
 
-    public void SetHomingTarget(Transform newTarget)
+    private void OnEnable()
     {
-        homingTarget = newTarget;
+        homingTarget = null;
+        inGravityField = false;
+        currentFieldStrength = 0f;
+        currentModifiedVelocity = 0f;
+        body.velocity = Vector2.zero;
+        gravityFields = new List<GravityField>();
     }
 
-    public void HitByShield(Vector2 shieldDirection)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (BounceOffShield)
+        if (collision.collider.tag == "GravityField")
         {
-            body.velocity = shieldDirection * body.velocity.magnitude;
-            transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
-        }
-        else
-        {
-            DestroyByCollision();
-        }
-    }
-    
-    public void DestroyByCollision()
-    {
-        //gameObject.SetActive(false);
-        // TODO hit object animation
-    }
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "GravityField")
-        {
-            gravityFields.Add(collision.GetComponent<GravityField>());
+            gravityFields.Add(collision.gameObject.GetComponent<GravityField>());
             if (!inGravityField)
             {
                 inGravityField = true;
                 SetModifiedVelocity();
             }
         }
-        else if (collision.tag == "Shield")
+        else if (BounceOffShield && collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
         {
-            // Do nothing. This is handled by the shield / gravity field components
+            body.velocity = collision.transform.right * body.velocity.magnitude;
+            transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
+        }
+        else if (BouncesOffTerrain && collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
         }
         else
         {
-            GetComponent<TrailRenderer>().Clear();
-            gameObject.SetActive(false);
-            // TODO hit object animation
+            ShowImpact();
         }
+    }
+
+    private void Deactivate()
+    {
+        if (pathRoutine != null)
+        {
+            StopCoroutine(pathRoutine);
+        }
+        GetComponent<TrailRenderer>().Clear();
+        gameObject.SetActive(false);
+    }
+
+    private void ShowImpact()
+    {
+        Deactivate();
+        // TODO hit object animation
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -131,16 +137,6 @@ public class Projectile : MonoBehaviour {
         currentModifiedVelocity = 0f;
     }
 
-    private void OnEnable()
-    {
-        homingTarget = null;
-        inGravityField = false;
-        currentFieldStrength = 0f;
-        currentModifiedVelocity = 0f;
-        body.velocity = Vector2.zero;
-        gravityFields = new List<GravityField>();
-    }
-
     private void FollowTarget()
     {
         if (homingTarget == null) return;
@@ -153,14 +149,34 @@ public class Projectile : MonoBehaviour {
         body.velocity = transform.right * speed;
     }
 
-    public void NewSetColour(EnergyTypes.Colours energyColour)
+    public void Activate(Vector3 startPoint, float angle, float speed, EnergyTypes.Colours colour, Transform homingTarget = null)
+    {
+        transform.position = startPoint;
+        transform.eulerAngles = new Vector3(0f, 0f, angle);
+
+        body.velocity = transform.right * speed;
+        SetColour(colour);
+
+        if (homingTarget != null)
+        {
+            Behaviour = ProjectileBehaviours.Homing;
+            this.homingTarget = homingTarget;
+        }
+    }
+
+    public void SetSinePath(float amplitude, float wavelength, float phase, float speed)
+    {
+        pathRoutine = StartCoroutine(SinePath(amplitude, wavelength, phase, speed));
+    }
+    
+    public void SetColour(EnergyTypes.Colours energyColour)
     {
         ProjectileColour = energyColour;
         Color color = new Color();
         switch (energyColour)
         {
             case EnergyTypes.Colours.Blue:
-                color = Color.blue;
+                color = new Color(0.2f, 0.4f, 1f, 1f);
                 break;
             case EnergyTypes.Colours.Pink:
                 color = Color.red;
@@ -174,5 +190,28 @@ public class Projectile : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = color;
         GetComponent<TrailRenderer>().startColor = color;
         GetComponent<TrailRenderer>().endColor = new Color(color.r, color.g, color.b, 0f);
+    }
+
+
+    private IEnumerator SinePath(float amplitude, float wavelength, float phase, float speed)
+    {
+        float t = 0f;
+        float y = 0f;
+        float initialY = body.transform.position.y;
+        float arg = 2f * Mathf.PI / (wavelength / speed);
+
+        while (true)
+        {
+            t += Time.deltaTime;
+            y = Mathf.Sin(arg * t + phase) * amplitude;
+
+            float grad = Mathf.Cos(arg * t + phase) * arg * amplitude / speed;
+            float rotation = Mathf.Atan2(grad, 1f) * Mathf.Rad2Deg;
+            if (speed < 0f) rotation = 180f - rotation;
+
+            body.transform.eulerAngles = new Vector3(0f, 0f, rotation);
+            body.transform.position = new Vector3(body.transform.position.x, initialY + y, body.transform.position.z);
+            yield return null;
+        }
     }
 }

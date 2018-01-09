@@ -21,6 +21,10 @@ public class SineShootComponent : ShootComponent {
 
     private void ActivateProjecile()
     {
+        Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
+        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
+        if (projectile == null) return;
+        
         Vector2 distVector = transform.right;
         if (Target != null)
         {
@@ -28,25 +32,9 @@ public class SineShootComponent : ShootComponent {
         }
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
 
-        Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
-
-        GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
-        if (projectile == null) return;
-
         projectile.SetActive(true);
-        projectile.transform.position = ShootPoint.transform.position;
-        projectile.transform.eulerAngles = new Vector3(0f, 0f, targetRotation);
-
-        projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
-        projectile.GetComponent<Projectile>().NewSetColour(Colour);
-
-        if (projectilePrefabScript.Behaviour == Projectile.ProjectileBehaviours.Homing)
-        {
-            projectile.GetComponent<Projectile>().SetHomingTarget(Target.transform);
-        }
-
-        StartCoroutine(SinePath(projectile));
-
+        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+        projectile.GetComponent<Projectile>().SetSinePath(Amplitude, Wavelength, Phase, ProjectileSpeed);
     }
 
     private IEnumerator SinePath(GameObject projectile)
