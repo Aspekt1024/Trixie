@@ -84,6 +84,14 @@ public class Projectile : MonoBehaviour {
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
+        {
+            ShowImpact();
+        }
+    }
+
     private void Deactivate()
     {
         if (pathRoutine != null)

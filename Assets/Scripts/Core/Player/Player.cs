@@ -135,7 +135,11 @@ public class Player : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "BouncyBulb")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        {
+            TakeDamage();
+        }
+        else if (collision.collider.tag == "BouncyBulb")
         {
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             body.velocity = new Vector2(body.velocity.x, 30f);
@@ -148,14 +152,7 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" || collision.tag == "Projectile")
-        {
-            if (!meleeComponent.MeleeIsActive())
-            {
-                TakeDamage();
-            }
-        }
-        else if (collision.tag == "GravityField")
+        if (collision.tag == "GravityField")
         {
             jumpComponent.EnterGravityField(collision.GetComponent<GravityField>());
         }

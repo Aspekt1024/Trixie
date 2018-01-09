@@ -25,10 +25,13 @@ public class PlayerHealthComponent : MonoBehaviour {
         health = MaxHealth;
     }
 
+    private const string INVINCIBLE_LAYER = "PlayerInvincible";
+    private const string NORMAL_LAYER = "Player";
+
     public void TakeDamage(int damage = 1)
     {
         if (InvincibilityMode || state == States.TakingDamage) return;
-
+        
         state = States.TakingDamage;
         StartCoroutine(DamageAnimation());
 
@@ -66,6 +69,7 @@ public class PlayerHealthComponent : MonoBehaviour {
         float flashTimer = 0f;
         float flashDuration = 0.5f / FlashFrequency;
         bool flashOn = false;
+        SetInvincibleLayer();
 
         Color damagedColour = new Color(1f, 0f, 0f, 0.2f);
 
@@ -87,7 +91,19 @@ public class PlayerHealthComponent : MonoBehaviour {
             }
             yield return null;
         }
+        SetNormalLayer();
         SpriteRenderer.color = Color.white;
         state = States.None;
+    }
+
+    private void SetInvincibleLayer()
+    {
+        gameObject.layer = LayerMask.NameToLayer(INVINCIBLE_LAYER);
+    }
+
+    private void SetNormalLayer()
+    {
+        gameObject.layer = LayerMask.NameToLayer(NORMAL_LAYER);
+        return;
     }
 }

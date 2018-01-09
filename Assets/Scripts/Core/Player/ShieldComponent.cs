@@ -11,6 +11,7 @@ public class ShieldComponent : MonoBehaviour {
     private ShieldStats shieldStats;
     public ShieldPower shieldPower;
 
+    private Collider2D shieldCollider;
     private Rigidbody2D body;
     private Animator anim;
     private Animator playerAnim;
@@ -41,6 +42,7 @@ public class ShieldComponent : MonoBehaviour {
         shieldStats = new ShieldStats();
         shieldPower = new ShieldPower();
 
+        shieldCollider = ShieldObject.GetComponent<Collider2D>();
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
         positioner = ShieldObject.GetComponent<ShieldPositioner>();
@@ -183,7 +185,8 @@ public class ShieldComponent : MonoBehaviour {
         if (state != States.Shielding) return;
         //if (!shieldStats.ShootUnlocked()) return;
         if (!shieldPower.ShieldFullyCharged(shieldColour)) return;
-        
+
+        shieldCollider.isTrigger = true;
         state = States.Firing;
         shieldDistance = 0f;
         body.isKinematic = false;
@@ -215,6 +218,7 @@ public class ShieldComponent : MonoBehaviour {
     {
         state = States.None;
         body.isKinematic = true;
+        shieldCollider.isTrigger = false;
         body.velocity = Vector2.zero;
         ShieldObject.SetActive(false);
     }

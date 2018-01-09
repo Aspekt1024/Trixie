@@ -38,4 +38,9 @@ public class ShootTestEnemy : BaseEnemy {
             }
         }
     }
+
+    public override void DamageEnemy(Vector2 direction, int damage = 1)
+    {
+        Debug.Log(name + "says 'Ow!'");
+    }
 }
