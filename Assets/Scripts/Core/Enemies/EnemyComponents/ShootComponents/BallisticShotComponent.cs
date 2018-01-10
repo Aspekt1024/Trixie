@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class BallisticShotComponent : ShootComponent {
 
+    public EnergyTypes.Colours Colour;
+
+    private const float GRAVITY_SCALE = 0.5f;
+
     public override void Shoot(GameObject target)
     {
-        Target = target;
+        this.target = target;
         Shoot();
     }
 
@@ -21,13 +25,12 @@ public class BallisticShotComponent : ShootComponent {
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
         if (projectile == null) return;
 
-        projectile.GetComponent<Rigidbody2D>().gravityScale = 0.5f;
-        float targetRotation = CalculateThrowingAngle(transform.position, Target.transform.position, false, ProjectileSpeed, 0.5f);
+        float targetRotation = CalculateThrowingAngle(transform.position, target.transform.position, false, ProjectileSpeed, GRAVITY_SCALE);
+        projectile.GetComponent<Rigidbody2D>().gravityScale = GRAVITY_SCALE;
 
         projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
     }
-
-
+    
     private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s, float gravityScale)
     {
         // Source: https://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_required_to_hit_coordinate_.28x.2Cy.29

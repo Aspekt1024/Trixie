@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class SineShootComponent : ShootComponent {
 
+    public EnergyTypes.Colours Colour;
     public float Amplitude = 4f;
     public float Wavelength = 4f;
     public float Phase = 0f;
 
     public override void Shoot(GameObject target)
     {
-        Target = target;
+        this.target = target;
         Shoot();
     }
 
@@ -26,9 +27,9 @@ public class SineShootComponent : ShootComponent {
         if (projectile == null) return;
         
         Vector2 distVector = transform.right;
-        if (Target != null)
+        if (target != null)
         {
-            distVector = Target.transform.position - transform.position;
+            distVector = target.transform.position - transform.position;
         }
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
 

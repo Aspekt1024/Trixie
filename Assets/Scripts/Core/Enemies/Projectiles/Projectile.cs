@@ -181,6 +181,7 @@ public class Projectile : MonoBehaviour {
         transform.position = startPoint;
         transform.eulerAngles = new Vector3(0f, 0f, angle);
 
+        body.gravityScale = 0f;
         body.velocity = transform.right * speed;
         SetColour(colour);
 
