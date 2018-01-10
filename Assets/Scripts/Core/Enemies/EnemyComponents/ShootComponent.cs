@@ -8,6 +8,8 @@ public abstract class ShootComponent : MonoBehaviour {
     public float ProjectileSpeed = 10f;
     public GameObject ShootPoint;
 
+    public Projectile.ProjectileSettings ProjectileSettings;
+
     protected GameObject target;
 
     public abstract void Shoot();

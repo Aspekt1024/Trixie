@@ -32,7 +32,7 @@ public class ShieldCollisionHandler : MonoBehaviour {
         if (other.tag == "Projectile")
         {
             Projectile projectile = other.gameObject.GetComponent<Projectile>();
-            if (projectile.ProjectileColour != shieldComponent.GetColour())
+            if (projectile.GetColour() != shieldComponent.GetColour())
             {
                 if (shieldComponent.IsShielding())
                 {

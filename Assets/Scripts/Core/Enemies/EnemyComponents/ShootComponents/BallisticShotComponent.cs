@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BallisticShotComponent : ShootComponent {
-
-    public EnergyTypes.Colours Colour;
-
-    private const float GRAVITY_SCALE = 0.5f;
-
+    
     public override void Shoot(GameObject target)
     {
         this.target = target;
@@ -24,17 +20,23 @@ public class BallisticShotComponent : ShootComponent {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
         if (projectile == null) return;
-
-        float targetRotation = CalculateThrowingAngle(transform.position, target.transform.position, false, ProjectileSpeed, GRAVITY_SCALE);
-        projectile.GetComponent<Rigidbody2D>().gravityScale = GRAVITY_SCALE;
-
-        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+        
+        float targetRotation = CalculateThrowingAngle(transform.position, target.transform.position, false, ProjectileSpeed);
+        
+        Projectile projScript = projectile.GetComponent<Projectile>();
+        projScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
     }
     
-    private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s, float gravityScale)
+    private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s)
     {
+        if (!ProjectileSettings.HasGravity)
+        {
+            Vector2 distVector = targetPos - startPos;
+            return Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
+        }
+
         // Source: https://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_required_to_hit_coordinate_.28x.2Cy.29
-        float g = -Physics2D.gravity.y * gravityScale;
+        float g = -Physics2D.gravity.y * ProjectileSettings.GravityScale;
         float x = startPos.x - targetPos.x;
         float y = targetPos.y - startPos.y;
 

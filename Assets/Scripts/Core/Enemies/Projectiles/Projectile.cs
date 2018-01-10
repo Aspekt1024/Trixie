@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public enum ProjectileBehaviours
+    [System.Serializable]
+    public struct ProjectileSettings
     {
-        Normal, Homing
+        public EnergyTypes.Colours ProjectileColour;
+        public bool IsHoming;
+        public Transform HomingTarget;
+        public bool IsSticky;
+        public float StickyTime;
+        public bool BouncesOffShield;
+        public bool BouncesOffTerrain;
+        public int NumTimesToBounce;
+        public bool HasGravity;
+        public float GravityScale;
     }
+    private ProjectileSettings settings;
 
-    public bool BounceOffShield;
-    public bool BouncesOffTerrain;
-    
-    public EnergyTypes.Colours ProjectileColour;
-    public ProjectileBehaviours Behaviour;
-    
     private Animator anim;
     private Rigidbody2D body;
-    private Transform homingTarget;
+
+    private int numTimesBounced;
 
     private bool inGravityField;
     private List<GravityField> gravityFields;
@@ -35,7 +41,7 @@ public class Projectile : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if (Behaviour == ProjectileBehaviours.Homing)
+        if (settings.IsHoming)
         {
             FollowTarget();
         }
@@ -51,7 +57,7 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void OnEnable()
     {
-        homingTarget = null;
+        numTimesBounced = 0;
         inGravityField = false;
         currentFieldStrength = 0f;
         currentModifiedVelocity = 0f;
@@ -72,13 +78,18 @@ public class Projectile : MonoBehaviour {
                 SetModifiedVelocity();
             }
         }
-        else if (BounceOffShield && collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
+        else if (settings.BouncesOffShield && collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
         {
             body.velocity = collision.transform.right * body.velocity.magnitude;
             transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
         }
-        else if (BouncesOffTerrain && collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        else if (settings.BouncesOffTerrain && collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
         {
+            if (numTimesBounced == settings.NumTimesToBounce)
+            {
+                ShowImpact();
+            }
+            numTimesBounced++;
         }
         else
         {
@@ -165,31 +176,35 @@ public class Projectile : MonoBehaviour {
 
     private void FollowTarget()
     {
-        if (homingTarget == null) return;
+        if (!settings.IsHoming || settings.HomingTarget == null) return;
 
-        Vector2 distVector = homingTarget.position - transform.position;
+        Vector2 distVector = settings.HomingTarget.position - transform.position;
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
         transform.localEulerAngles = new Vector3(0f, 0f, targetRotation);
 
         float speed = body.velocity.magnitude;
         body.velocity = transform.right * speed;
     }
-
+    
     public void Activate(Vector3 startPoint, float angle, float speed, EnergyTypes.Colours colour, Transform homingTarget = null)
     {
+        // TODO make obsolete. Replace with below
+        settings.ProjectileColour = colour;
+        if (homingTarget != null)
+        {
+            settings.IsHoming = true;
+            settings.HomingTarget = homingTarget;
+        }
+        Activate(startPoint, angle, speed, settings);
+    }
+
+    public void Activate(Vector3 startPoint, float angle, float speed, ProjectileSettings newSettings)
+    {
+        SetProjectileSettings(newSettings);
         gameObject.SetActive(true);
         transform.position = startPoint;
         transform.eulerAngles = new Vector3(0f, 0f, angle);
-
-        body.gravityScale = 0f;
         body.velocity = transform.right * speed;
-        SetColour(colour);
-
-        if (homingTarget != null)
-        {
-            Behaviour = ProjectileBehaviours.Homing;
-            this.homingTarget = homingTarget;
-        }
     }
 
     public void SetSinePath(float amplitude, float wavelength, float phase, float speed)
@@ -199,7 +214,7 @@ public class Projectile : MonoBehaviour {
     
     public void SetColour(EnergyTypes.Colours energyColour)
     {
-        ProjectileColour = energyColour;
+        settings.ProjectileColour = energyColour;
         Color color = new Color();
         switch (energyColour)
         {
@@ -215,11 +230,21 @@ public class Projectile : MonoBehaviour {
             default:
                 break;
         }
-        GetComponent<SpriteRenderer>().color = color;
-        GetComponent<TrailRenderer>().startColor = color;
-        GetComponent<TrailRenderer>().endColor = new Color(color.r, color.g, color.b, 0f);
+        SetColourGraphic(color);
     }
 
+    protected virtual void SetColourGraphic (Color color)
+    {
+    }
+
+    private void SetProjectileSettings(ProjectileSettings newSettings)
+    {
+        settings = newSettings;
+
+        SetColour(settings.ProjectileColour);
+        if (settings.HasGravity) { body.gravityScale = settings.GravityScale; }
+        if (!settings.IsHoming) { settings.HomingTarget = null; }
+    }
 
     private IEnumerator SinePath(float amplitude, float wavelength, float phase, float speed)
     {
@@ -241,5 +266,10 @@ public class Projectile : MonoBehaviour {
             body.transform.position = new Vector3(body.transform.position.x, initialY + y, body.transform.position.z);
             yield return null;
         }
+    }
+
+    public EnergyTypes.Colours GetColour()
+    {
+        return settings.ProjectileColour;
     }
 }

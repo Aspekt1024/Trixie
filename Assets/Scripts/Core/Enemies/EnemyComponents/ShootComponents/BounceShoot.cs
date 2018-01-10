@@ -29,9 +29,9 @@ public class BounceShoot : ShootComponent {
             distVector = target.transform.position - transform.position;
         }
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
-
-        projectile.SetActive(true);
-        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
-        projectile.GetComponent<Projectile>().BouncesOffTerrain = true;
+        
+        ProjectileSettings.BouncesOffTerrain = true;
+        ProjectileSettings.ProjectileColour = Colour;
+        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
     }
 }

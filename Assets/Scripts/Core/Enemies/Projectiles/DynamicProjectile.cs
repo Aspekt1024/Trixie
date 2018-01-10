@@ -46,4 +46,12 @@ public class DynamicProjectile : Projectile {
         base.Deactivate();
         trailRenderer.Clear();
     }
+
+    protected override void SetColourGraphic(Color color)
+    {
+        base.SetColourGraphic(color);
+        GetComponent<SpriteRenderer>().color = color;
+        trailRenderer.startColor = color;
+        trailRenderer.endColor = new Color(color.r, color.g, color.b, 0f);
+    }
 }
