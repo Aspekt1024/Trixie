@@ -7,12 +7,15 @@ public class ShootTestEnemy : BaseEnemy {
     public float ShootCooldown = 1f;
     public Transform Turrets;
 
+    private float cooldown;
+
     private ShootComponent[] shooters;
 
     private float cdTimer = 0f;
 
     private void Start()
     {
+        cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
         shooters = GetComponents<ShootComponent>();
     }
 
@@ -25,12 +28,13 @@ public class ShootTestEnemy : BaseEnemy {
             Turrets.eulerAngles = new Vector3(0f, 0f, targetRotation);
         }
 
-        if (cdTimer < ShootCooldown)
+        if (cdTimer < cooldown)
         {
             cdTimer += Time.deltaTime;
         }
         else
         {
+            cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
             cdTimer = 0f;
             foreach (ShootComponent shooter in shooters)
             {

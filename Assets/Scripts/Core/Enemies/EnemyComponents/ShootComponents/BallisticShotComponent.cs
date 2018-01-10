@@ -18,19 +18,13 @@ public class BallisticShotComponent : ShootComponent {
     private void ActivateProjecile()
     {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
-        
-        float targetRotation = CalculateThrowingAngle(transform.position, Target.transform.position, false, ProjectileSpeed, projectilePrefabScript.GetComponent<Rigidbody2D>().gravityScale);
-
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
         if (projectile == null) return;
 
-        projectile.SetActive(true);
-        projectile.transform.position = ShootPoint.transform.position;
-        projectile.transform.eulerAngles = new Vector3(0f, 0f, targetRotation);
+        projectile.GetComponent<Rigidbody2D>().gravityScale = 0.5f;
+        float targetRotation = CalculateThrowingAngle(transform.position, Target.transform.position, false, ProjectileSpeed, 0.5f);
 
-        projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
-        projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
-        
+        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
     }
 
 

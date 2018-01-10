@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour {
     
     public EnergyTypes.Colours ProjectileColour;
     public ProjectileBehaviours Behaviour;
-
+    
     private Animator anim;
     private Rigidbody2D body;
     private Transform homingTarget;
@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour {
 
     private Coroutine pathRoutine;
     
-    private void Awake()
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
@@ -49,13 +49,15 @@ public class Projectile : MonoBehaviour {
         //UpdateModifiedVelocity();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         homingTarget = null;
         inGravityField = false;
         currentFieldStrength = 0f;
         currentModifiedVelocity = 0f;
         body.velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
         gravityFields = new List<GravityField>();
     }
 
@@ -92,20 +94,36 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    private void Deactivate()
+    protected virtual void ShowImpact()
+    {
+        body.velocity = Vector2.zero;
+        body.gravityScale = 0f;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        StartCoroutine(DeactivateAfterSeconds(1f));
+    }
+
+    protected virtual IEnumerator DeactivateAfterSeconds(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        gameObject.SetActive(false);
+    }
+
+    protected virtual void PersistingExplosion()
+    {
+        // Not currently in use but would be a cool mechanic
+        body.gravityScale = 10f;
+        body.velocity = Vector2.zero;
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
+    
+    protected virtual void Deactivate()
     {
         if (pathRoutine != null)
         {
             StopCoroutine(pathRoutine);
         }
-        GetComponent<TrailRenderer>().Clear();
         gameObject.SetActive(false);
-    }
-
-    private void ShowImpact()
-    {
-        Deactivate();
-        // TODO hit object animation
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -159,6 +177,7 @@ public class Projectile : MonoBehaviour {
 
     public void Activate(Vector3 startPoint, float angle, float speed, EnergyTypes.Colours colour, Transform homingTarget = null)
     {
+        gameObject.SetActive(true);
         transform.position = startPoint;
         transform.eulerAngles = new Vector3(0f, 0f, angle);
 
