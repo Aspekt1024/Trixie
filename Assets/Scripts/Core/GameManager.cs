@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TrixieInput;
 
 public class GameManager : MonoBehaviour {
     
@@ -57,8 +58,38 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region PlayerInputs
+    public void DirectInput(Action action)
+    {
+        switch (state)
+        {
+            case States.None:
+                break;
+            case States.Playing:
+                action.Invoke();
+                break;
+            case States.Paused:
+                break;
+            case States.InMenu:
+                if (action.Method.Name == "ToggleMenu")
+                {
+                    action.Invoke();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetPlayMode()
+    {
+        state = States.Playing;
+    }
+
     public void ToggleMenu()
     {
+        Debug.LogWarning("Menu Control has not yet been implemented");
+        return;
+
         if (state == States.InMenu)
         {
             state = States.Playing;
@@ -69,10 +100,6 @@ public class GameManager : MonoBehaviour {
             state = States.InMenu;
             MenuControl.EnableMainMenu();
         }
-    }
-    public void SetPlayMode()
-    {
-        state = States.Playing;
     }
 
     public void MoveLeftPressed()

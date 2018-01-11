@@ -1,90 +1,126 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerInputHandler {
-
-    // Can use system.enum.parse to serialize these
-    // These key bindings are for windows
-    // see http://wiki.unity3d.com/index.php?title=Xbox360Controller
-    public string HORIZONTAL_AXIS = "Horizontal";
-    public string SHOOT = "Fire1";
-    public KeyCode JUMP_1 = KeyCode.Joystick1Button0;
-    public KeyCode MELEE = KeyCode.Joystick1Button5;
-    public KeyCode INTERACT = KeyCode.E;
-    public KeyCode CYCLE_ITEMS = KeyCode.Z;
-    public KeyCode USE_ITEM = KeyCode.X;
-    //public KeyCode SHOOT = KeyCode.Joystick1Button2;
-    public KeyCode SHIELD = KeyCode.Joystick1Button4;
-    public KeyCode CYCLE_SHIELD_COLOUR = KeyCode.Joystick1Button3;
-
-    public string AIM_AXIS_X = "AimX";
-    public string AIM_AXIS_Y = "AimY";
-
-    public KeyCode SHOW_HIDE_MENU = KeyCode.Joystick1Button7;
-
-    private GameManager gameManager;
-
-    private Vector2 aimDirection;
-
-    public ControllerInputHandler(GameManager manager)
+namespace TrixieInput
+{
+    public class ControllerInputHandler
     {
-        gameManager = manager;
-        aimDirection = Vector2.right;
-    }
+        public string HORIZONTAL_AXIS = "Horizontal";
+        public string SHOOT = "Fire1";
+        public string AIM_AXIS_X = "AimX";
+        public string AIM_AXIS_Y = "AimY";
 
-    public void ProcessInput()
-    {
-        if (Input.GetKeyDown(JUMP_1)) gameManager.JumpPressed();
-        if (Input.GetKeyUp(JUMP_1)) gameManager.JumpReleased();
+        private bool movedByAxis;
 
-        if (Input.GetAxis(HORIZONTAL_AXIS) > 0.5f)
+#if UNITY_STANDALONE_WIN
+        // These key bindings are for windows
+        // see http://wiki.unity3d.com/index.php?title=Xbox360Controller
+        private static KeyCode A_BUTTON = KeyCode.JoystickButton0;
+        private static KeyCode B_BUTTON = KeyCode.JoystickButton1;
+        private static KeyCode X_BUTTON = KeyCode.JoystickButton2;
+        private static KeyCode Y_BUTTON = KeyCode.JoystickButton3;
+        private static KeyCode L_BUMPER = KeyCode.JoystickButton4;
+        private static KeyCode R_BUMPER = KeyCode.JoystickButton5;
+        private static KeyCode BACK_BUTTON = KeyCode.JoystickButton6;
+        private static KeyCode START_BUTTON = KeyCode.JoystickButton7;
+        private static KeyCode L_STICK = KeyCode.JoystickButton8;
+        private static KeyCode R_STICK = KeyCode.JoystickButton9;
+#else
+        // TODO define other platforms
+#endif
+        private GameManager gameManager;
+
+        private Dictionary<KeyCode, Action> getKeyDownBindings = new Dictionary<KeyCode, Action>();
+        private Dictionary<KeyCode, Action> getKeyUpBindings = new Dictionary<KeyCode, Action>();
+        private Dictionary<KeyCode, Action> getKeyBindings = new Dictionary<KeyCode, Action>();
+
+        private Vector2 aimDirection;
+
+        public ControllerInputHandler(GameManager manager)
         {
-            gameManager.MoveRightPressed();
+            gameManager = manager;
+            aimDirection = Vector2.right;
+
+            getKeyDownBindings.Add(A_BUTTON, gameManager.JumpPressed);
+            getKeyDownBindings.Add(L_BUMPER, gameManager.ShieldPressed);
+            getKeyDownBindings.Add(X_BUTTON, gameManager.MeleePressed);
+            getKeyDownBindings.Add(Y_BUTTON, gameManager.InteractPressed);
+            getKeyDownBindings.Add(B_BUTTON, gameManager.CycleShieldColourPressed);
+            getKeyDownBindings.Add(START_BUTTON, gameManager.ToggleMenu);
+
+            getKeyUpBindings.Add(A_BUTTON, gameManager.JumpReleased);
+            getKeyUpBindings.Add(L_BUMPER, gameManager.ShieldReleased);
         }
-        else if (Input.GetAxis(HORIZONTAL_AXIS) < -0.5f)
+
+        public bool ProcessInput()
         {
-            gameManager.MoveLeftPressed();
+            bool inputReceived = false;
+            foreach (var binding in getKeyDownBindings)
+            {
+                if (Input.GetKeyDown(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
+
+            foreach (var binding in getKeyUpBindings)
+            {
+                if (Input.GetKeyUp(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
+
+            foreach (var binding in getKeyBindings)
+            {
+                if (Input.GetKey(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
+
+            if (Input.GetAxis(HORIZONTAL_AXIS) > 0.5f)
+            {
+                inputReceived = true;
+                movedByAxis = true;
+                gameManager.DirectInput(gameManager.MoveRightPressed);
+            }
+            else if (Input.GetAxis(HORIZONTAL_AXIS) < -0.5f)
+            {
+                inputReceived = true;
+                movedByAxis = true;
+                gameManager.DirectInput(gameManager.MoveLeftPressed);
+            }
+            else if (movedByAxis)
+            {
+                movedByAxis = false;
+                gameManager.DirectInput(gameManager.MoveReleased);
+            }
+
+            if (Input.GetAxis(SHOOT) > 0.5f)
+            {
+                inputReceived = true;
+                gameManager.DirectInput(gameManager.ShootPressed);
+            }
+
+            return inputReceived;
         }
-        else
+
+        public Vector2 GetAimDirection()
         {
-            gameManager.MoveReleased();
+            Vector2 aimAxis = new Vector2(Input.GetAxis(AIM_AXIS_X), Input.GetAxis(AIM_AXIS_Y));
+
+            if (aimAxis.magnitude > 0.2f)
+            {
+                aimDirection = new Vector2(aimAxis.x, -aimAxis.y);
+            }
+
+            return aimDirection + (Vector2)Player.Instance.transform.position;
         }
-
-        if (Input.GetAxis(SHOOT) > 0.5f)
-        {
-            gameManager.ShootPressed();
-        }
-
-        if (Input.GetKeyDown(SHIELD)) gameManager.ShieldPressed();
-        if (Input.GetKeyUp(SHIELD)) gameManager.ShieldReleased();
-
-        if (Input.GetKey(MELEE)) gameManager.MeleePressed();
-        if (Input.GetKey(INTERACT)) gameManager.InteractPressed();
-        if (Input.GetKey(CYCLE_ITEMS)) gameManager.CycleItemsPressed();
-        if (Input.GetKey(USE_ITEM)) gameManager.UseItemPressed();
-        if (Input.GetKeyDown(CYCLE_SHIELD_COLOUR)) gameManager.CycleShieldColourPressed();
-
-
-        if (Input.GetKeyDown(SHOW_HIDE_MENU)) gameManager.ToggleMenu();
-    }
-
-    public bool ReceivingInput()
-    {
-        return Input.GetKey(JUMP_1);
-    }
-
-    public Vector2 GetAimDirection()
-    {
-        float xVal = Input.GetAxis(AIM_AXIS_X);
-        float yVal = Input.GetAxis(AIM_AXIS_Y);
-
-        if (Mathf.Abs(xVal) + Mathf.Abs(yVal) > 0.5f)
-        {
-            aimDirection = new Vector2(xVal, -yVal);
-        }
-        aimDirection = new Vector2(xVal, -yVal);
-
-        return aimDirection + (Vector2)Player.Instance.transform.position;
     }
 }
+

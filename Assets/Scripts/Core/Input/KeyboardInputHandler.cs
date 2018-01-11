@@ -1,62 +1,85 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class KeyboardInputHandler {
-
-    // Can use system.enum.parse to serialize these
-    public KeyCode MOVE_LEFT = KeyCode.A;
-    public KeyCode MOVE_RIGHT = KeyCode.D;
-    public KeyCode JUMP_1 = KeyCode.W;
-    public KeyCode JUMP_2 = KeyCode.Space;
-    public KeyCode MELEE = KeyCode.F;
-    public KeyCode INTERACT = KeyCode.E;
-    public KeyCode CYCLE_ITEMS = KeyCode.Z;
-    public KeyCode USE_ITEM = KeyCode.X;
-    public KeyCode SHOOT = KeyCode.Mouse0;
-    public KeyCode SHIELD = KeyCode.Mouse1;
-    public KeyCode CYCLE_SHIELD_COLOUR = KeyCode.R;
-
-    public KeyCode SHOW_HIDE_MENU = KeyCode.Escape;
-
-    private GameManager gameManager;
-
-    public KeyboardInputHandler(GameManager manager)
+namespace TrixieInput
+{
+    public class KeyboardInputHandler
     {
-        gameManager = manager;
-    }
+        // Can use system.enum.parse to serialize these
+        private KeyCode MOVE_LEFT = KeyCode.A;
+        private KeyCode MOVE_RIGHT = KeyCode.D;
 
-    public void ProcessInput()
-    {
-        if (Input.GetKeyDown(JUMP_1) || Input.GetKeyDown(JUMP_2)) gameManager.JumpPressed();
-        if (Input.GetKeyUp(JUMP_1) || Input.GetKeyUp(JUMP_2)) gameManager.JumpReleased();
-
-        if (Input.GetKeyDown(SHIELD)) gameManager.ShieldPressed();
-        if (Input.GetKeyUp(SHIELD)) gameManager.ShieldReleased();
-
-        if (Input.GetKeyDown(MOVE_LEFT)) gameManager.MoveLeftPressed();
-        if (Input.GetKeyDown(MOVE_RIGHT)) gameManager.MoveRightPressed();
-        if (Input.GetKeyUp(MOVE_RIGHT) || Input.GetKeyUp(MOVE_LEFT))
+        private GameManager gameManager;
+        private Dictionary<KeyCode, Action> getKeyDownBindings = new Dictionary<KeyCode, Action>();
+        private Dictionary<KeyCode, Action> getKeyUpBindings = new Dictionary<KeyCode, Action>();
+        private Dictionary<KeyCode, Action> getKeyBindings = new Dictionary<KeyCode, Action>();
+        
+        public KeyboardInputHandler(GameManager manager)
         {
-            if (!Input.GetKey(MOVE_LEFT) && !Input.GetKey(MOVE_RIGHT))
-            {
-                gameManager.MoveReleased();
-            }
+            gameManager = manager;
+
+            getKeyDownBindings.Add(KeyCode.A, gameManager.MoveLeftPressed);
+            getKeyDownBindings.Add(KeyCode.D, gameManager.MoveRightPressed);
+            getKeyDownBindings.Add(KeyCode.W, gameManager.JumpPressed);
+            getKeyDownBindings.Add(KeyCode.Space, gameManager.JumpPressed);
+            getKeyDownBindings.Add(KeyCode.F, gameManager.MeleePressed);
+            getKeyDownBindings.Add(KeyCode.Mouse0, gameManager.ShootPressed);
+            getKeyDownBindings.Add(KeyCode.Mouse1, gameManager.ShieldPressed);
+            getKeyDownBindings.Add(KeyCode.R, gameManager.CycleShieldColourPressed);
+            getKeyDownBindings.Add(KeyCode.Escape, gameManager.ToggleMenu);
+            
+            getKeyUpBindings.Add(KeyCode.W, gameManager.JumpReleased);
+            getKeyUpBindings.Add(KeyCode.Space, gameManager.JumpReleased);
+            getKeyUpBindings.Add(KeyCode.Mouse1, gameManager.ShieldReleased);
         }
 
-        if (Input.GetKey(MELEE)) gameManager.MeleePressed();
-        if (Input.GetKey(INTERACT)) gameManager.InteractPressed();
-        if (Input.GetKey(CYCLE_ITEMS)) gameManager.CycleItemsPressed();
-        if (Input.GetKey(USE_ITEM)) gameManager.UseItemPressed();
-        if (Input.GetKeyDown(SHOOT)) gameManager.ShootPressed();
-        if (Input.GetKeyDown(CYCLE_SHIELD_COLOUR)) gameManager.CycleShieldColourPressed();
+        public bool ProcessInput()
+        {
+            bool inputReceived = false;
+            
+            foreach (var binding in getKeyDownBindings)
+            {
+                if (Input.GetKeyDown(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
 
+            foreach (var binding in getKeyUpBindings)
+            {
+                if (Input.GetKeyUp(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
 
-        if (Input.GetKeyDown(SHOW_HIDE_MENU)) gameManager.ToggleMenu();
-    }
-
-    public bool ReceivingInput()
-    {
-        return Input.anyKey;
+            foreach (var binding in getKeyBindings)
+            {
+                if (Input.GetKey(binding.Key))
+                {
+                    inputReceived = true;
+                    gameManager.DirectInput(binding.Value);
+                }
+            }
+            
+            if (Input.GetKeyUp(MOVE_RIGHT) || Input.GetKeyUp(MOVE_LEFT))
+            {
+                if (!Input.GetKey(MOVE_LEFT) && !Input.GetKey(MOVE_RIGHT))
+                {
+                    gameManager.DirectInput(gameManager.MoveReleased);
+                }
+                else
+                {
+                    inputReceived = true;
+                }
+            }
+            
+            return inputReceived;
+        }
     }
 }
+
