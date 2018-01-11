@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
 
     private InputHandler inputHandler;
 
-    #region LifeCycle
+#region LifeCycle
     private void Awake ()
     {
         if (Instance == null)
@@ -55,9 +55,21 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
-    #endregion
+#endregion
 
-    #region PlayerInputs
+#region GameEvents
+    public static Vector2 GetAimDirection()
+    {
+        return Instance.inputHandler.GetAimDirection();
+    }
+
+    public static void RespawnPlayerStart()
+    {
+        Instance.RespawnHandler.SetObjectToPoint(Instance.Player.transform);
+    }
+#endregion
+
+#region PlayerInputs
     public void DirectInput(Action action)
     {
         switch (state)
@@ -80,10 +92,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void SetPlayMode()
-    {
-        state = States.Playing;
-    }
 
     public void ToggleMenu()
     {
@@ -92,7 +100,7 @@ public class GameManager : MonoBehaviour {
 
         if (state == States.InMenu)
         {
-            state = States.Playing;
+            SetPlayMode();
             MenuControl.DisableMainMenu();
         }
         else
@@ -102,100 +110,25 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void MoveLeftPressed()
+    public void SetPlayMode()
     {
-        if (state == States.Playing)
-        {
-            Player.MoveLeft();
-        }
-    }
-    public void MoveRightPressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.MoveRight();
-        }
-    }
-    public void MoveReleased()
-    {
-        if (state == States.Playing)
-        {
-            Player.MoveReleased();
-        }
-    }
-    public void JumpPressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.Jump();
-        }
+        state = States.Playing;
     }
 
-    public void JumpReleased()
-    {
-        if (state == States.Playing)
-        {
-            Player.JumpReleased();
-        }
-    }
-    public void MeleePressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.Melee();
-        }
-    }
-    public void InteractPressed()
-    {
-
-    }
-    public void CycleItemsPressed()
-    {
-
-    }
-    public void UseItemPressed()
-    {
-
-    }
-    public void ShootPressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.Shoot();
-        }
-    }
-    public void ShieldPressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.ShieldPressed();
-        }
-    }
-    public void ShieldReleased()
-    {
-        if (state == States.Playing)
-        {
-            Player.ShieldReleased();
-        }
-    }
-    public void CycleShieldColourPressed()
-    {
-        if (state == States.Playing)
-        {
-            Player.CycleShieldColourPressed();
-        }
-    }
+    public void MoveLeftPressed() { Player.MoveLeft(); }
+    public void MoveRightPressed() { Player.MoveRight(); }
+    public void MoveReleased() { Player.MoveReleased(); }
+    public void JumpPressed() { Player.Jump(); }
+    public void JumpReleased() { Player.JumpReleased(); }
+    public void MeleePressed() { Player.Melee(); }
+    public void InteractPressed() { }
+    public void CycleItemsPressed() { }
+    public void UseItemPressed() { }
+    public void ShootPressed() { Player.Shoot(); }
+    public void ShieldPressed() { Player.ShieldPressed(); }
+    public void ShieldReleased() { Player.ShieldReleased(); }
+    public void CycleShieldColourPressed() { Player.CycleShieldColourPressed(); }
     
-    #endregion
+#endregion
 
-
-    public static Vector2 GetAimDirection()
-    {
-        return Instance.inputHandler.GetAimDirection();
-    }
-
-    public static void RespawnPlayerStart()
-    {
-        Instance.RespawnHandler.SetObjectToPoint(Instance.Player.transform);
-    }
 }
