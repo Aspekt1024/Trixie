@@ -5,69 +5,65 @@ using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
 
-public class AttackAction : ReGoapAction<GoapLabels, object> {
-    
-    public float CooldownDuration = 1f;
+[RequireComponent(typeof(EnemyProjectileSensor))]
+public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {
 
-    private float cooldownTimer;
+    private GoapTestMem memory;
+    private EnemyProjectileSensor projectileSensor;
     private ShootComponent shootComponent;
-    private AnimateState animState;
-    
+
     protected override void Awake()
     {
         base.Awake();
-        shootComponent = GetComponentInParent<ShootComponent>();
-        animState = GetComponent<AnimateState>();
+        memory = GetComponent<GoapTestMem>();
+        projectileSensor = GetComponent<EnemyProjectileSensor>();
     }
-    
+
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         effects.Clear();
-        effects.Set(GoapLabels.EliminateThreats, true);
+        effects.Set(GoapLabels.HasCorrectProjectileColour, true);
         return effects;
     }
 
     public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         preconditions.Clear();
-        preconditions.Set(GoapLabels.TargetFound, true);
-        preconditions.Set(GoapLabels.HasCorrectProjectileColour, true);
         return preconditions;
     }
 
     public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
-        if (cooldownTimer < CooldownDuration)
+        if (memory.CheckCondition(GoapLabels.HasCorrectProjectileColour))
         {
-            cooldownTimer += Time.deltaTime;
+            return false;
         }
-        bool check = base.CheckProceduralCondition(goapAgent, goalState, next) && cooldownTimer >= CooldownDuration;
-        return check;
+        return base.CheckProceduralCondition(goapAgent, goalState, next);
     }
 
     public override void Run(IReGoapAction<GoapLabels, object> previous, IReGoapAction<GoapLabels, object> next, IReGoapActionSettings<GoapLabels, object> settings, ReGoapState<GoapLabels, object> goalState, Action<IReGoapAction<GoapLabels, object>> done, Action<IReGoapAction<GoapLabels, object>> fail)
     {
         base.Run(previous, next, settings, goalState, done, fail);
-        animState.Animate(0.5f, OnDoneCallback, OnFailCallback);
-    }
-
-    private void OnDoneCallback()
-    {
-        cooldownTimer = 0f;
-        shootComponent.Shoot(Player.Instance.gameObject);
-
-        if (Player.Instance.GetComponent<PlayerHealthComponent>().IsAlive())
+        
+        if (shootComponent == null)
         {
-            failCallback(this);
+            shootComponent = GetComponent<EnemyGoapAgent>().Parent.GetComponent<ShootComponent>();
         }
-        else
+        
+        switch (projectileSensor.GetWeakColour())
         {
-            doneCallback(this);
+            case EnergyTypes.Colours.Blue:
+                shootComponent.ProjectileSettings.ProjectileColour = EnergyTypes.Colours.Yellow;
+                break;
+            case EnergyTypes.Colours.Pink:
+                break;
+            case EnergyTypes.Colours.Yellow:
+                shootComponent.ProjectileSettings.ProjectileColour = EnergyTypes.Colours.Blue;
+                break;
+            default:
+                break;
         }
-    }
 
-    private void OnFailCallback()
-    {
-        failCallback(this);
+        doneCallback(this);
     }
 }

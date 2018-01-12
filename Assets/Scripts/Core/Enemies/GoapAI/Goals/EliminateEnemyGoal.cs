@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReGoap.Unity;
 using ReGoap.Core;
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class EliminateEnemyGoal : ReGoapGoal<GoapLabels, object> {
 

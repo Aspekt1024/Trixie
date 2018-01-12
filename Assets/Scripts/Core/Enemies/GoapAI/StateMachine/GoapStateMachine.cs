@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class GoapStateMachine : MonoBehaviour
 {

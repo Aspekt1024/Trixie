@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 [RequireComponent(typeof(GotoState))]
 public class ReturnToStartPointAction : ReGoapAction<GoapLabels, object> {
@@ -17,8 +16,6 @@ public class ReturnToStartPointAction : ReGoapAction<GoapLabels, object> {
         base.Awake();
         gotoState = GetComponent<GotoState>();
         startPosition = transform.position;
-        
-        //preconditions.Set(GoapLabels.NotSeenPlayerRecently, true);
     }
 
     private void Update()

@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 [RequireComponent(typeof(GotoState))]
 public class LookForTargetAction : ReGoapAction<GoapLabels, object> {

@@ -14,7 +14,7 @@ public class BallisticShotComponent : ShootComponent {
     {
         ActivateProjecile();
     }
-
+    
     private void ActivateProjecile()
     {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
@@ -25,6 +25,7 @@ public class BallisticShotComponent : ShootComponent {
         
         Projectile projScript = projectile.GetComponent<Projectile>();
         projScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
+        TrixieEvent.Shot(projScript);
     }
     
     private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s)

@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class IdleAction : ReGoapAction<GoapLabels, object>
 {

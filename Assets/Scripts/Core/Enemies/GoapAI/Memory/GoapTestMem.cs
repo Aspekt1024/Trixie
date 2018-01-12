@@ -1,10 +1,15 @@
 ﻿using ReGoap.Unity;
 using UnityEngine;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class GoapTestMem : ReGoapMemoryAdvanced<GoapLabels, object>
 {
+    protected override void Awake()
+    {
+        base.Awake();
+        GetWorldState().Set(GoapLabels.HasCorrectProjectileColour, true);
+    }
+
     public Vector2 GetLastKnownPlayerPosition()
     {
         if (GetWorldState().HasKey(GoapLabels.LastKnownPlayerPosition))

@@ -1,7 +1,6 @@
 ﻿using ReGoap.Unity;
 using UnityEngine;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class EnemySensor : ReGoapSensor<GoapLabels, object>
 {
@@ -43,8 +42,6 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
         enemyScript.HasAggro();
         worldState.Set(GoapLabels.LastKnownPlayerPosition, lookAtPosition);
         enemyScript.LookAtPosition(lookAtPosition);
-
-        //worldState.Set(GoapLabels.HasSameShieldColour, shieldCol == myCOlour);
 
     }
 }

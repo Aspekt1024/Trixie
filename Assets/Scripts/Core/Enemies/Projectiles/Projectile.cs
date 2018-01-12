@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+    public delegate void DestroyEvent(Projectile projectile, bool destroyedBySameShieldColour);
+    public DestroyEvent OnDestroyed;
+    public void Destroyed(Projectile projectile, bool destroyedBySameShieldColour)
+    {
+        if (OnDestroyed != null)
+        {
+            OnDestroyed(projectile, destroyedBySameShieldColour);
+        }
+    }
+
     [System.Serializable]
     public struct ProjectileSettings
     {
@@ -34,6 +44,8 @@ public class Projectile : MonoBehaviour {
     private float currentModifiedVelocity;
 
     private Coroutine pathRoutine;
+
+    private bool destroyedBySameShieldColour;
     
     protected virtual void Awake()
     {
@@ -107,6 +119,7 @@ public class Projectile : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        destroyedBySameShieldColour = false;
         if (collision.collider.tag == "GravityField")
         {
             gravityFields.Add(collision.gameObject.GetComponent<GravityField>());
@@ -143,6 +156,14 @@ public class Projectile : MonoBehaviour {
                 ShowImpact();
             }
         }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
+        {
+            if (Player.Instance.GetComponent<ShieldComponent>().GetColour() == GetColour())
+            {
+                destroyedBySameShieldColour = true;
+            }
+            ShowImpact();
+        }
         else
         {
             ShowImpact();
@@ -155,6 +176,7 @@ public class Projectile : MonoBehaviour {
         body.gravityScale = 0f;
         GetComponent<Collider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
+        Destroyed(this, destroyedBySameShieldColour);
         StartCoroutine(DeactivateAfterSeconds(1f));
     }
 

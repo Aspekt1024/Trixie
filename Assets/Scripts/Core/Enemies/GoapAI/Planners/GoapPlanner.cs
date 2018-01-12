@@ -1,6 +1,5 @@
 ﻿using ReGoap.Unity;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class GoapPlanner : ReGoapPlannerManager<GoapLabels, object>
 {

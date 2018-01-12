@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReGoap.Unity;
 using ReGoap.Core;
-
-using GoapLabels = GoapConditions.Labels;
+using TrixieCore.Goap;
 
 public class TestPlannerManager : ReGoapPlannerManager<GoapLabels, object> {
     
