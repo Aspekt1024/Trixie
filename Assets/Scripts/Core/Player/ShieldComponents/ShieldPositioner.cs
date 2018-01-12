@@ -21,6 +21,8 @@ public class ShieldPositioner : MonoBehaviour {
     public void SetShieldPosition()
     {
         Vector2 aimDirection = GameManager.GetAimDirection();
+        if (aimDirection == Vector2.zero) return;
+
         Vector2 distVector = (aimDirection - (Vector2)centerPoint.position).normalized * distFromCenter;
         transform.position = centerPoint.position + (Vector3)distVector;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);

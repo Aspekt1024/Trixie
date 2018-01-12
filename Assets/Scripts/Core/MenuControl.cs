@@ -19,17 +19,14 @@ public class MenuControl : MonoBehaviour {
     }
     private States state;
 
-    private GameManager gameManager;
-
     private void Awake()
     {
         mainCanvasGroup = GetComponent<CanvasGroup>();
-        gameManager = GameManager.Instance;
 
-        activePanelPosition = new Vector3(Screen.width / 2f, Screen.height / 2f);
-        inactivePanelPosition = new Vector3(Screen.width * 2f, 0f, 0f);
+        //activePanelPosition = new Vector3(Screen.width / 2f, Screen.height / 2f);
+        //inactivePanelPosition = new Vector3(Screen.width * 2f, 0f, 0f);
 
-        EnableMainMenu();
+        DisableMainMenu();
     }
 
     public void EnableMainMenu()
@@ -37,7 +34,6 @@ public class MenuControl : MonoBehaviour {
         state = States.MainMenu;
         mainCanvasGroup.alpha = 1f;
         mainCanvasGroup.blocksRaycasts = true;
-        GotoMainMenu();
     }
 
     public void DisableMainMenu()
@@ -45,24 +41,6 @@ public class MenuControl : MonoBehaviour {
         state = States.None;
         mainCanvasGroup.alpha = 0f;
         mainCanvasGroup.blocksRaycasts = false;
-    }
-
-    public void PlayButtonPressed()
-    {
-        gameManager.SetPlayMode();
-        DisableMainMenu();
-    }
-
-    public void ControlsButtonPressed()
-    {
-        state = States.ControlsMenu;
-        GotoControlMenu();
-    }
-    
-    public void MainMenuButtonPressed()
-    {
-        state = States.MainMenu;
-        GotoMainMenu();
     }
 
     public void ExitButtonPressed()
@@ -73,17 +51,5 @@ public class MenuControl : MonoBehaviour {
     public bool MainMenuIsActive()
     {
         return state != States.None;
-    }
-
-    private void GotoMainMenu()
-    {
-        MainMenuPanel.position = activePanelPosition;
-        ControlsPanel.position = inactivePanelPosition;
-    }
-
-    private void GotoControlMenu()
-    {
-        MainMenuPanel.position = inactivePanelPosition;
-        ControlsPanel.position = activePanelPosition;
     }
 }

@@ -60,7 +60,14 @@ public class GameManager : MonoBehaviour {
 #region GameEvents
     public static Vector2 GetAimDirection()
     {
-        return Instance.inputHandler.GetAimDirection();
+        if (Instance.state == States.Playing)
+        {
+            return Instance.inputHandler.GetAimDirection();
+        }
+        else
+        {
+            return Vector2.zero;
+        }
     }
 
     public static void RespawnPlayerStart()
@@ -91,21 +98,19 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
-
-
+    
     public void ToggleMenu()
     {
-        Debug.LogWarning("Menu Control has not yet been implemented");
-        return;
-
         if (state == States.InMenu)
         {
             SetPlayMode();
+            Time.timeScale = 1f;
             MenuControl.DisableMainMenu();
         }
         else
         {
             state = States.InMenu;
+            Time.timeScale = 0f;
             MenuControl.EnableMainMenu();
         }
     }

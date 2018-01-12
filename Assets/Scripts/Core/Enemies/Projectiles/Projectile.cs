@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour {
         public EnergyTypes.Colours ProjectileColour;
         public bool IsHoming;
         public Transform HomingTarget;
+        public bool IsAMine;
         public bool IsSticky;
         public float StickyTime;
         public bool BouncesOffShield;
@@ -24,6 +25,8 @@ public class Projectile : MonoBehaviour {
     private Rigidbody2D body;
 
     private int numTimesBounced;
+    private float stickyTimer;
+    private bool isStuck;
 
     private bool inGravityField;
     private List<GravityField> gravityFields;
@@ -46,6 +49,15 @@ public class Projectile : MonoBehaviour {
             FollowTarget();
         }
 
+        if (isStuck && (settings.IsAMine || settings.IsSticky))
+        {
+            stickyTimer += Time.fixedDeltaTime;
+            if (stickyTimer > settings.StickyTime)
+            {
+                ShowImpact();
+            }
+        }
+
         Vector2 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
         if (viewportPos.x < -0.5f || viewportPos.x > 1.5f || viewportPos.y < -0.5f || viewportPos.y > 1.5f)
         {
@@ -57,6 +69,7 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void OnEnable()
     {
+        isStuck = false;
         numTimesBounced = 0;
         inGravityField = false;
         currentFieldStrength = 0f;
@@ -65,6 +78,31 @@ public class Projectile : MonoBehaviour {
         GetComponent<Collider2D>().enabled = true;
         GetComponent<SpriteRenderer>().enabled = true;
         gravityFields = new List<GravityField>();
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Shield") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            ShowImpact();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "GravityField")
+        {
+            gravityFields.Remove(collision.GetComponent<GravityField>());
+            if (gravityFields.Count > 0)
+            {
+                SetModifiedVelocity();
+            }
+            else
+            {
+                inGravityField = false;
+                RemoveModifiedVelocty();
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -83,23 +121,29 @@ public class Projectile : MonoBehaviour {
             body.velocity = collision.transform.right * body.velocity.magnitude;
             transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
         }
-        else if (settings.BouncesOffTerrain && collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
         {
-            if (numTimesBounced == settings.NumTimesToBounce)
+            if (settings.BouncesOffTerrain)
+            {
+                if (numTimesBounced == settings.NumTimesToBounce)
+                {
+                    ShowImpact();
+                }
+                numTimesBounced++;
+            }
+            else if (settings.IsSticky || settings.IsAMine)
+            {
+                if (!isStuck)
+                {
+                    SetAsMine();
+                }
+            }
+            else
             {
                 ShowImpact();
             }
-            numTimesBounced++;
         }
         else
-        {
-            ShowImpact();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
         {
             ShowImpact();
         }
@@ -120,12 +164,19 @@ public class Projectile : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    private void SetAsMine()
+    {
+        isStuck = true;
+        stickyTimer = 0f;
+        body.gravityScale = 0f;
+        body.velocity = Vector2.zero;
+    }
+
     protected virtual void PersistingExplosion()
     {
-        // Not currently in use but would be a cool mechanic
-        body.gravityScale = 10f;
+        body.gravityScale = 0f;
         body.velocity = Vector2.zero;
-        GetComponent<SpriteRenderer>().enabled = false;
+        //GetComponent<SpriteRenderer>().enabled = false;
     }
     
     protected virtual void Deactivate()
@@ -135,23 +186,6 @@ public class Projectile : MonoBehaviour {
             StopCoroutine(pathRoutine);
         }
         gameObject.SetActive(false);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "GravityField")
-        {
-            gravityFields.Remove(collision.GetComponent<GravityField>());
-            if (gravityFields.Count > 0)
-            {
-                SetModifiedVelocity();
-            }
-            else
-            {
-                inGravityField = false;
-                RemoveModifiedVelocty();
-            }
-        }
     }
 
     private void UpdateModifiedVelocity()
