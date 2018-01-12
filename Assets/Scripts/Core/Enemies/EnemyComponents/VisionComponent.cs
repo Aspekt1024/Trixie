@@ -11,11 +11,10 @@ public class VisionComponent : MonoBehaviour {
     public float VisionMemory = 2f;
 
     private bool canSeePlayer;
-    private LayerMask layers;
+    private LayerMask visibleLayers;
     private bool hasSeenPlayer;
     private float timeLastSeenPlayer;
     private Vector3 lastKnownPlayerPosition;
-    private bool directionFlipped;
 
     private enum States
     {
@@ -25,7 +24,7 @@ public class VisionComponent : MonoBehaviour {
     
     private void Start()
     {
-        layers = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Player");
+        visibleLayers = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Player");
     }
 
     public void Activate()
@@ -41,37 +40,30 @@ public class VisionComponent : MonoBehaviour {
         state = States.None;
         CancelInvoke();
     }
-
-    public void FaceInitialDirection()
-    {
-        if (directionFlipped)
-        {
-            directionFlipped = false;
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
-        }
-    }
-
-    public void FaceOppositeDirection()
-    {
-        if (!directionFlipped)
-        {
-            directionFlipped = true;
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
-        }
-    }
-
-    public bool DirectionFlipped
-    {
-        get { return directionFlipped; }
-    }
-
+    
     public bool HasSeenPlayerRecenty()
     {
-        if (canSeePlayer) return true;
-        if (!hasSeenPlayer) return false;
+        bool seenRecently = false;
+        if (canSeePlayer)
+        {
+            seenRecently = true;
+        }
+        else if (!hasSeenPlayer)
+        {
+            seenRecently = false;
+        }
+        else if (timeLastSeenPlayer + VisionMemory > Time.time)
+        {
+            seenRecently = true;
+        }
+        else
+        {
+            seenRecently = false;
+        }
 
-        return timeLastSeenPlayer + VisionMemory > Time.time;
+        return seenRecently;
     }
+
     public Vector2 GetLastKnownPlayerPosition() { return lastKnownPlayerPosition; }
     public bool CanSeePlayer() { return canSeePlayer; }
     
@@ -85,7 +77,7 @@ public class VisionComponent : MonoBehaviour {
             return;
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, Radius, layers);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, Radius, visibleLayers);
         if (hit.collider == null)
         {
             canSeePlayer = false;
@@ -98,6 +90,7 @@ public class VisionComponent : MonoBehaviour {
             }
             else
             {
+                timeLastSeenPlayer = Time.time;
                 hasSeenPlayer = true;
                 canSeePlayer = true;
                 lastKnownPlayerPosition = Player.Instance.transform.position;
@@ -121,7 +114,7 @@ public class VisionComponent : MonoBehaviour {
 
     private bool IsWithinArc(Vector2 distVector)
     {
-        if (directionFlipped)
+        if (GetComponent<BaseEnemy>().DirectionFlipped)
         {
             distVector.x *= -1;
         }

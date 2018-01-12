@@ -25,7 +25,7 @@ public class FlavourBot : BaseEnemy {
         //TurretLower.Activate();
     }
 
-    private void Update()
+    protected override void Update()
     {
         switch(state)
         {

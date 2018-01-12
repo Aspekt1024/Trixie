@@ -15,24 +15,15 @@ public class SmartBot : BaseEnemy {
         vision.Activate();
     }
 
-    private void Update()
+    protected override void DestroyEnemy()
     {
-        UpdateLookDirection();
+        gameObject.SetActive(false);
     }
-    
-    public override void DamageEnemy(Vector2 direction, int damage = 1)
+
+    protected override void OnDamaged()
     {
-        HealthComponent healthComponent = GetComponent<HealthComponent>();
-        healthComponent.TakeDamage(damage);
-        if (healthComponent.IsDead())
-        {
-            DestroyEnemy();
-        }
-        else
-        {
-            // TODO can't overlap!
-            StartCoroutine(ShowDamaged());
-        }
+        // TODO can't overlap!
+        StartCoroutine(ShowDamaged());
     }
 
     private IEnumerator ShowDamaged()
@@ -41,35 +32,5 @@ public class SmartBot : BaseEnemy {
         yield return new WaitForSeconds(0.2f);
         spriteRenderer.color = Color.white;
     }
-
-    private void UpdateLookDirection()
-    {
-        Vector2 lookAtPosition;
-        if (vision.CanSeePlayer())
-        {
-            lookAtPosition = Player.Instance.transform.position;
-        }
-        else if (!pathFinder.FinishedPathing())
-        {
-            lookAtPosition = pathFinder.GetTargetPosition();
-        }
-        else
-        {
-            return;
-        }
-        
-        if (transform.position.x > lookAtPosition.x)
-        {
-            vision.FaceInitialDirection();
-        }
-        else
-        {
-            vision.FaceOppositeDirection();
-        }
-    }
-
-    protected override void DestroyEnemy()
-    {
-        gameObject.SetActive(false);
-    }
+    
 }

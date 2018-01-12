@@ -20,7 +20,7 @@ public class VisionComponentInspector : Editor {
         // Check if the vision has been flipped (i.e. by movement) and calculate the correct angles
         float startingAngle = current.StartingAngle;
 
-        if (current.DirectionFlipped)
+        if (current.GetComponent<BaseEnemy>().DirectionFlipped)
         {
             startingAngle = Mathf.Sign(startingAngle) * (180f - Mathf.Abs(startingAngle)) - current.Arc;
         }

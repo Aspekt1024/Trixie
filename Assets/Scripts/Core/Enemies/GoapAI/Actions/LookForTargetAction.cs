@@ -9,15 +9,15 @@ using GoapLabels = GoapConditions.Labels;
 [RequireComponent(typeof(GotoState))]
 public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
 
-    private VisionComponent vision;
+    private GoapTestMem memory;
     private GotoState gotoState;
     
     protected override void Awake()
     {
         base.Awake();
         effects.Set(GoapLabels.TargetFound, true);
-        vision = GetComponentInParent<VisionComponent>();
         gotoState = GetComponent<GotoState>();
+        memory = GetComponent<GoapTestMem>();
     }
 
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
@@ -29,7 +29,7 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
 
     public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
-        if (!vision.HasSeenPlayerRecenty())
+        if (!memory.CheckCondition(GoapLabels.HasSeenPlayerRecently) && !memory.CheckCondition(GoapLabels.CanSensePlayer))
         {
             return false;
         }
@@ -39,33 +39,23 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     public override void Run(IReGoapAction<GoapLabels, object> previous, IReGoapAction<GoapLabels, object> next, IReGoapActionSettings<GoapLabels, object> settings, ReGoapState<GoapLabels, object> goalState, Action<IReGoapAction<GoapLabels, object>> done, Action<IReGoapAction<GoapLabels, object>> fail)
     {
         base.Run(previous, next, settings, goalState, done, fail);
-        StartCoroutine(LookForTarget());
-    }
+        gotoState.GoTo(memory.GetLastKnownPlayerPosition(), OnDoneCallback, OnFailCallback);
 
-    private IEnumerator LookForTarget()
-    {
-        gotoState.GoTo(vision.GetLastKnownPlayerPosition(), OnDoneCallback, OnFailCallback);
-
-        while (vision.HasSeenPlayerRecenty())
+        if (memory.CheckCondition(GoapLabels.CanSeePlayer))
         {
-            if (vision.CanSeePlayer())
-            {
-                gotoState.Exit();
-                yield break;
-            }
-            else
-            {
-                gotoState.SetTargetPosition(vision.GetLastKnownPlayerPosition());
-            }
-            yield return null;
+            Debug.Log("can see player, attacking");
+            gotoState.Exit();
         }
-
-        gotoState.Exit();
+        else
+        {
+            Debug.Log("seen player recently, updating position");
+            gotoState.SetTargetPosition(memory.GetLastKnownPlayerPosition());
+        }
     }
-
+    
     private void OnDoneCallback()
     {
-        if (vision.CanSeePlayer())
+        if (memory.CheckCondition(GoapLabels.CanSeePlayer))
         {
             doneCallback(this);
         }

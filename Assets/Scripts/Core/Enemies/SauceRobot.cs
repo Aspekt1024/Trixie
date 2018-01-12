@@ -23,7 +23,6 @@ public class SauceRobot : BaseEnemy {
     {
         movementTf = new GameObject("MovementTf").transform;
         
-
         pathFinder = GetComponent<EnemyAITest>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         vision = GetComponent<VisionComponent>();
@@ -32,7 +31,7 @@ public class SauceRobot : BaseEnemy {
         startPosition = transform.position;
     }
 
-    public void Update()
+    protected override void Update()
     {
         UpdateLookDirection();
     }
@@ -72,14 +71,14 @@ public class SauceRobot : BaseEnemy {
 
     private void UpdateLookDirection()
     {
-        if (pathFinder.FinishedPathing()) return;
+        if (pathFinder.HasFinishedPathing()) return;
         if (transform.position.x > pathFinder.GetTargetPosition().x)
         {
-            vision.FaceInitialDirection();
+            FaceInitialDirection();
         }
         else
         {
-            vision.FaceOppositeDirection();
+            FaceOppositeDirection();
         }
     }
 

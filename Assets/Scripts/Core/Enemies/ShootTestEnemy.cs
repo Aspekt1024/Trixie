@@ -12,7 +12,6 @@ public class ShootTestEnemy : BaseEnemy {
     private float cooldown;
 
     private ShootComponent[] shooters;
-    private HealthComponent health;
 
     private float cdTimer = 0f;
     private Coroutine damageRoutine;
@@ -30,14 +29,13 @@ public class ShootTestEnemy : BaseEnemy {
     {
         cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
         shooters = GetComponents<ShootComponent>();
-        health = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         spriteRenderer = Sprites.GetComponentsInChildren<SpriteRenderer>();
         ExplosionEffect.SetActive(false);
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (state == States.Dead) return;
 
@@ -68,8 +66,8 @@ public class ShootTestEnemy : BaseEnemy {
     
     public override void DamageEnemy(Vector2 direction, int damage = 1)
     {
-        health.TakeDamage(damage);
-        if (health.IsDead())
+        healthComponent.TakeDamage(damage);
+        if (healthComponent.IsDead())
         {
             DestroyEnemy();
         }

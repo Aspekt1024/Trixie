@@ -52,7 +52,7 @@ public class GotoState : MachineState
     {
         pathfinder.Activate(position);
         
-        if (pathfinder.FinishedPathing())
+        if (pathfinder.HasFinishedPathing())
         {
             state = States.Success;
         }

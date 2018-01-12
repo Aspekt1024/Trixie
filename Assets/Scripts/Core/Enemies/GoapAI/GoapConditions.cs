@@ -5,6 +5,7 @@ public class GoapConditions {
     {
         EliminateThreats, Survive, RunAway, Wander, Patrol, Idle,
         CanSeePlayer, IsDying, CanAttack, TargetFound, HasSeenPlayerRecently,
-        IsAtStartingPoint, NotSeenPlayerRecently
+        IsAtStartingPoint, NotSeenPlayerRecently, CanSensePlayer,
+        LastKnownPlayerPosition
     }
 }

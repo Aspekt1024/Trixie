@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
@@ -46,7 +47,7 @@ public class EnemyAITest : MonoBehaviour {
         if (currentlySeeking) return;
 
         currentlySeeking = true;
-        InvokeRepeating("UpdatePath", 0f, 1f / UpdateFrequency);
+        InvokeRepeating(GetMethodName(UpdatePath), 0f, 1f / UpdateFrequency);
     }
 
     public Vector3 GetTargetPosition()
@@ -54,7 +55,7 @@ public class EnemyAITest : MonoBehaviour {
         return target.position;
     }
    
-    public bool FinishedPathing()
+    public bool HasFinishedPathing()
     {
         return Path == null;
     }
@@ -77,7 +78,7 @@ public class EnemyAITest : MonoBehaviour {
             return;
         }
 
-        if (currentWaypoint >= Path.vectorPath.Count)
+        if (currentWaypoint == Path.vectorPath.Count)
         {
             CancelPath();
             return;
@@ -117,4 +118,8 @@ public class EnemyAITest : MonoBehaviour {
         }
     }
 
+    private string GetMethodName(Action method)
+    {
+        return method.Method.Name;
+    }
 }

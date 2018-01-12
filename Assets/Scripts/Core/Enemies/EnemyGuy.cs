@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyGuy : BaseEnemy {
     
     private BasicPatrolComponent patrolComponent;
-    private HealthComponent healthComponent;
     private CapsuleCollider2D coll;
     private Rigidbody2D body;
     private SpriteRenderer spriteRenderer;
@@ -23,13 +22,12 @@ public class EnemyGuy : BaseEnemy {
         coll = GetComponent<CapsuleCollider2D>();
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        healthComponent = GetComponent<HealthComponent>();
         patrolComponent = GetComponent<BasicPatrolComponent>();
         patrolComponent.Activate();
         state = States.Patrolling;
     }
 
-    private void Update()
+    protected override void Update()
     {
         switch (state)
         {

@@ -36,7 +36,7 @@ public class EnemyVertical : BaseEnemy {
     float fallTime = 4f;
     float fallTimer = 0f;
 
-    private void Update()
+    protected override void Update()
     {
         switch (state)
         {
