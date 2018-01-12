@@ -2,23 +2,44 @@
 using UnityEngine;
 
 public class SmartBot : BaseEnemy {
-    
+
+    public GameObject Sprites;
+    public GameObject ExplosionEffect;
+    public GameObject AI;
+
     private EnemyAITest pathFinder;
     private VisionComponent vision;
-    private SpriteRenderer spriteRenderer;
+    private Collider2D coll;
+    private Rigidbody2D body;
 
     private void Start()
     {
+        body = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         pathFinder = GetComponent<EnemyAITest>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         vision = GetComponent<VisionComponent>();
         vision.Activate();
+        ExplosionEffect.SetActive(false);
     }
 
     protected override void DestroyEnemy()
     {
-        gameObject.SetActive(false);
+        body.velocity = Vector2.zero;
+        coll.enabled = false;
+        AI.SetActive(false);
+        Sprites.SetActive(false);
+        ExplosionEffect.SetActive(true);
+
+        StartCoroutine(DestroyCompletionDelay(2f));
     }
+
+
+    private IEnumerator DestroyCompletionDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        base.DestroyEnemy();
+    }
+
 
     protected override void OnDamaged()
     {
@@ -28,9 +49,17 @@ public class SmartBot : BaseEnemy {
 
     private IEnumerator ShowDamaged()
     {
-        spriteRenderer.color = new Color(1f, 0f, 0f, 0.5f);
+        SetSpriteColour(new Color(1f, 0f, 0f, 0.5f));
         yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = Color.white;
+        SetSpriteColour(Color.white);
     }
-    
+
+    private void SetSpriteColour(Color color)
+    {
+        foreach (var sr in Sprites.GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr.color = color;
+        }
+    }
+
 }

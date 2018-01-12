@@ -43,12 +43,10 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
 
         if (memory.CheckCondition(GoapLabels.CanSeePlayer))
         {
-            Debug.Log("can see player, attacking");
             gotoState.Exit();
         }
         else
         {
-            Debug.Log("seen player recently, updating position");
             gotoState.SetTargetPosition(memory.GetLastKnownPlayerPosition());
         }
     }

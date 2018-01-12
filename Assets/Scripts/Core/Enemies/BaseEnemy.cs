@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class BaseEnemy : MonoBehaviour {
     protected HealthComponent healthComponent;
     protected Animator anim;
     private bool directionFlipped;
+    private Action OnDeathCallback;
 
     private void Awake()
     {
@@ -20,6 +22,11 @@ public class BaseEnemy : MonoBehaviour {
     protected virtual void Update()
     {
     }
+    
+    public void SetOnDeathAction(Action callback)
+    {
+        OnDeathCallback = callback;
+    }
 
     public virtual void DamageEnemy(Vector2 direction, int damage = 1)
     {
@@ -27,11 +34,6 @@ public class BaseEnemy : MonoBehaviour {
         if (healthComponent.IsDead())
         {
             DestroyEnemy();
-
-            if (hasAggro)
-            {
-                LostAggro();
-            }
         }
         else
         {
@@ -39,7 +41,19 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
     
-    protected virtual void DestroyEnemy() { }
+    protected virtual void DestroyEnemy()
+    {
+        // TODO setup delegate
+        if (OnDeathCallback != null)
+        {
+            OnDeathCallback.Invoke();
+        }
+
+        if (hasAggro)
+        {
+            LostAggro();
+        }
+    }
     protected virtual void OnDamaged() { }
 
     public void HasAggro()

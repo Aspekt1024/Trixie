@@ -26,13 +26,12 @@ public class AnimateState : MachineState
     protected override void Update()
     {
         base.Update();
-        if (state == States.Disabled) return;
+        if (state == States.Disabled || state == States.Success || state == States.Failure) return;
 
         animTimer += Time.deltaTime;
         if (animTimer > animDuration)
         {
             state = States.Success;
-            Exit();
         }
     }
 
