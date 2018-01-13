@@ -93,14 +93,14 @@ public class Player : MonoBehaviour {
 
     public void ShieldPressed()
     {
-        if (shieldComponent.ActivateShield())
+        if (shieldComponent.ShieldActivatePressed())
         {
             anim.SetBool("shieldEnabled", true);
         }
     }
     public void ShieldReleased()
     {
-        if (shieldComponent.DeactivateShield())
+        if (shieldComponent.ShieldDeactivatePressed())
         {
             anim.SetBool("shieldEnabled", false);
         }
@@ -110,9 +110,21 @@ public class Player : MonoBehaviour {
     public void CycleShieldColourPressed() { shieldComponent.CycleShieldColourPressed(); }
     
 
-    public void Shoot()
+    public void ShootPressed()
     {
-        shieldComponent.Shoot();
+        if (shieldComponent.IsAwaitingActivation())
+        {
+            shieldComponent.ShootPressed();
+        }
+        else
+        {
+            // TODO shoot normal gun if available
+        }
+    }
+
+    public void ShootReleased()
+    {
+        shieldComponent.ShootReleased();
     }
 
     public SpriteRenderer GetPlayerRenderer()

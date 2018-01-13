@@ -1,6 +1,7 @@
 ﻿using ReGoap.Unity;
 using UnityEngine;
 using TrixieCore.Goap;
+using TrixieCore;
 
 public class EnemyProjectileSensor : ReGoapSensor<GoapLabels, object>
 {

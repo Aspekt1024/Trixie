@@ -37,6 +37,8 @@ public class GameUIManager : MonoBehaviour {
     public static void ShowBoostIndicator() { Instance.BoostUI.ShowBoostIndicator(); }
     public static void HideShieldIndicator() { Instance.ShieldUI.HideShieldIndicator(); }
     public static void ShowShieldIndicator() { Instance.ShieldUI.ShowShieldIndicator(); }
+    public static void ShowShieldsDisabled() { Instance.ShieldUI.ShowShieldsDisabled(); }
+    public static void ShowShieldsEnabled() { Instance.ShieldUI.ShowShieldsEnabled(); }
 
     public static void ItemCollected(string itemName) { Instance.ItemCollectOverlay.ShowItemText(itemName); }
 

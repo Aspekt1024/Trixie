@@ -4,6 +4,7 @@ using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
+using TrixieCore;
 
 public class AttackAction : ReGoapAction<GoapLabels, object> {
     

@@ -1,15 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore;
 
-public partial class BarrageShot : ShootComponent {
-    
+public partial class BarrageShot : ShootComponent
+{
     public EnergyTypes.Colours[] Projectiles;
     public float Spread = 5f;
-    
-    private Transform objTf;
-    private Rigidbody2D body;
-    
+
     public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
@@ -36,7 +34,7 @@ public partial class BarrageShot : ShootComponent {
         if (projectile == null) return null;
 
         ProjectileSettings.ProjectileColour = colour;
-        
+
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, angle, ProjectileSpeed, ProjectileSettings);
         return projectileScript;

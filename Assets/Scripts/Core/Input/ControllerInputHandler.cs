@@ -12,6 +12,7 @@ namespace TrixieInput
         public string AIM_AXIS_Y = "AimY";
 
         private bool movedByAxis;
+        private bool shotByAxis;
 
 #if UNITY_STANDALONE_WIN
         // These key bindings are for windows
@@ -103,8 +104,14 @@ namespace TrixieInput
 
             if (Input.GetAxis(SHOOT) > 0.5f)
             {
+                shotByAxis = true;
                 inputReceived = true;
                 gameManager.DirectInput(gameManager.ShootPressed);
+            }
+            else if (shotByAxis)
+            {
+                shotByAxis = false;
+                gameManager.DirectInput(gameManager.ShootReleased);
             }
 
             return inputReceived;

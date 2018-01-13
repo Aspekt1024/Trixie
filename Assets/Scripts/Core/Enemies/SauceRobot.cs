@@ -6,17 +6,12 @@ using TrixieCore.Goap;
 public class SauceRobot : BaseEnemy {
 
     private Transform movementTf;
-    private bool isShrunk;
     private Vector2 startPosition;
     
     private EnemyAITest pathFinder;
     private VisionComponent vision;
     private SpriteRenderer spriteRenderer;
     
-    public void SetShrunkState()
-    {
-        isShrunk = true;
-    }
 
     private void Start()
     {
@@ -47,7 +42,6 @@ public class SauceRobot : BaseEnemy {
 
     public override void DamageEnemy(Vector2 direction, int damage = 1)
     {
-        Debug.Log("success");
         HealthComponent healthComponent = GetComponent<HealthComponent>();
         healthComponent.TakeDamage(damage);
         if (healthComponent.IsDead())

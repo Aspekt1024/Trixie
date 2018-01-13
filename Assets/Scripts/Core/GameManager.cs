@@ -41,19 +41,7 @@ public class GameManager : MonoBehaviour {
 	
 	private void Update ()
     {
-		switch(state)
-        {
-            case States.None:
-                break;
-            case States.Playing:
-                inputHandler.ProcessInput();
-                break;
-            case States.Paused:
-                break;
-            case States.InMenu:
-                inputHandler.ProcessInput();
-                break;
-        }
+        inputHandler.ProcessInput();
     }
 #endregion
 
@@ -89,9 +77,22 @@ public class GameManager : MonoBehaviour {
             case States.Paused:
                 break;
             case States.InMenu:
-                if (action.Method.Name == "ToggleMenu")
+                switch (action.Method.Name)
                 {
-                    action.Invoke();
+                    case "ToggleMenu":
+                        action.Invoke();
+                        break;
+                    case "MoveReleased":
+                        action.Invoke();
+                        break;
+                    case "ShieldReleased":
+                        action.Invoke();
+                        break;
+                    case "ShootReleased":
+                        action.Invoke();
+                        break;
+                    default:
+                        break;
                 }
                 break;
             default:
@@ -129,7 +130,8 @@ public class GameManager : MonoBehaviour {
     public void InteractPressed() { }
     public void CycleItemsPressed() { }
     public void UseItemPressed() { }
-    public void ShootPressed() { Player.Shoot(); }
+    public void ShootPressed() { Player.ShootPressed(); }
+    public void ShootReleased() { Player.ShootReleased(); }
     public void ShieldPressed() { Player.ShieldPressed(); }
     public void ShieldReleased() { Player.ShieldReleased(); }
     public void CycleShieldColourPressed() { Player.CycleShieldColourPressed(); }

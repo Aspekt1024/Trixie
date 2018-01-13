@@ -6,36 +6,33 @@ public class ShieldComponent : MonoBehaviour {
 
     public GameObject ShieldObject;
     public Transform ShieldCenterPoint;
-    
+    public ShieldPower shieldPower;
+    public float ShootChargeTime = 1.5f;
+
     private ShieldPositioner positioner;
     private ShieldStats shieldStats;
-    public ShieldPower shieldPower;
 
     private Collider2D shieldCollider;
     private Rigidbody2D body;
     private Animator anim;
     private Animator playerAnim;
-
-    private int shieldCharges;
-    private float rechargeTimer;
-
-    private const float shootSpeed = 34f;
+    
+    private const float shootSpeed = 75f;
     private const float shieldShootDistance = 30f;
     private float shieldDistance;
+    private float timeCharged;
 
-    private const int maxShieldCharges = 3;
-    private const float shieldRechargeTime = 3f;
+    private float shieldDisabledTimer;
+    private bool activateWhenAvailable;
+    private bool chargeWhenAvailable;
     
     private EnergyTypes.Colours shieldColour;
 
     private enum States
     {
-        None, Shielding, Firing,
+        None, Shielding, Firing, Disabled, Returning, ChargingShoot, ShootCharged
     }
     private States state;
-
-    // TODO remove this when anim is set
-    Vector3 maxSize;
 
     private void Start()
     {
@@ -49,12 +46,9 @@ public class ShieldComponent : MonoBehaviour {
         ShieldObject.SetActive(false);
 
         playerAnim = Player.Instance.GetComponent<Animator>();
-
-        shieldCharges = maxShieldCharges;
+        
         SetShieldColour(EnergyTypes.Colours.Blue);
         positioner.Setup(ShieldCenterPoint);
-
-        maxSize = ShieldObject.transform.localScale;
     }
 
     private void Update()
@@ -70,23 +64,30 @@ public class ShieldComponent : MonoBehaviour {
                 shieldDistance += Time.deltaTime * shootSpeed;
                 if (shieldDistance >= shieldShootDistance)
                 {
-                    DisableShield();
+                    ReturnShield();
                 }
                 break;
-        }
-        
-        if (shieldCharges < maxShieldCharges)
-        {
-            rechargeTimer += Time.deltaTime;
-            if (rechargeTimer >= shieldRechargeTime)
-            {
-                rechargeTimer = 0f;
-                AddCharge();
-            }
-        }
-        else
-        {
-            rechargeTimer = 0f;
+            case States.Returning:
+                break;
+            case States.Disabled:
+                shieldDisabledTimer -= Time.deltaTime;
+                if (shieldDisabledTimer <= 0f)
+                {
+                    GameUIManager.ShowShieldsEnabled();
+                    state = States.None;
+                }
+                break;
+            case States.ChargingShoot:
+                timeCharged += Time.deltaTime;
+                if (timeCharged >= ShootChargeTime)
+                {
+                    state = States.ShootCharged;
+                }
+                positioner.SetShieldPosition();
+                break;
+            case States.ShootCharged:
+                positioner.SetShieldPosition();
+                break;
         }
     }
 
@@ -160,31 +161,74 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
     
-    public bool ActivateShield()
+    public bool ShieldActivatePressed()
     {
-        if (state != States.None || shieldCharges == 0 || !shieldStats.ShieldUnlocked()) return false;
+        activateWhenAvailable = true;
+        if (state == States.Disabled || state == States.Shielding || !shieldStats.ShieldUnlocked()) return false;
+        if (state == States.Returning) return true;
 
-        state = States.Shielding;
+        if (state == States.Firing)
+        {
+            ReturnShield();
+        }
+        else
+        {
+            Activate();
+        }
+        return true;
+    }
+
+    private void Activate()
+    {
         body.isKinematic = true;
         ShieldObject.SetActive(true);
         positioner.SetShieldPosition();
         anim.Play("Static", 0, 0f);
-        return true;
+
+        if (chargeWhenAvailable)
+        {
+            StartCharging();
+        }
+        else
+        {
+            state = States.Shielding;
+        }
     }
 
-    public bool DeactivateShield()
+    public bool ShieldDeactivatePressed()
     {
-        if (state != States.Shielding) return true;
+        activateWhenAvailable = false;
+        if (state == States.Firing || state == States.Returning) return false;
 
         DisableShield();
         return true;
     }
-    
-    public void Shoot()
+
+    public void ReturnShield()
     {
+        StartCoroutine(ReturnShieldRoutine());
+    }
+    
+    public void ShootPressed()
+    {
+        chargeWhenAvailable = true;
         if (state != States.Shielding) return;
+        StartCharging();
+    }
+
+    private void StartCharging()
+    {
         //if (!shieldStats.ShootUnlocked()) return;
         if (!shieldPower.ShieldFullyCharged(shieldColour)) return;
+        timeCharged = 0f;
+        state = States.ChargingShoot;
+    }
+
+    public void ShootReleased()
+    {
+        timeCharged = 0f;
+        chargeWhenAvailable = false;
+        if (state != States.ShootCharged) return;
 
         shieldCollider.isTrigger = true;
         state = States.Firing;
@@ -193,40 +237,26 @@ public class ShieldComponent : MonoBehaviour {
         body.velocity = shootSpeed * body.transform.right;
         anim.Play("Shoot", 0, 0f);
     }
-
-    public void RemoveCharge(int chargesToRemove = 1)
-    {
-        shieldCharges = Mathf.Max(0, shieldCharges - chargesToRemove);
-        UpdateShieldSize();
-        if (state == States.Shielding && shieldCharges == 0)
-        {
-            DisableShield();
-        }
-    }
-
-    public bool IsShielding() { return state == States.Shielding; }
+    
+    public bool IsAwaitingActivation() { return activateWhenAvailable; }
+    public bool IsShielding() { return state == States.Shielding || state == States.ChargingShoot || state == States.ShootCharged; }
     public bool IsFiring() { return state == States.Firing; }
     public EnergyTypes.Colours GetColour() { return shieldColour; }
-
-    private void AddCharge(int chargesToAdd = 1)
+    
+    public void DisableShield(float secondsToDisable)
     {
-        shieldCharges = Mathf.Min(maxShieldCharges, shieldCharges + chargesToAdd);
-        UpdateShieldSize();
+        shieldDisabledTimer = secondsToDisable;
+        GameUIManager.ShowShieldsDisabled();
+        DisableShield();
     }
 
     public void DisableShield()
     {
-        state = States.None;
+        state = States.Disabled;
         body.isKinematic = true;
         shieldCollider.isTrigger = false;
         body.velocity = Vector2.zero;
         ShieldObject.SetActive(false);
-    }
-
-    private void UpdateShieldSize()
-    {
-        if (shieldCharges == 0) return;
-        ShieldObject.transform.localScale = maxSize * (3 + shieldCharges) / 6f;
     }
 
     private void SetShieldColour(EnergyTypes.Colours colour)
@@ -255,5 +285,33 @@ public class ShieldComponent : MonoBehaviour {
                 break;
         }
     }
+    
+    private IEnumerator ReturnShieldRoutine()
+    {
+        state = States.Returning;
+        body.isKinematic = true;
 
+        while (Vector2.Distance(ShieldObject.transform.position, ShieldCenterPoint.position) > 1f)
+        {
+            Vector2 distVector = (ShieldCenterPoint.position - ShieldObject.transform.position).normalized;
+            ShieldObject.transform.position += new Vector3(distVector.x, distVector.y, 0f) * shootSpeed * Time.deltaTime;
+
+            // Ensure we don't overshoot the target position
+            Vector2 newDistVector = ShieldCenterPoint.position - ShieldObject.transform.position;
+            if (Mathf.Sign(newDistVector.x) != Mathf.Sign(distVector.x) || Mathf.Sign(newDistVector.y) != Mathf.Sign(distVector.y))
+            {
+                ShieldObject.transform.position = new Vector3(ShieldCenterPoint.position.x, ShieldCenterPoint.position.y, ShieldObject.transform.position.z);
+            }
+            yield return null;
+        }
+
+        if (activateWhenAvailable)
+        {
+            Activate();
+        }
+        else
+        {
+            DisableShield();
+        }
+    }
 }

@@ -10,8 +10,8 @@ public class MenuControl : MonoBehaviour {
 
     private CanvasGroup mainCanvasGroup;
 
-    private Vector3 activePanelPosition;
-    private Vector3 inactivePanelPosition;
+    //private Vector3 activePanelPosition;
+    //private Vector3 inactivePanelPosition;
 
     private enum States
     {

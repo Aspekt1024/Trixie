@@ -29,6 +29,16 @@ public class ShieldUIModule : MonoBehaviour {
         shieldImage = GetComponent<Image>();
 	}
 
+    public void Hide()
+    {
+        shieldImage.enabled = false;
+    }
+
+    public void Show()
+    {
+        shieldImage.enabled = true;
+    }
+
     public void SelectShield()
     {
         selected = true;
@@ -59,7 +69,7 @@ public class ShieldUIModule : MonoBehaviour {
                 shieldImage.sprite = selected ? ShieldSelected1 : ShieldUnselected1;
                 break;
             case 2:
-                shieldImage.sprite = selected ? ShieldSelected3 : ShieldUnselected2;
+                shieldImage.sprite = selected ? ShieldSelected3 : ShieldUnselected3;
                 break;
             case 3:
                 shieldImage.sprite = selected ? ShieldSelectedFull : ShieldUnselectedFull;

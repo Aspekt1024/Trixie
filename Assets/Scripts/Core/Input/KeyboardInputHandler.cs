@@ -32,6 +32,7 @@ namespace TrixieInput
             
             getKeyUpBindings.Add(KeyCode.W, gameManager.JumpReleased);
             getKeyUpBindings.Add(KeyCode.Space, gameManager.JumpReleased);
+            getKeyUpBindings.Add(KeyCode.Mouse0, gameManager.ShootReleased);
             getKeyUpBindings.Add(KeyCode.Mouse1, gameManager.ShieldReleased);
         }
 

@@ -7,7 +7,6 @@ public class ShieldPositioner : MonoBehaviour {
     private Transform centerPoint;
 
     private Animator playerAnim;
-    private bool directionReversed;
 
     private const float distFromCenter = 1.2f;
 
@@ -15,7 +14,6 @@ public class ShieldPositioner : MonoBehaviour {
     {
         centerPoint = centerPointReference;
         playerAnim = Player.Instance.GetComponent<Animator>();
-        directionReversed = false;
     }
 
     public void SetShieldPosition()

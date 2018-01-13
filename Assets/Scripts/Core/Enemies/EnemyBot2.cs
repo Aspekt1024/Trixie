@@ -23,7 +23,7 @@ public class EnemyBot2 : BaseEnemy {
         ballisticsComponent.Activate();
     }
 
-    private void Update()
+    protected override void Update()
     {
         switch(state)
         {

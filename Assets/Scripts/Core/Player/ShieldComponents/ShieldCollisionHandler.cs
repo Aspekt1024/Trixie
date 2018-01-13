@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore;
 
 public class ShieldCollisionHandler : MonoBehaviour {
-
-    [SerializeField]
-    private PolygonCollider2D[] shieldColliders;
-    private int currentColliderIndex;
-
+    
     private ShieldComponent shieldComponent;
     
     private void Start ()
@@ -29,14 +26,14 @@ public class ShieldCollisionHandler : MonoBehaviour {
 
     private void BlockProjectiles(GameObject other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        if (other.gameObject.layer == TrixieLayers.GetMask(Layers.Projectile))
         {
             Projectile projectile = other.gameObject.GetComponent<Projectile>();
             if (projectile.GetColour() != shieldComponent.GetColour())
             {
                 if (shieldComponent.IsShielding())
                 {
-                    shieldComponent.RemoveCharge();
+                    shieldComponent.DisableShield(3f);
                 }
                 else if (shieldComponent.IsFiring())
                 {
@@ -55,7 +52,7 @@ public class ShieldCollisionHandler : MonoBehaviour {
 
     private void HitEnemies(GameObject other)
     {
-        if (other.tag == "Enemy")
+        if (other.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
         {
             BaseEnemy baseEnemy = other.GetComponent<BaseEnemy>();
             if (baseEnemy)
@@ -63,9 +60,17 @@ public class ShieldCollisionHandler : MonoBehaviour {
                 if (shieldComponent.IsFiring())
                 {
                     baseEnemy.DamageEnemy(Vector2.zero);
+                    shieldComponent.ReturnShield();
                 }
-                shieldComponent.DisableShield();
+                else
+                {
+                    shieldComponent.DisableShield();
+                }
             }
+        }
+        else if (other.gameObject.layer == TrixieLayers.GetMask(Layers.Terrain))
+        {
+            shieldComponent.ReturnShield();
         }
     }
 

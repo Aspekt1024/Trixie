@@ -59,11 +59,29 @@ public class ShieldUI : MonoBehaviour {
     public void HideShieldIndicator()
     {
         // TODO hide shields when not available
+        PinkShieldModule.Hide();
+        BlueShieldModule.Hide();
+        YellowShieldModule.Hide();
     }
 
     public void ShowShieldIndicator()
     {
         // TODO show shields when available
+        PinkShieldModule.Show();
+        BlueShieldModule.Show();
+        YellowShieldModule.Show();
+    }
+
+    public void ShowShieldsEnabled()
+    {
+        // TODO show animation
+        ShowShieldIndicator();
+    }
+
+    public void ShowShieldsDisabled()
+    {
+        // TODO show animation
+        HideShieldIndicator();
     }
 
 }

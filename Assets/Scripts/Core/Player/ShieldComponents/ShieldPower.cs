@@ -12,7 +12,7 @@ public class ShieldPower {
 
     public ShieldPower()
     {
-        bluePower = 0;
+        bluePower = 3;
         pinkPower = 0;
         yellowPower = 0;
         UpdateShieldUI();
