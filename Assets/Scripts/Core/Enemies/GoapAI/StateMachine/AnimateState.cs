@@ -26,7 +26,7 @@ public class AnimateState : MachineState
     protected override void Update()
     {
         base.Update();
-        if (state == States.Disabled || state == States.Success || state == States.Failure) return;
+        //if (state == States.Disabled || state == States.Success || state == States.Failure) return;
 
         animTimer += Time.deltaTime;
         if (animTimer > animDuration)
@@ -64,12 +64,12 @@ public class AnimateState : MachineState
     public void Animate(float animDuration, Action onDoneAnimate, Action onFailAnimate)
     {
         this.animDuration = animDuration;
-        animTimer = 0f;
         Animate(onDoneAnimate, onFailAnimate);
     }
 
     public void Animate(Animator anim, string animation, Action onDoneAnimate, Action onFailAnimate)
     {
+        animDuration = 0f;
         if (anim != null)
         {
             anim.Play(animation, 0, 0f);
@@ -77,8 +77,9 @@ public class AnimateState : MachineState
         Animate(onDoneAnimate, onFailAnimate);
     }
 
-    void Animate(Action onDoneAnimate, Action onFailAnimate)
+    private void Animate(Action onDoneAnimate, Action onFailAnimate)
     {
+        animTimer = 0f;
         state = States.Pulsed;
         onDoneAnimationCallback = onDoneAnimate;
         onFailureAnimationCallback = onFailAnimate;

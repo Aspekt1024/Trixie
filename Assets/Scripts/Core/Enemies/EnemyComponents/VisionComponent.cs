@@ -9,6 +9,7 @@ public class VisionComponent : MonoBehaviour {
     public float Radius = 10f;
     public float CheckFrequency = 5f;
     public float VisionMemory = 2f;
+    public Transform VisionCenterPoint;
 
     private bool canSeePlayer;
     private LayerMask visibleLayers;
@@ -76,8 +77,8 @@ public class VisionComponent : MonoBehaviour {
             canSeePlayer = false;
             return;
         }
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, Radius, visibleLayers);
+        
+        RaycastHit2D hit = Physics2D.CircleCast(VisionCenterPoint.position, 0.593f, distVector, Radius, visibleLayers);
         if (hit.collider == null)
         {
             canSeePlayer = false;

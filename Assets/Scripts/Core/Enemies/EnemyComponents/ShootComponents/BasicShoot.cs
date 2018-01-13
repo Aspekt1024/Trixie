@@ -6,21 +6,23 @@ public class BasicShoot : ShootComponent {
 
     public EnergyTypes.Colours Colour;
 
-    public override void Shoot(GameObject target)
+    public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
-        Shoot();
+        return Shoot();
     }
 
-    public override void Shoot()
+    public override Projectile[] Shoot()
     {
-        ActivateProjecile();
+        Projectile[] projectile = new Projectile[1];
+        projectile[0] = ActivateProjecile();
+        return projectile;
     }
 
-    private void ActivateProjecile()
+    private Projectile ActivateProjecile()
     {
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(ProjectilePrefab.name);
-        if (projectile == null) return;
+        if (projectile == null) return null;
         
         Vector2 distVector = transform.right;
         if (target != null)
@@ -28,8 +30,10 @@ public class BasicShoot : ShootComponent {
             distVector = target.transform.position - transform.position;
         }
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
-        
-        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+        return projectileScript;
     }
 
 }

@@ -14,7 +14,7 @@ public abstract class ShootComponent : MonoBehaviour {
     protected GameObject target;
     protected Action shootCallback;
 
-    public abstract void Shoot();
-    public abstract void Shoot(GameObject target);
+    public abstract Projectile[] Shoot();
+    public abstract Projectile[] Shoot(GameObject target);
 
 }

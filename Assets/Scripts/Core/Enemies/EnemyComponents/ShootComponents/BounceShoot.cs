@@ -5,23 +5,25 @@ using UnityEngine;
 public class BounceShoot : ShootComponent {
 
     public EnergyTypes.Colours Colour;
-
-    public override void Shoot(GameObject target)
+    
+    public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
-        Shoot();
+        return Shoot();
     }
 
-    public override void Shoot()
+    public override Projectile[] Shoot()
     {
-        ActivateProjecile();
+        Projectile[] projectile = new Projectile[1];
+        projectile[0] = ActivateProjecile();
+        return projectile;
     }
 
-    private void ActivateProjecile()
+    private Projectile ActivateProjecile()
     {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
-        if (projectile == null) return;
+        if (projectile == null) return null;
 
         Vector2 distVector = transform.right;
         if (target != null)
@@ -32,6 +34,8 @@ public class BounceShoot : ShootComponent {
         
         ProjectileSettings.BouncesOffTerrain = true;
         ProjectileSettings.ProjectileColour = Colour;
-        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
+        return projectileScript;
     }
 }

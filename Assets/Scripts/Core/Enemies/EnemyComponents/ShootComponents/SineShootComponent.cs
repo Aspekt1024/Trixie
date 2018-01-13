@@ -9,22 +9,24 @@ public class SineShootComponent : ShootComponent {
     public float Wavelength = 4f;
     public float Phase = 0f;
 
-    public override void Shoot(GameObject target)
+    public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
-        Shoot();
+        return Shoot();
     }
 
-    public override void Shoot()
+    public override Projectile[] Shoot()
     {
-        ActivateProjecile();
+        Projectile[] projectile = new Projectile[1];
+        projectile[0] = ActivateProjecile();
+        return projectile;
     }
 
-    private void ActivateProjecile()
+    private Projectile ActivateProjecile()
     {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
-        if (projectile == null) return;
+        if (projectile == null) return null;
         
         Vector2 distVector = transform.right;
         if (target != null)
@@ -34,8 +36,10 @@ public class SineShootComponent : ShootComponent {
         float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
 
         projectile.SetActive(true);
-        projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
-        projectile.GetComponent<Projectile>().SetSinePath(Amplitude, Wavelength, Phase, ProjectileSpeed);
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, Colour);
+        projectileScript.SetSinePath(Amplitude, Wavelength, Phase, ProjectileSpeed);
+        return projectileScript;
     }
 
     private IEnumerator SinePath(GameObject projectile)

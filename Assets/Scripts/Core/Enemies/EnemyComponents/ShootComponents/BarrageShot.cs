@@ -10,32 +10,36 @@ public partial class BarrageShot : ShootComponent {
     private Transform objTf;
     private Rigidbody2D body;
     
-    public override void Shoot(GameObject target)
+    public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
-        Shoot();
+        return Shoot();
     }
 
-    public override void Shoot()
+    public override Projectile[] Shoot()
     {
+        Projectile[] projectiles = new Projectile[Projectiles.Length];
+
         float angle = CalculateThrowingAngle();
         float angleOffset = 0f;
         for (int i = 0; i < Projectiles.Length; i++)
         {
             angleOffset = -Mathf.Sign(angleOffset) * (Mathf.Abs(angleOffset) + (i % 2 == 0 ? 0 : Spread));
-            ActivateProjectile(Projectiles[i], angle + angleOffset);
+            projectiles[i] = ActivateProjectile(Projectiles[i], angle + angleOffset);
         }
+        return projectiles;
     }
 
-    private void ActivateProjectile(EnergyTypes.Colours colour, float angle)
+    private Projectile ActivateProjectile(EnergyTypes.Colours colour, float angle)
     {
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(ProjectilePrefab.name);
-        if (projectile == null) return;
+        if (projectile == null) return null;
 
         ProjectileSettings.ProjectileColour = colour;
         
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         projectile.GetComponent<Projectile>().Activate(ShootPoint.transform.position, angle, ProjectileSpeed, ProjectileSettings);
+        return projectileScript;
     }
 
     public float CalculateThrowingAngle()

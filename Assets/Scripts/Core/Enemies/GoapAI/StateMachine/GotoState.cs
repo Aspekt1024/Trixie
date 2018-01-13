@@ -56,7 +56,6 @@ public class GotoState : MachineState
         {
             state = States.Success;
         }
-        return;
     }
 
     private bool CheckIfStuck()

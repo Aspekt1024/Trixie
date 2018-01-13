@@ -13,6 +13,26 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     private ShootComponent shootComponent;
     private AnimateState animState;
     
+    public delegate void ShootEvent(Projectile projectile);
+    public ShootEvent OnShoot;
+    public void ShotFired(Projectile projectile)
+    {
+        if (OnShoot != null)
+        {
+            OnShoot(projectile);
+        }
+    }
+
+    public delegate void ShootPreparationEvent(EnergyTypes.Colours colour);
+    public ShootPreparationEvent OnShootPreparation;
+    public void ShootPreparation(EnergyTypes.Colours colour)
+    {
+        if (OnShootPreparation != null)
+        {
+            OnShootPreparation(colour);
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -48,13 +68,15 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     public override void Run(IReGoapAction<GoapLabels, object> previous, IReGoapAction<GoapLabels, object> next, IReGoapActionSettings<GoapLabels, object> settings, ReGoapState<GoapLabels, object> goalState, Action<IReGoapAction<GoapLabels, object>> done, Action<IReGoapAction<GoapLabels, object>> fail)
     {
         base.Run(previous, next, settings, goalState, done, fail);
+        ShootPreparation(shootComponent.ProjectileSettings.ProjectileColour);
         animState.Animate(0.5f, OnDoneCallback, OnFailCallback);
     }
 
     private void OnDoneCallback()
     {
         cooldownTimer = 0f;
-        shootComponent.Shoot(Player.Instance.gameObject);
+        Projectile[] projectiles = shootComponent.Shoot(Player.Instance.gameObject);
+        ShotFired(projectiles[0]);
 
         if (Player.Instance.GetComponent<PlayerHealthComponent>().IsAlive())
         {

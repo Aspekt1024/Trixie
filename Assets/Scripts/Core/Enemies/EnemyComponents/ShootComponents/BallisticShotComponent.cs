@@ -4,28 +4,31 @@ using UnityEngine;
 
 public class BallisticShotComponent : ShootComponent {
     
-    public override void Shoot(GameObject target)
+    public override Projectile[] Shoot(GameObject target)
     {
         this.target = target;
-        Shoot();
+        return Shoot();
     }
 
-    public override void Shoot()
+    public override Projectile[] Shoot()
     {
-        ActivateProjecile();
+        Projectile[] projectile = new Projectile[1];
+        projectile[0] = ActivateProjecile();
+        return projectile;
     }
     
-    private void ActivateProjecile()
+    private Projectile ActivateProjecile()
     {
         Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
         GameObject projectile = ObjectPooler.Instance.GetPooledProjectile(projectilePrefabScript.name);
-        if (projectile == null) return;
+        if (projectile == null) return null;
         
         float targetRotation = CalculateThrowingAngle(transform.position, target.transform.position, false, ProjectileSpeed);
         
-        Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
-        TrixieEvent.Shot(projScript);
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        projectileScript.Activate(ShootPoint.transform.position, targetRotation, ProjectileSpeed, ProjectileSettings);
+
+        return projectileScript;
     }
     
     private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s)

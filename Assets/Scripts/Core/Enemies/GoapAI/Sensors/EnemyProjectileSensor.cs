@@ -6,7 +6,8 @@ public class EnemyProjectileSensor : ReGoapSensor<GoapLabels, object>
 {
     private Projectile lastProjectile;
     private EnergyTypes.Colours weakColour;
-
+    private AttackAction attackAction;
+    
     private void Start()
     {
         memory = GetComponent<GoapTestMem>();
@@ -14,12 +15,13 @@ public class EnemyProjectileSensor : ReGoapSensor<GoapLabels, object>
     
     private void OnEnable()
     {
-        TrixieEvent.OnShot += Shot;
+        attackAction = GetComponent<AttackAction>();
+        attackAction.OnShoot += Shot;
     }
 
     private void OnDisable()
     {
-        TrixieEvent.OnShot -= Shot;
+        attackAction.OnShoot -= Shot;
     }
 
     private void Shot(Projectile projectile)
@@ -54,19 +56,5 @@ public class EnemyProjectileSensor : ReGoapSensor<GoapLabels, object>
 
         lastProjectile.OnDestroyed -= ProjectileDestroyed;
         lastProjectile = null;
-    }
-}
-
-public static class TrixieEvent
-{
-    public delegate void ShootEvent(Projectile projectile);
-    public static ShootEvent OnShot;
-
-    public static void Shot(Projectile projectile)
-    {
-        if (OnShot != null)
-        {
-            OnShot(projectile);
-        }
     }
 }
