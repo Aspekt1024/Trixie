@@ -46,6 +46,12 @@ public class GotoState : MachineState
     {
         base.Update();
         MoveTo(targetPosition);
+
+        bool isStuck = CheckIfStuck();
+        if (isStuck)
+        {
+            Debug.Log("I am stuck");
+        }
     }
 
     protected virtual void MoveTo(Vector3 position)
@@ -60,7 +66,6 @@ public class GotoState : MachineState
 
     private bool CheckIfStuck()
     {
-        // TODO update this
         if (Time.time > stuckCheckCooldown)
         {
             stuckCheckCooldown = Time.time + StuckCheckDelay;

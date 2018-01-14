@@ -34,6 +34,10 @@ public class ShieldCollisionHandler : MonoBehaviour {
                     shieldComponent.DisableShield(3f);
                 }
             }
+            else
+            {
+                shieldComponent.AddShieldPower();
+            }
         }
     }
 }

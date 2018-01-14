@@ -71,6 +71,7 @@ public class ShieldComponent : MonoBehaviour {
 
     public void OnReturn()
     {
+        body.velocity = Vector2.zero;
         if (activateButtonHeld)
         {
             Activate();

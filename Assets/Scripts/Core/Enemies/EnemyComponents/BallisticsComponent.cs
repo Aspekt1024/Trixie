@@ -170,7 +170,7 @@ public class BallisticsComponent : MonoBehaviour
     private bool Aim()
     {
         Vector2 distVector = aimTarget.position - transform.position;
-        float targetRotation = CalculateThrowingAngle(transform.position, aimTarget.position, false, ProjectileSpeed, projectilePrefabScript.GetComponent<Rigidbody2D>().gravityScale);
+        float targetRotation = Maths.CalculateThrowingAngle(transform.position, aimTarget.position, false, ProjectileSpeed, projectilePrefabScript.GetComponent<Rigidbody2D>().gravityScale);
         SetLookAngle(targetRotation);
         return true;
     }
@@ -234,32 +234,6 @@ public class BallisticsComponent : MonoBehaviour
         projectile.transform.localEulerAngles = new Vector3(0f, 0f, projectile.transform.localEulerAngles.z);
         projectile.GetComponent<Rigidbody2D>().velocity = projectile.transform.right * ProjectileSpeed;
         
-    }
-
-    private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s, float gravityScale)
-    {
-        // Source: https://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_required_to_hit_coordinate_.28x.2Cy.29
-        float g = -Physics2D.gravity.y * gravityScale;
-        float x = startPos.x - targetPos.x;
-        float y = targetPos.y - startPos.y;
-
-        bool backwards = x < 0;
-        if (backwards)
-        {
-            x = -x;
-        }
-
-        float angle;
-        if (upperPath)
-            angle = Mathf.Atan((s * s + Mathf.Sqrt(Mathf.Pow(s, 4) - g * (g * x * x + 2 * y * s * s))) / (g * x));
-        else
-            angle = Mathf.Atan((s * s - Mathf.Sqrt(Mathf.Pow(s, 4) - g * (g * x * x + 2 * y * s * s))) / (g * x));
-        
-        if (float.IsNaN(angle)) angle = 0;
-
-        angle *= Mathf.Rad2Deg;
-        
-        return backwards ? angle : 180f - angle;
     }
 
     private void SetupLayerMask()

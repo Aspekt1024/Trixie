@@ -123,7 +123,7 @@ public class ShieldShoot : MonoBehaviour
 
     public void ReturnShield()
     {
-        if (state != States.Returning)
+        if (state != States.Returning && shield.gameObject.activeSelf)
         {
             state = States.Returning;
             StartCoroutine(ReturnShieldRoutine());
@@ -137,6 +137,11 @@ public class ShieldShoot : MonoBehaviour
             timer = 0f;
         }
         state = States.None;
+        if (trajectory == null)
+        {
+            // TODO if this wasn't a prototype... fix this.
+            trajectory = GetComponentInChildren<ShieldTrajectory>();
+        }
         trajectory.Disable();
         ChargeIndicator.StopCharge();
     }

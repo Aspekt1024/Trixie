@@ -51,7 +51,7 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         preconditions.Clear();
-        preconditions.Set(GoapLabels.TargetFound, true);
+        preconditions.Set(GoapLabels.CanHitPlayer, true);
         preconditions.Set(GoapLabels.HasCorrectProjectileColour, true);
         return preconditions;
     }

@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            Debug.Log("if the game wasnt paused, look at this");
             return Vector2.zero;
         }
     }

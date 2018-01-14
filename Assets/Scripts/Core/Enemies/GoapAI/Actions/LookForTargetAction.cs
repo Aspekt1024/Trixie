@@ -14,7 +14,6 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     protected override void Awake()
     {
         base.Awake();
-        effects.Set(GoapLabels.TargetFound, true);
         gotoState = GetComponent<GotoState>();
         memory = GetComponent<GoapTestMem>();
     }
@@ -22,7 +21,7 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         effects.Clear();
-        effects.Set(GoapLabels.TargetFound, true);
+        effects.Set(GoapLabels.FindTarget, true);
         return effects;
     }
 
@@ -40,7 +39,7 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
         base.Run(previous, next, settings, goalState, done, fail);
         gotoState.GoTo(memory.GetLastKnownPlayerPosition(), OnDoneCallback, OnFailCallback);
 
-        if (memory.CheckCondition(GoapLabels.CanSeePlayer))
+        if (memory.CheckCondition(GoapLabels.CanSeePlayer) || memory.CheckCondition(GoapLabels.CanHitPlayer))
         {
             gotoState.Exit();
         }
@@ -54,7 +53,8 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     {
         if (memory.CheckCondition(GoapLabels.CanSeePlayer))
         {
-            doneCallback(this);
+            failCallback(this);
+            //doneCallback(this);
         }
         else
         {

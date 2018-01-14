@@ -17,5 +17,4 @@ public abstract class ShootComponent : MonoBehaviour {
 
     public abstract Projectile[] Shoot();
     public abstract Projectile[] Shoot(GameObject target);
-
 }
