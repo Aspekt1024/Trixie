@@ -7,7 +7,7 @@ namespace TrixieCore
 {
     public enum Layers
     {
-        Projectile, Enemy, Player, Terrain, Shield
+        Projectile, Enemy, Player, Terrain, Shield, PlayerProjectile
     }
 
     public class TrixieLayers : MonoBehaviour
@@ -20,7 +20,7 @@ namespace TrixieCore
             return instance.layerMasks[layer];
         }
 
-        private void Start()
+        private void Awake()
         {
             if (instance == null)
             {

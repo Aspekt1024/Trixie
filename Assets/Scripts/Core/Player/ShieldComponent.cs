@@ -6,43 +6,37 @@ public class ShieldComponent : MonoBehaviour {
 
     public GameObject ShieldObject;
     public Transform ShieldCenterPoint;
-    public ShieldPower shieldPower;
-    public float ShootChargeTime = 1.5f;
 
+    private ShieldPower power;
+    private ShieldStats stats;
+    private ShieldShoot shooter;
     private ShieldPositioner positioner;
-    private ShieldStats shieldStats;
-
-    private Collider2D shieldCollider;
+    
     private Rigidbody2D body;
     private Animator anim;
     private Animator playerAnim;
-    
-    private const float shootSpeed = 75f;
-    private const float shieldShootDistance = 30f;
-    private float shieldDistance;
-    private float timeCharged;
 
     private float shieldDisabledTimer;
-    private bool activateWhenAvailable;
-    private bool chargeWhenAvailable;
+    private bool activateButtonHeld;
+    private bool shootButtonHeld;
     
     private EnergyTypes.Colours shieldColour;
 
     private enum States
     {
-        None, Shielding, Firing, Disabled, Returning, ChargingShoot, ShootCharged
+        None, Shielding, Firing, Disabled
     }
     private States state;
 
     private void Start()
     {
-        shieldStats = new ShieldStats();
-        shieldPower = new ShieldPower();
-
-        shieldCollider = ShieldObject.GetComponent<Collider2D>();
+        stats = new ShieldStats();
+        power = new ShieldPower();
+        positioner = ShieldObject.GetComponent<ShieldPositioner>();
+        shooter = ShieldObject.GetComponent<ShieldShoot>();
+        
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
-        positioner = ShieldObject.GetComponent<ShieldPositioner>();
         ShieldObject.SetActive(false);
 
         playerAnim = Player.Instance.GetComponent<Animator>();
@@ -53,6 +47,8 @@ public class ShieldComponent : MonoBehaviour {
 
     private void Update()
     {
+        shooter.UpdateCharge(Time.deltaTime);
+
         switch (state)
         {
             case States.None:
@@ -61,13 +57,6 @@ public class ShieldComponent : MonoBehaviour {
                 positioner.SetShieldPosition();
                 break;
             case States.Firing:
-                shieldDistance += Time.deltaTime * shootSpeed;
-                if (shieldDistance >= shieldShootDistance)
-                {
-                    ReturnShield();
-                }
-                break;
-            case States.Returning:
                 break;
             case States.Disabled:
                 shieldDisabledTimer -= Time.deltaTime;
@@ -77,39 +66,40 @@ public class ShieldComponent : MonoBehaviour {
                     state = States.None;
                 }
                 break;
-            case States.ChargingShoot:
-                timeCharged += Time.deltaTime;
-                if (timeCharged >= ShootChargeTime)
-                {
-                    state = States.ShootCharged;
-                }
-                positioner.SetShieldPosition();
-                break;
-            case States.ShootCharged:
-                positioner.SetShieldPosition();
-                break;
+        }
+    }
+
+    public void OnReturn()
+    {
+        if (activateButtonHeld)
+        {
+            Activate();
+        }
+        else
+        {
+            DisableShield();
         }
     }
 
     public bool HasShield()
     {
-        return shieldStats.ShieldUnlocked();
+        return stats.ShieldUnlocked();
     }
 
     public void AddShieldPower(int powerToAdd = 1)
     {
-        shieldPower.AddPower(shieldColour, powerToAdd);
+        power.AddPower(shieldColour, powerToAdd);
     }
 
     public void ReduceShieldPower(int powerToRemove = 1)
     {
-        shieldPower.ReducePower(shieldColour, powerToRemove);
+        power.ReducePower(shieldColour, powerToRemove);
     }
 
     public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
     {
-        shieldStats.ObtainedUnlock(unlockType);
-        if (!shieldStats.ColourUnlocked(shieldColour))
+        stats.ObtainedUnlock(unlockType);
+        if (!stats.ColourUnlocked(shieldColour))
         {
             CycleShieldColourPressed();
         }
@@ -121,12 +111,12 @@ public class ShieldComponent : MonoBehaviour {
 
     public void CycleShieldColourPressed()
     {
-        if (!shieldStats.ShieldUnlocked()) return;
+        if (!stats.ShieldUnlocked()) return;
 
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
-                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Pink))
+                if (stats.ColourUnlocked(EnergyTypes.Colours.Pink))
                 {
                     SetShieldColour(EnergyTypes.Colours.Pink);
                 }
@@ -137,7 +127,7 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
             case EnergyTypes.Colours.Pink:
-                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Yellow))
+                if (stats.ColourUnlocked(EnergyTypes.Colours.Yellow))
                 {
                     SetShieldColour(EnergyTypes.Colours.Yellow);
                 }
@@ -148,7 +138,7 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
             case EnergyTypes.Colours.Yellow:
-                if (shieldStats.ColourUnlocked(EnergyTypes.Colours.Blue))
+                if (stats.ColourUnlocked(EnergyTypes.Colours.Blue))
                 {
                     SetShieldColour(EnergyTypes.Colours.Blue);
                 }
@@ -163,13 +153,12 @@ public class ShieldComponent : MonoBehaviour {
     
     public bool ShieldActivatePressed()
     {
-        activateWhenAvailable = true;
-        if (state == States.Disabled || state == States.Shielding || !shieldStats.ShieldUnlocked()) return false;
-        if (state == States.Returning) return true;
+        activateButtonHeld = true;
+        if (state == States.Disabled || state == States.Shielding || !stats.ShieldUnlocked()) return false;
 
         if (state == States.Firing)
         {
-            ReturnShield();
+            shooter.ReturnShield();
         }
         else
         {
@@ -180,66 +169,57 @@ public class ShieldComponent : MonoBehaviour {
 
     private void Activate()
     {
+        state = States.Shielding;
         body.isKinematic = true;
         ShieldObject.SetActive(true);
         positioner.SetShieldPosition();
         anim.Play("Static", 0, 0f);
 
-        if (chargeWhenAvailable)
+        if (shootButtonHeld)
         {
-            StartCharging();
+            shooter.Arm();
         }
         else
         {
-            state = States.Shielding;
         }
     }
 
     public bool ShieldDeactivatePressed()
     {
-        activateWhenAvailable = false;
-        if (state == States.Firing || state == States.Returning) return false;
+        activateButtonHeld = false;
+        if (state == States.Firing) return false;
 
         DisableShield();
         return true;
     }
-
-    public void ReturnShield()
-    {
-        StartCoroutine(ReturnShieldRoutine());
-    }
     
     public void ShootPressed()
     {
-        chargeWhenAvailable = true;
-        if (state != States.Shielding) return;
-        StartCharging();
-    }
-
-    private void StartCharging()
-    {
+        shootButtonHeld = true;
         //if (!shieldStats.ShootUnlocked()) return;
-        if (!shieldPower.ShieldFullyCharged(shieldColour)) return;
-        timeCharged = 0f;
-        state = States.ChargingShoot;
+
+        if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
+        {
+            shooter.Arm();
+        }
     }
 
     public void ShootReleased()
     {
-        timeCharged = 0f;
-        chargeWhenAvailable = false;
-        if (state != States.ShootCharged) return;
-
-        shieldCollider.isTrigger = true;
-        state = States.Firing;
-        shieldDistance = 0f;
-        body.isKinematic = false;
-        body.velocity = shootSpeed * body.transform.right;
-        anim.Play("Shoot", 0, 0f);
+        shootButtonHeld = false;
+        
+        if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
+        {
+            bool shootSuccess = shooter.Shoot();
+            if (shootSuccess)
+            {
+                state = States.Firing;
+            }
+        }
     }
-    
-    public bool IsAwaitingActivation() { return activateWhenAvailable; }
-    public bool IsShielding() { return state == States.Shielding || state == States.ChargingShoot || state == States.ShootCharged; }
+
+    public bool IsAwaitingActivation() { return activateButtonHeld; }
+    public bool IsShielding() { return state == States.Shielding; }
     public bool IsFiring() { return state == States.Firing; }
     public EnergyTypes.Colours GetColour() { return shieldColour; }
     
@@ -254,15 +234,15 @@ public class ShieldComponent : MonoBehaviour {
     {
         state = States.Disabled;
         body.isKinematic = true;
-        shieldCollider.isTrigger = false;
         body.velocity = Vector2.zero;
+        shooter.DisableShield();
         ShieldObject.SetActive(false);
     }
 
     private void SetShieldColour(EnergyTypes.Colours colour)
     {
         shieldColour = colour;
-        if (shieldStats.ShieldUnlocked())
+        if (stats.ShieldUnlocked())
         {
             GameUIManager.ShowShieldIndicator();
             GameUIManager.SetShieldColour(shieldColour);
@@ -286,32 +266,4 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
     
-    private IEnumerator ReturnShieldRoutine()
-    {
-        state = States.Returning;
-        body.isKinematic = true;
-
-        while (Vector2.Distance(ShieldObject.transform.position, ShieldCenterPoint.position) > 1f)
-        {
-            Vector2 distVector = (ShieldCenterPoint.position - ShieldObject.transform.position).normalized;
-            ShieldObject.transform.position += new Vector3(distVector.x, distVector.y, 0f) * shootSpeed * Time.deltaTime;
-
-            // Ensure we don't overshoot the target position
-            Vector2 newDistVector = ShieldCenterPoint.position - ShieldObject.transform.position;
-            if (Mathf.Sign(newDistVector.x) != Mathf.Sign(distVector.x) || Mathf.Sign(newDistVector.y) != Mathf.Sign(distVector.y))
-            {
-                ShieldObject.transform.position = new Vector3(ShieldCenterPoint.position.x, ShieldCenterPoint.position.y, ShieldObject.transform.position.z);
-            }
-            yield return null;
-        }
-
-        if (activateWhenAvailable)
-        {
-            Activate();
-        }
-        else
-        {
-            DisableShield();
-        }
-    }
 }

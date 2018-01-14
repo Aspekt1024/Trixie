@@ -104,9 +104,12 @@ namespace TrixieInput
 
             if (Input.GetAxis(SHOOT) > 0.5f)
             {
-                shotByAxis = true;
-                inputReceived = true;
-                gameManager.DirectInput(gameManager.ShootPressed);
+                if (shotByAxis == false)
+                {
+                    shotByAxis = true;
+                    inputReceived = true;
+                    gameManager.DirectInput(gameManager.ShootPressed);
+                }
             }
             else if (shotByAxis)
             {
