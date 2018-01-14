@@ -41,6 +41,8 @@ public class ShieldShoot : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
+
+        ProjectileCollider.enabled = false;
     }
 
     public void UpdateCharge(float deltaTime)

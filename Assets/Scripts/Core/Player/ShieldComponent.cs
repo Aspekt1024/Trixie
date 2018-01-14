@@ -111,7 +111,7 @@ public class ShieldComponent : MonoBehaviour {
 
     public void CycleShieldColourPressed()
     {
-        if (!stats.ShieldUnlocked()) return;
+        if (!stats.ShieldUnlocked() || state == States.Disabled) return;
 
         switch (shieldColour)
         {
@@ -232,7 +232,14 @@ public class ShieldComponent : MonoBehaviour {
 
     public void DisableShield()
     {
-        state = States.Disabled;
+        if (shieldDisabledTimer <= 0f)
+        {
+            state = States.None;
+        }
+        else
+        {
+            state = States.Disabled;
+        }
         body.isKinematic = true;
         body.velocity = Vector2.zero;
         shooter.DisableShield();
