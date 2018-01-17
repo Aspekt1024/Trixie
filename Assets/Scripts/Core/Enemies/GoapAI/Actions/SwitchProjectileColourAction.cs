@@ -53,11 +53,11 @@ public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {
         switch (projectileSensor.GetWeakColour())
         {
             case EnergyTypes.Colours.Blue:
-                shootComponent.ProjectileSettings.ProjectileColour = EnergyTypes.Colours.Yellow;
+                shootComponent.ProjectileSettings.ProjectileColour = EnergyTypes.Colours.Green;
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 shootComponent.ProjectileSettings.ProjectileColour = EnergyTypes.Colours.Blue;
                 break;
             default:

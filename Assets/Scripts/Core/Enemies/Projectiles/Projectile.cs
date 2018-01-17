@@ -40,6 +40,7 @@ namespace TrixieCore
         private int numTimesBounced;
         private float stickyTimer;
         private bool isStuck;
+        private float originalSpeed;
 
         private bool inGravityField;
         private List<GravityField> gravityFields;
@@ -97,7 +98,7 @@ namespace TrixieCore
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Shield") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Shield") || collision.gameObject.layer == LayerMask.NameToLayer("Player") || collision.gameObject.layer == LayerMask.NameToLayer("PlayerProjectile"))
             {
                 ShowImpact();
             }
@@ -171,6 +172,12 @@ namespace TrixieCore
             {
                 ShowImpact();
             }
+        }
+
+        public void Destroy()
+        {
+            // TODO this is used only for shield effects. On collision / trigget needs to be reworked for consistency
+            ShowImpact();
         }
 
         protected virtual void ShowImpact()
@@ -263,6 +270,7 @@ namespace TrixieCore
             gameObject.SetActive(true);
             transform.position = startPoint;
             transform.eulerAngles = new Vector3(0f, 0f, angle);
+            originalSpeed = speed;
             body.velocity = transform.right * speed;
         }
 
@@ -280,16 +288,23 @@ namespace TrixieCore
                 case EnergyTypes.Colours.Blue:
                     color = new Color(0.2f, 0.4f, 1f, 1f);
                     break;
-                case EnergyTypes.Colours.Pink:
+                case EnergyTypes.Colours.Red:
                     color = Color.red;
                     break;
-                case EnergyTypes.Colours.Yellow:
+                case EnergyTypes.Colours.Green:
                     color = Color.green;
                     break;
                 default:
                     break;
             }
             SetColourGraphic(color);
+        }
+
+        public void SetSpeedMultiplier(float multiplier)
+        {
+            Debug.Log(multiplier);
+            body.gravityScale = settings.GravityScale * multiplier;
+            body.velocity = body.velocity.normalized * originalSpeed * multiplier;
         }
 
         protected virtual void SetColourGraphic(Color color)

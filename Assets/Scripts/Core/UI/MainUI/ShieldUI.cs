@@ -23,12 +23,12 @@ public class ShieldUI : MonoBehaviour {
                 PinkShieldModule.DeselectShield();
                 YellowShieldModule.DeselectShield();
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 PinkShieldModule.SelectShield();
                 BlueShieldModule.DeselectShield();
                 YellowShieldModule.DeselectShield();
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 YellowShieldModule.SelectShield();
                 PinkShieldModule.DeselectShield();
                 BlueShieldModule.DeselectShield();
@@ -45,10 +45,10 @@ public class ShieldUI : MonoBehaviour {
             case EnergyTypes.Colours.Blue:
                 BlueShieldModule.SetShieldPower(power);
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 PinkShieldModule.SetShieldPower(power);
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 YellowShieldModule.SetShieldPower(power);
                 break;
             default:

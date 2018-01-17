@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BaseShieldAbility))]
 public class ShieldComponent : MonoBehaviour {
 
+    public float DisableTime = 3f;
     public GameObject ShieldObject;
-    public Transform ShieldCenterPoint;
+    public Collider2D ShieldCollider;
+    public Collider2D ProjectileCollider;
+    public Transform CenterPoint;
+    public ShieldChargeIndicator ChargeIndicator;
 
     private ShieldPower power;
     private ShieldStats stats;
-    private ShieldShoot shooter;
     private ShieldPositioner positioner;
-    
+    private BaseShieldAbility[] abilities;
+
     private Rigidbody2D body;
     private Animator anim;
     private Animator playerAnim;
@@ -21,6 +26,7 @@ public class ShieldComponent : MonoBehaviour {
     private bool shootButtonHeld;
     
     private EnergyTypes.Colours shieldColour;
+    private int currentAbilityIndex;
 
     private enum States
     {
@@ -33,7 +39,7 @@ public class ShieldComponent : MonoBehaviour {
         stats = new ShieldStats();
         power = new ShieldPower();
         positioner = ShieldObject.GetComponent<ShieldPositioner>();
-        shooter = ShieldObject.GetComponent<ShieldShoot>();
+        abilities = ShieldObject.GetComponents<BaseShieldAbility>();
         
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
@@ -42,12 +48,15 @@ public class ShieldComponent : MonoBehaviour {
         playerAnim = Player.Instance.GetComponent<Animator>();
         
         SetShieldColour(EnergyTypes.Colours.Blue);
-        positioner.Setup(ShieldCenterPoint);
+        positioner.Setup(CenterPoint);
     }
 
     private void Update()
     {
-        shooter.UpdateCharge(Time.deltaTime);
+        if (abilities != null && abilities.Length > currentAbilityIndex)
+        {
+            abilities[currentAbilityIndex].UpdateCharge(Time.deltaTime);
+        }
 
         switch (state)
         {
@@ -67,6 +76,11 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
         }
+    }
+
+    public void ReturnShield()
+    {
+        abilities[currentAbilityIndex].ReturnShield();
     }
 
     public void OnReturn()
@@ -112,33 +126,33 @@ public class ShieldComponent : MonoBehaviour {
 
     public void CycleShieldColourPressed()
     {
-        if (!stats.ShieldUnlocked() || state == States.Disabled) return;
+        if (!stats.ShieldUnlocked() || state == States.Disabled || state == States.Firing || shootButtonHeld) return;
 
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
-                if (stats.ColourUnlocked(EnergyTypes.Colours.Pink))
+                if (stats.ColourUnlocked(EnergyTypes.Colours.Red))
                 {
-                    SetShieldColour(EnergyTypes.Colours.Pink);
+                    SetShieldColour(EnergyTypes.Colours.Red);
                 }
                 else
                 {
-                    shieldColour = EnergyTypes.Colours.Pink;
+                    shieldColour = EnergyTypes.Colours.Red;
                     CycleShieldColourPressed();
                 }
                 break;
-            case EnergyTypes.Colours.Pink:
-                if (stats.ColourUnlocked(EnergyTypes.Colours.Yellow))
+            case EnergyTypes.Colours.Red:
+                if (stats.ColourUnlocked(EnergyTypes.Colours.Green))
                 {
-                    SetShieldColour(EnergyTypes.Colours.Yellow);
+                    SetShieldColour(EnergyTypes.Colours.Green);
                 }
                 else
                 {
-                    shieldColour = EnergyTypes.Colours.Yellow;
+                    shieldColour = EnergyTypes.Colours.Green;
                     CycleShieldColourPressed();
                 }
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 if (stats.ColourUnlocked(EnergyTypes.Colours.Blue))
                 {
                     SetShieldColour(EnergyTypes.Colours.Blue);
@@ -159,7 +173,7 @@ public class ShieldComponent : MonoBehaviour {
 
         if (state == States.Firing)
         {
-            shooter.ReturnShield();
+            abilities[currentAbilityIndex].ReturnShield();
         }
         else
         {
@@ -178,7 +192,7 @@ public class ShieldComponent : MonoBehaviour {
 
         if (shootButtonHeld)
         {
-            shooter.Arm();
+            abilities[currentAbilityIndex].ActivatePressed();
         }
         else
         {
@@ -201,7 +215,7 @@ public class ShieldComponent : MonoBehaviour {
 
         if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
         {
-            shooter.Arm();
+            abilities[currentAbilityIndex].ActivatePressed();
         }
     }
 
@@ -211,7 +225,7 @@ public class ShieldComponent : MonoBehaviour {
         
         if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
         {
-            bool shootSuccess = shooter.Shoot();
+            bool shootSuccess = abilities[currentAbilityIndex].ActivateReleased();
             if (shootSuccess)
             {
                 state = States.Firing;
@@ -226,7 +240,7 @@ public class ShieldComponent : MonoBehaviour {
     
     public void DisableShield(float secondsToDisable)
     {
-        shieldDisabledTimer = secondsToDisable;
+        shieldDisabledTimer = DisableTime;
         GameUIManager.ShowShieldsDisabled();
         DisableShield();
     }
@@ -243,7 +257,7 @@ public class ShieldComponent : MonoBehaviour {
         }
         body.isKinematic = true;
         body.velocity = Vector2.zero;
-        shooter.DisableShield();
+        abilities[currentAbilityIndex].DisableShield();
         ShieldObject.SetActive(false);
     }
 
@@ -260,18 +274,26 @@ public class ShieldComponent : MonoBehaviour {
             GameUIManager.HideShieldIndicator();
         }
 
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            if (abilities[i].Colour == shieldColour)
+            {
+                currentAbilityIndex = i;
+                break;
+            }
+        }
+
         switch (shieldColour)
         {
             case EnergyTypes.Colours.Blue:
                 ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, .7f, 1f);
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 1f);
                 break;
         }
     }
-    
 }

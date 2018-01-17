@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TrixieCore;
 
-public class ShieldShoot : MonoBehaviour
+public class RedShieldAbility : BaseShieldAbility
 {
     public float ShootSpeed = 75f;
     public float ShootDistance = 30f;
@@ -15,10 +14,7 @@ public class ShieldShoot : MonoBehaviour
     public float ChargeupTime = 1f;
     public float CooldownTime = 1f;
     
-    private ShieldComponent shield;
     private ShieldTrajectory trajectory;
-    private Rigidbody2D body;
-    private Animator anim;
 
     private float timer;
 
@@ -28,18 +24,75 @@ public class ShieldShoot : MonoBehaviour
     }
     private States state;
 
-    private void Start()
+    protected override void Start()
     {
-        shield = GetComponentInParent<ShieldComponent>();
+        base.Start();
+        Colour = EnergyTypes.Colours.Red;
         trajectory = GetComponentInChildren<ShieldTrajectory>();
-
-        body = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
         shield.ProjectileCollider.enabled = false;
     }
 
-    public void UpdateCharge(float deltaTime)
+    public override void ActivatePressed()
+    {
+        trajectory.Enable();
+
+        if (ChargeType == ChargeTypes.Chargeup)
+        {
+            state = States.Charging;
+        }
+    }
+
+    public override bool ActivateReleased()
+    {
+        shield.ChargeIndicator.StopCharge();
+        trajectory.Disable();
+        bool shootSuccess = false;
+
+        if (state == States.Charged && shield.IsShielding())
+        {
+            shootSuccess = true;
+            ActivateShoot();
+        }
+
+        if (ChargeType == ChargeTypes.Chargeup)
+        {
+            timer = 0f;
+            if (state == States.Charging)
+            {
+                state = States.None;
+            }
+        }
+
+        return shootSuccess;
+    }
+    
+    public override void ReturnShield()
+    {
+        if (state != States.Returning && shield.gameObject.activeSelf)
+        {
+            state = States.Returning;
+            StartCoroutine(ReturnShieldRoutine());
+        }
+    }
+
+    public override void DisableShield()
+    {
+        if (state == States.Shooting)
+        {
+            timer = 0f;
+        }
+        state = States.None;
+        if (trajectory == null)
+        {
+            // TODO if this wasn't a prototype... fix this.
+            trajectory = GetComponentInChildren<ShieldTrajectory>();
+        }
+        shield.ProjectileCollider.enabled = false;
+        trajectory.Disable();
+        shield.ChargeIndicator.StopCharge();
+    }
+
+    public override void UpdateCharge(float deltaTime)
     {
         switch (state)
         {
@@ -80,67 +133,7 @@ public class ShieldShoot : MonoBehaviour
                 break;
         }
     }
-
-    public void Arm()
-    {
-        trajectory.Enable();
-
-        if (ChargeType == ChargeTypes.Chargeup)
-        {
-            state = States.Charging;
-        }
-    }
-
-    public bool Shoot()
-    {
-        shield.ChargeIndicator.StopCharge();
-        trajectory.Disable();
-        bool shootSuccess = false;
-
-        if (state == States.Charged && shield.IsShielding())
-        {
-            shootSuccess = true;
-            ActivateShoot();
-        }
-        
-        if (ChargeType == ChargeTypes.Chargeup)
-        {
-            timer = 0f;
-            if (state == States.Charging)
-            {
-                state = States.None;
-            }
-        }
-
-        return shootSuccess;
-    }
-
-    public void ReturnShield()
-    {
-        if (state != States.Returning && shield.gameObject.activeSelf)
-        {
-            state = States.Returning;
-            StartCoroutine(ReturnShieldRoutine());
-        }
-    }
-
-    public void DisableShield()
-    {
-        if (state == States.Shooting)
-        {
-            timer = 0f;
-        }
-        state = States.None;
-        if (trajectory == null)
-        {
-            // TODO if this wasn't a prototype... fix this.
-            trajectory = GetComponentInChildren<ShieldTrajectory>();
-        }
-        shield.ProjectileCollider.enabled = false;
-        trajectory.Disable();
-        shield.ChargeIndicator.StopCharge();
-    }
-
+    
     private void ActivateShoot()
     {
         state = States.Shooting;
@@ -151,7 +144,7 @@ public class ShieldShoot : MonoBehaviour
         body.velocity = ShootSpeed * body.transform.right;
         anim.Play("Shoot", 0, 0f);
     }
-    
+
     private IEnumerator ReturnShieldRoutine()
     {
         shield.ProjectileCollider.enabled = false;

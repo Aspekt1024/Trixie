@@ -33,10 +33,10 @@ public class ColourIndicator : MonoBehaviour {
             case EnergyTypes.Colours.Blue:
                 IndicatorEffect.transform.position = BlueIndicator.position;
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 IndicatorEffect.transform.position = RedIndicator.position;
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 IndicatorEffect.transform.position = GreenIndicator.position;
                 break;
             default:

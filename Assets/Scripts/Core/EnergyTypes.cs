@@ -6,6 +6,6 @@ public class EnergyTypes {
 
     public enum Colours
     {
-        Blue, Pink, Yellow
+        Blue, Red, Green
     }
 }

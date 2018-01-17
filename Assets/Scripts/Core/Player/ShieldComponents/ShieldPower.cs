@@ -7,13 +7,13 @@ public class ShieldPower {
     private const int MAX_POWER = 3;
 
     private int bluePower;
-    private int pinkPower;
+    private int redPower;
     private int yellowPower;
 
     public ShieldPower()
     {
         bluePower = 3;
-        pinkPower = 0;
+        redPower = 3;
         yellowPower = 0;
         UpdateShieldUI();
     }
@@ -26,10 +26,10 @@ public class ShieldPower {
             case EnergyTypes.Colours.Blue:
                 charge = bluePower;
                 break;
-            case EnergyTypes.Colours.Pink:
-                charge = pinkPower;
+            case EnergyTypes.Colours.Red:
+                charge = redPower;
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 charge = yellowPower;
                 break;
             default:
@@ -45,9 +45,9 @@ public class ShieldPower {
         {
             case EnergyTypes.Colours.Blue:
                 return bluePower;
-            case EnergyTypes.Colours.Pink:
-                return pinkPower;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Red:
+                return redPower;
+            case EnergyTypes.Colours.Green:
                 return yellowPower;
             default:
                 return 0;
@@ -61,10 +61,10 @@ public class ShieldPower {
             case EnergyTypes.Colours.Blue:
                 bluePower = Mathf.Clamp(bluePower + 1, 0, MAX_POWER);
                 break;
-            case EnergyTypes.Colours.Pink:
-                pinkPower = Mathf.Clamp(pinkPower + 1, 0, MAX_POWER);
+            case EnergyTypes.Colours.Red:
+                redPower = Mathf.Clamp(redPower + 1, 0, MAX_POWER);
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 yellowPower = Mathf.Clamp(yellowPower + 1, 0, MAX_POWER);
                 break;
             default:
@@ -81,8 +81,8 @@ public class ShieldPower {
     private void UpdateShieldUI()
     {
         GameUIManager.SetShieldPower(EnergyTypes.Colours.Blue, bluePower);
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Yellow, yellowPower);
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Pink, pinkPower);
+        GameUIManager.SetShieldPower(EnergyTypes.Colours.Green, yellowPower);
+        GameUIManager.SetShieldPower(EnergyTypes.Colours.Red, redPower);
     }
 
 }

@@ -24,10 +24,10 @@ public class ShieldStats {
                 UnlockColour(EnergyTypes.Colours.Blue);
                 break;
             case ItemUnlock.UnlockType.ShieldYellow:
-                UnlockColour(EnergyTypes.Colours.Yellow);
+                UnlockColour(EnergyTypes.Colours.Green);
                 break;
             case ItemUnlock.UnlockType.ShieldPink:
-                UnlockColour(EnergyTypes.Colours.Pink);
+                UnlockColour(EnergyTypes.Colours.Red);
                 break;
             case ItemUnlock.UnlockType.ShieldShoot:
                 UnlockShoot();
@@ -55,9 +55,9 @@ public class ShieldStats {
         {
             case EnergyTypes.Colours.Blue:
                 return blueUnlocked;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 return pinkUnlocked;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 return yellowUnlocked;
             default:
                 return false;
@@ -81,10 +81,10 @@ public class ShieldStats {
             case EnergyTypes.Colours.Blue:
                 blueUnlocked = true;
                 break;
-            case EnergyTypes.Colours.Pink:
+            case EnergyTypes.Colours.Red:
                 pinkUnlocked = true;
                 break;
-            case EnergyTypes.Colours.Yellow:
+            case EnergyTypes.Colours.Green:
                 yellowUnlocked = true;
                 break;
             default:

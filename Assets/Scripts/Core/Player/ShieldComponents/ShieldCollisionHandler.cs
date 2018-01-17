@@ -31,7 +31,7 @@ public class ShieldCollisionHandler : MonoBehaviour {
             {
                 if (shieldComponent.IsShielding())
                 {
-                    shieldComponent.DisableShield(3f);
+                    shieldComponent.DisableShield(shieldComponent.DisableTime);
                 }
             }
             else
