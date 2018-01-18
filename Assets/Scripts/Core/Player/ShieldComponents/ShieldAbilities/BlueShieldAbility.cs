@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class BlueShieldAbility : BaseShieldAbility
 {
     public bool DestroysProjectiles = true;
@@ -25,12 +21,6 @@ public class BlueShieldAbility : BaseShieldAbility
     public GameObject Telegraph;
 
     private float timer;
-
-    private enum States
-    {
-        None, Charging, Charged, Activating, Returning
-    }
-    private States state;
 
     private HashSet<Projectile> projectiles = new HashSet<Projectile>();
 
@@ -94,7 +84,6 @@ public class BlueShieldAbility : BaseShieldAbility
             timer = 0f;
         }
         state = States.None;
-        shield.ProjectileCollider.enabled = false;
         Telegraph.SetActive(false);
         shield.ChargeIndicator.StopCharge();
         ReleaseProjectiles();
@@ -216,11 +205,9 @@ public class BlueShieldAbility : BaseShieldAbility
         projectiles.Remove(projectile);
         projectile.OnDestroyed -= RemoveDestroyedProjectileFromList;
     }
-
-
+    
     private IEnumerator ReturnShieldRoutine()
     {
-        shield.ProjectileCollider.enabled = false;
         body.isKinematic = true;
         ReleaseProjectiles();
 

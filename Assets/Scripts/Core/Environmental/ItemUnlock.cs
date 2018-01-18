@@ -6,7 +6,7 @@ public class ItemUnlock : MonoBehaviour {
 
     public enum UnlockType
     {
-        ShieldBlue, ShieldYellow, ShieldPink, ShieldShoot, ShieldMelee,
+        ShieldBlue, ShieldGreen, ShieldRed, ShieldShoot, ShieldMelee,
         Boosters,
     }
     public UnlockType Type;
@@ -27,10 +27,10 @@ public class ItemUnlock : MonoBehaviour {
             case UnlockType.ShieldBlue:
                 Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                 break;
-            case UnlockType.ShieldYellow:
+            case UnlockType.ShieldGreen:
                 Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                 break;
-            case UnlockType.ShieldPink:
+            case UnlockType.ShieldRed:
                 Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                 break;
             case UnlockType.ShieldShoot:
@@ -55,11 +55,11 @@ public class ItemUnlock : MonoBehaviour {
             case UnlockType.ShieldBlue:
                 GameUIManager.ItemCollected("Blue Shield");
                 break;
-            case UnlockType.ShieldYellow:
-                GameUIManager.ItemCollected("Yellow Shield");
+            case UnlockType.ShieldGreen:
+                GameUIManager.ItemCollected("Green Shield");
                 break;
-            case UnlockType.ShieldPink:
-                GameUIManager.ItemCollected("Pink Shield");
+            case UnlockType.ShieldRed:
+                GameUIManager.ItemCollected("Red Shield");
                 break;
             case UnlockType.ShieldShoot:
                 GameUIManager.ItemCollected("Shield Shoot");

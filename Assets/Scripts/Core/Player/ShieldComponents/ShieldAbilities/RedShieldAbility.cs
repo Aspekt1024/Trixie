@@ -18,12 +18,6 @@ public class RedShieldAbility : BaseShieldAbility
 
     private float timer;
 
-    private enum States
-    {
-        None, Charging, Charged, Shooting, Returning
-    }
-    private States state;
-
     protected override void Start()
     {
         base.Start();
@@ -77,7 +71,7 @@ public class RedShieldAbility : BaseShieldAbility
 
     public override void DisableShield()
     {
-        if (state == States.Shooting)
+        if (state == States.Activating)
         {
             timer = 0f;
         }
@@ -120,7 +114,7 @@ public class RedShieldAbility : BaseShieldAbility
                 break;
             case States.Charged:
                 break;
-            case States.Shooting:
+            case States.Activating:
                 float shieldDistance = (transform.position - shield.CenterPoint.position).magnitude;
                 if (shieldDistance >= ShootDistance)
                 {
@@ -136,7 +130,7 @@ public class RedShieldAbility : BaseShieldAbility
     
     private void ActivateShoot()
     {
-        state = States.Shooting;
+        state = States.Activating;
 
         shield.ProjectileCollider.enabled = true;
         shield.ShieldCollider.isTrigger = true;

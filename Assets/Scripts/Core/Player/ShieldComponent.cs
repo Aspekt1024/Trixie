@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore;
 
 [RequireComponent(typeof(BaseShieldAbility))]
 public class ShieldComponent : MonoBehaviour {
@@ -76,6 +77,11 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
         }
+    }
+    
+    public void ProjectileImpact(Projectile projectile)
+    {
+        abilities[currentAbilityIndex].ProjectileImpact(projectile);
     }
 
     public void ReturnShield()

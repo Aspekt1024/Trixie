@@ -27,16 +27,16 @@ public class ShieldCollisionHandler : MonoBehaviour {
         if (other.gameObject.layer == TrixieLayers.GetMask(Layers.Projectile))
         {
             Projectile projectile = other.gameObject.GetComponent<Projectile>();
-            if (projectile.GetColour() != shieldComponent.GetColour())
+            if (projectile.GetColour() == shieldComponent.GetColour())
+            {
+                shieldComponent.AddShieldPower();
+            }
+            else
             {
                 if (shieldComponent.IsShielding())
                 {
                     shieldComponent.DisableShield(shieldComponent.DisableTime);
                 }
-            }
-            else
-            {
-                shieldComponent.AddShieldPower();
             }
         }
     }

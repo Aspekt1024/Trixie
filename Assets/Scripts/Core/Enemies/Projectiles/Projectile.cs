@@ -83,6 +83,11 @@ namespace TrixieCore
             //UpdateModifiedVelocity();
         }
 
+        public ProjectileSettings GetSettings()
+        {
+            return settings;
+        }
+
         protected virtual void OnEnable()
         {
             isStuck = false;
@@ -102,6 +107,12 @@ namespace TrixieCore
             {
                 ShowImpact();
             }
+            else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
+            {
+                collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+                ShowImpact();
+            }
+
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -124,7 +135,11 @@ namespace TrixieCore
         private void OnCollisionEnter2D(Collision2D collision)
         {
             destroyedBySameShieldColour = false;
-            if (collision.collider.tag == "GravityField")
+            if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
+            {
+                collision.gameObject.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+            }
+            else if (collision.collider.tag == "GravityField")
             {
                 gravityFields.Add(collision.gameObject.GetComponent<GravityField>());
                 if (!inGravityField)
@@ -160,13 +175,14 @@ namespace TrixieCore
                     ShowImpact();
                 }
             }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
+            else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Shield))
             {
-                if (Player.Instance.GetComponent<ShieldComponent>().GetColour() == GetColour())
+                ShieldComponent shield = Player.Instance.GetComponent<ShieldComponent>();
+                if (shield.GetColour() == GetColour())
                 {
                     destroyedBySameShieldColour = true;
                 }
-                ShowImpact();
+                shield.ProjectileImpact(this);
             }
             else
             {
@@ -176,8 +192,13 @@ namespace TrixieCore
 
         public void Destroy()
         {
-            // TODO this is used only for shield effects. On collision / trigget needs to be reworked for consistency
+            // TODO this is used only for shield effects. On collision / trigger needs to be reworked for consistency
             ShowImpact();
+        }
+
+        public void Disable()
+        {
+            Deactivate();
         }
 
         protected virtual void ShowImpact()
@@ -268,6 +289,7 @@ namespace TrixieCore
         {
             SetProjectileSettings(newSettings);
             gameObject.SetActive(true);
+            gameObject.layer = TrixieLayers.GetMask(Layers.Projectile);
             transform.position = startPoint;
             transform.eulerAngles = new Vector3(0f, 0f, angle);
             originalSpeed = speed;

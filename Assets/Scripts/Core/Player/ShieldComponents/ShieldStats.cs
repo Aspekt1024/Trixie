@@ -23,10 +23,10 @@ public class ShieldStats {
             case ItemUnlock.UnlockType.ShieldBlue:
                 UnlockColour(EnergyTypes.Colours.Blue);
                 break;
-            case ItemUnlock.UnlockType.ShieldYellow:
+            case ItemUnlock.UnlockType.ShieldGreen:
                 UnlockColour(EnergyTypes.Colours.Green);
                 break;
-            case ItemUnlock.UnlockType.ShieldPink:
+            case ItemUnlock.UnlockType.ShieldRed:
                 UnlockColour(EnergyTypes.Colours.Red);
                 break;
             case ItemUnlock.UnlockType.ShieldShoot:

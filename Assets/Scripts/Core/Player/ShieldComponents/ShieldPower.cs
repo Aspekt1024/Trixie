@@ -8,13 +8,13 @@ public class ShieldPower {
 
     private int bluePower;
     private int redPower;
-    private int yellowPower;
+    private int greenPower;
 
     public ShieldPower()
     {
         bluePower = 3;
         redPower = 3;
-        yellowPower = 0;
+        greenPower = 0;
         UpdateShieldUI();
     }
 
@@ -30,7 +30,7 @@ public class ShieldPower {
                 charge = redPower;
                 break;
             case EnergyTypes.Colours.Green:
-                charge = yellowPower;
+                charge = greenPower;
                 break;
             default:
                 charge = 0;
@@ -48,7 +48,7 @@ public class ShieldPower {
             case EnergyTypes.Colours.Red:
                 return redPower;
             case EnergyTypes.Colours.Green:
-                return yellowPower;
+                return greenPower;
             default:
                 return 0;
         }
@@ -65,7 +65,7 @@ public class ShieldPower {
                 redPower = Mathf.Clamp(redPower + 1, 0, MAX_POWER);
                 break;
             case EnergyTypes.Colours.Green:
-                yellowPower = Mathf.Clamp(yellowPower + 1, 0, MAX_POWER);
+                greenPower = Mathf.Clamp(greenPower + 1, 0, MAX_POWER);
                 break;
             default:
                 break;
@@ -81,7 +81,7 @@ public class ShieldPower {
     private void UpdateShieldUI()
     {
         GameUIManager.SetShieldPower(EnergyTypes.Colours.Blue, bluePower);
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Green, yellowPower);
+        GameUIManager.SetShieldPower(EnergyTypes.Colours.Green, greenPower);
         GameUIManager.SetShieldPower(EnergyTypes.Colours.Red, redPower);
     }
 
