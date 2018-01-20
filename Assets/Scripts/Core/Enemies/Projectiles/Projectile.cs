@@ -41,6 +41,8 @@ namespace TrixieCore
         private float stickyTimer;
         private bool isStuck;
         private float originalSpeed;
+        private bool hitPlayer;
+        private bool hitShield;
 
         private bool inGravityField;
         private List<GravityField> gravityFields;
@@ -80,7 +82,13 @@ namespace TrixieCore
                 Deactivate();
             }
 
-            //UpdateModifiedVelocity();
+            if (hitPlayer && gameObject.activeSelf && !hitShield)
+            {
+                hitPlayer = false;
+                Debug.Log("damaging player");
+                Player.Instance.Damage();
+                ShowImpact();
+            }
         }
 
         public ProjectileSettings GetSettings()
@@ -91,6 +99,8 @@ namespace TrixieCore
         protected virtual void OnEnable()
         {
             isStuck = false;
+            hitPlayer = false;
+            hitShield = false;
             numTimesBounced = 0;
             inGravityField = false;
             currentFieldStrength = 0f;
@@ -135,9 +145,17 @@ namespace TrixieCore
         private void OnCollisionEnter2D(Collision2D collision)
         {
             destroyedBySameShieldColour = false;
+
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
                 collision.gameObject.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+                ShowImpact();
+            }
+            else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Player))
+            {
+                // Will check if still active next frame and hit player then.
+                // Prevents cases where the projectile hit the shield first
+                hitPlayer = true;
             }
             else if (collision.collider.tag == "GravityField")
             {
@@ -150,39 +168,46 @@ namespace TrixieCore
             }
             else if (settings.BouncesOffShield && collision.gameObject.layer == LayerMask.NameToLayer("Shield"))
             {
+                hitShield = true;
                 body.velocity = collision.transform.right * body.velocity.magnitude;
                 transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(body.velocity.y, body.velocity.x) * Mathf.Rad2Deg);
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
             {
-                if (settings.BouncesOffTerrain)
-                {
-                    if (numTimesBounced == settings.NumTimesToBounce)
-                    {
-                        ShowImpact();
-                    }
-                    numTimesBounced++;
-                }
-                else if (settings.IsSticky || settings.IsAMine)
-                {
-                    if (!isStuck)
-                    {
-                        SetAsMine();
-                    }
-                }
-                else
-                {
-                    ShowImpact();
-                }
+                TerrainCollision();
             }
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Shield))
             {
+                hitShield = true;
                 ShieldComponent shield = Player.Instance.GetComponent<ShieldComponent>();
                 if (shield.GetColour() == GetColour())
                 {
                     destroyedBySameShieldColour = true;
                 }
                 shield.ProjectileImpact(this);
+            }
+            else
+            {
+                ShowImpact();
+            }
+        }
+
+        private void TerrainCollision()
+        {
+            if (settings.BouncesOffTerrain)
+            {
+                if (numTimesBounced == settings.NumTimesToBounce)
+                {
+                    ShowImpact();
+                }
+                numTimesBounced++;
+            }
+            else if (settings.IsSticky || settings.IsAMine)
+            {
+                if (!isStuck)
+                {
+                    SetAsMine();
+                }
             }
             else
             {

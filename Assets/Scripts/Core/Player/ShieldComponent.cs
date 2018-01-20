@@ -40,7 +40,8 @@ public class ShieldComponent : MonoBehaviour {
         stats = new ShieldStats();
         power = new ShieldPower();
         positioner = ShieldObject.GetComponent<ShieldPositioner>();
-        abilities = ShieldObject.GetComponents<BaseShieldAbility>();
+
+        GetAbilities();
         
         anim = ShieldObject.GetComponent<Animator>();
         body = ShieldObject.GetComponent<Rigidbody2D>();
@@ -50,6 +51,14 @@ public class ShieldComponent : MonoBehaviour {
         
         SetShieldColour(EnergyTypes.Colours.Blue);
         positioner.Setup(CenterPoint);
+    }
+
+    private void GetAbilities()
+    {
+        abilities = new BaseShieldAbility[3];
+        abilities[0] = ShieldObject.GetComponent<BlueShieldAbility>();
+        abilities[1] = ShieldObject.GetComponent<RedShieldAbility>();
+        abilities[2] = ShieldObject.GetComponent<GreenShieldAbility>();
     }
 
     private void Update()
@@ -122,7 +131,7 @@ public class ShieldComponent : MonoBehaviour {
         stats.ObtainedUnlock(unlockType);
         if (!stats.ColourUnlocked(shieldColour))
         {
-            CycleShieldColourPressed();
+            CycleShieldColour();
         }
         else
         {
@@ -130,7 +139,7 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
-    public void CycleShieldColourPressed()
+    public void CycleShieldColour()
     {
         if (!stats.ShieldUnlocked() || state == States.Disabled || state == States.Firing || shootButtonHeld) return;
 
@@ -144,7 +153,7 @@ public class ShieldComponent : MonoBehaviour {
                 else
                 {
                     shieldColour = EnergyTypes.Colours.Red;
-                    CycleShieldColourPressed();
+                    CycleShieldColour();
                 }
                 break;
             case EnergyTypes.Colours.Red:
@@ -155,7 +164,7 @@ public class ShieldComponent : MonoBehaviour {
                 else
                 {
                     shieldColour = EnergyTypes.Colours.Green;
-                    CycleShieldColourPressed();
+                    CycleShieldColour();
                 }
                 break;
             case EnergyTypes.Colours.Green:
@@ -166,7 +175,7 @@ public class ShieldComponent : MonoBehaviour {
                 else
                 {
                     shieldColour = EnergyTypes.Colours.Blue;
-                    CycleShieldColourPressed();
+                    CycleShieldColour();
                 }
                 break;
         }
@@ -236,7 +245,7 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
-
+    public bool ShieldIsDisabled() { return state == States.Disabled; }
     public bool ShieldIsCharged(EnergyTypes.Colours colour) { return power.ShieldFullyCharged(colour); }
     public bool IsAwaitingActivation() { return activateButtonHeld; }
     public bool IsShielding() { return state == States.Shielding; }

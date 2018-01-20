@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore;
 
 public class Player : MonoBehaviour {
     
@@ -107,18 +108,19 @@ public class Player : MonoBehaviour {
     }
 
     public void JumpReleased() { jumpComponent.JumpReleased(); }
-    public void CycleShieldColourPressed() { shieldComponent.CycleShieldColourPressed(); }
-    
+    public void CycleShieldColourPressed() { shieldComponent.CycleShieldColour(); }
+
+    public void Damage(int damage = 1)
+    {
+        TakeDamage(damage);
+    }
 
     public void ShootPressed()
     {
+        // TODO let the shield component handle this (originally it was going to enable a basic shoot. we're not doing that anymore)
         if (shieldComponent.IsAwaitingActivation())
         {
             shieldComponent.ShootPressed();
-        }
-        else
-        {
-            // TODO shoot normal gun if available
         }
     }
 
@@ -147,7 +149,7 @@ public class Player : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") || collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             TakeDamage();
         }
@@ -186,9 +188,9 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void TakeDamage()
+    private void TakeDamage(int damage = 1)
     {
-        healthComponent.TakeDamage();
+        healthComponent.TakeDamage(damage);
         if (healthComponent.IsDead())
         {
             healthComponent.AddHealth(healthComponent.MaxHealth);

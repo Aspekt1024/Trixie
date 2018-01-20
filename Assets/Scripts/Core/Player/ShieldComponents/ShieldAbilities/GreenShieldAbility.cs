@@ -26,10 +26,10 @@ public class GreenShieldAbility : BaseShieldAbility
         switch (state)
         {
             case States.None:
-                CheckCooldown();
+                MoveToChargeState();
                 break;
             case States.Charging:
-                CheckChargeup(deltaTime);
+                CheckCooldown(deltaTime);
                 break;
             case States.Charged:
                 break;
@@ -85,7 +85,7 @@ public class GreenShieldAbility : BaseShieldAbility
     }
 
 #region charging
-    private void CheckCooldown()
+    private void MoveToChargeState()
     {
         if (HasCooldown)
         {
@@ -97,9 +97,9 @@ public class GreenShieldAbility : BaseShieldAbility
         }
     }
     
-    private void CheckChargeup(float deltaTime)
+    private void CheckCooldown(float deltaTime)
     {
-        if (HasCooldown)
+        if (HasCooldown && !shield.ShieldIsDisabled())
         {
             timer += deltaTime;
             shield.ChargeIndicator.SetCharge(timer / CooldownTime);
