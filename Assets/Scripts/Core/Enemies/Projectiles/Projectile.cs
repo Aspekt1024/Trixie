@@ -324,7 +324,6 @@ namespace TrixieCore
 
         public void SetSpeedMultiplier(float multiplier)
         {
-            Debug.Log(multiplier);
             body.gravityScale = settings.GravityScale * multiplier;
             body.velocity = body.velocity.normalized * originalSpeed * multiplier;
         }

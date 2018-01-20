@@ -14,73 +14,22 @@ public class GreenShieldAbility : BaseShieldAbility
     private float timer;
     private ShieldCollisionHandler collisionHandler;
     
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         Colour = EnergyTypes.Colours.Green;
         shield.ProjectileCollider.enabled = false;
         collisionHandler = shield.ShieldCollider.GetComponent<ShieldCollisionHandler>();
     }
-
-    public override void ActivatePressed()
-    {
-        if (state == States.None || state == States.Charged)
-        {
-            state = States.Activated;
-        }
-    }
-
-    public override bool ActivateReleased()
-    {
-        state = HasCooldown ? States.Charging : States.None;
-        if (numProjectilesStored > 0)
-        {
-            ReleaseProjectiles();
-        }
-        return false;
-    }
-
-    public override void DisableShield()
-    {
-        state = States.None;
-        shield.ChargeIndicator.StopCharge();
-        numProjectilesStored = 0;
-    }
-
-    public override void ReturnShield()
-    {
-        if (state != States.Returning && shield.gameObject.activeSelf)
-        {
-            state = States.Returning;
-            StartCoroutine(ReturnShieldRoutine());
-        }
-    }
-
+    
     public override void UpdateCharge(float deltaTime)
     {
         switch (state)
         {
             case States.None:
-                if (HasCooldown)
-                {
-                    state = timer > CooldownTime ? States.Charged : States.Charging;
-                }
-                else
-                {
-                    state = States.Charged;
-                }
+                CheckCooldown();
                 break;
             case States.Charging:
-                if (HasCooldown)
-                {
-                    timer += deltaTime;
-                    shield.ChargeIndicator.SetCharge(timer / CooldownTime);
-                    TransitionIfCharged();
-                }
-                else
-                {
-                    state = States.Charged;
-                }
+                CheckChargeup(deltaTime);
                 break;
             case States.Charged:
                 break;
@@ -93,7 +42,106 @@ public class GreenShieldAbility : BaseShieldAbility
         }
     }
 
+    public override void ActivatePressed()
+    {
+        if (state == States.None || state == States.Charged)
+        {
+            state = States.Activated;
+        }
+    }
+
+    public override bool ActivateReleased()
+    {
+        if (HasCooldown)
+        {
+            state = timer >= CooldownTime ? States.Charged : States.Charging;
+        }
+        else
+        {
+            state = States.None;
+        }
+
+        if (numProjectilesStored > 0)
+        {
+            ReleaseProjectiles();
+        }
+        return false;
+    }
+
+    public override void DisableShield()
+    {
+        state = States.None;
+        numProjectilesStored = 0;
+        shield.ChargeIndicator.StopCharge();
+    }
+
+    public override void ReturnShield()
+    {
+        if (state != States.Returning && shield.gameObject.activeSelf)
+        {
+            state = States.Returning;
+            StartCoroutine(ReturnShieldRoutine());
+        }
+    }
+
+#region charging
+    private void CheckCooldown()
+    {
+        if (HasCooldown)
+        {
+            state = timer > CooldownTime ? States.Charged : States.Charging;
+        }
+        else
+        {
+            state = States.Charged;
+        }
+    }
+    
+    private void CheckChargeup(float deltaTime)
+    {
+        if (HasCooldown)
+        {
+            timer += deltaTime;
+            shield.ChargeIndicator.SetCharge(timer / CooldownTime);
+            TransitionIfCharged();
+        }
+        else
+        {
+            state = States.Charged;
+        }
+    }
+
+    private void TransitionIfCharged()
+    {
+        if (timer > CooldownTime)
+        {
+            shield.ChargeIndicator.SetCharged(true);
+            state = States.Charged;
+        }
+    }
+#endregion
+
     public override void ProjectileImpact(Projectile projectile)
+    {
+        if (projectile.GetColour() == Colour)
+        {
+            ManipulateProjectile(projectile);
+        }
+        else
+        {
+            if (state == States.Activated && shield.ShieldIsCharged(Colour))
+            {
+                ReflectProjectile(projectile, false);
+            }
+            else
+            {
+                projectile.Destroy();
+                shield.DisableShield(shield.DisableTime);
+            }
+        }
+    }
+
+    private void ManipulateProjectile(Projectile projectile)
     {
         if (state == States.Activated)
         {
@@ -102,12 +150,19 @@ public class GreenShieldAbility : BaseShieldAbility
         }
         else if (state == States.None || state == States.Charged)
         {
-            Rigidbody2D projectileBody = projectile.GetComponent<Rigidbody2D>();
-            projectileBody.velocity = transform.right * projectileBody.velocity.magnitude;
-            if (ProjectileMultiplier > 1)
-            {
-                GenerateNewProjectiles(projectile, projectileBody, ProjectileMultiplier, Spread);
-            }
+            ReflectProjectile(projectile);
+        }
+    }
+
+    private void ReflectProjectile(Projectile projectile, bool useMultiplier = true)
+    {
+        Rigidbody2D projectileBody = projectile.GetComponent<Rigidbody2D>();
+        projectileBody.velocity = transform.right * projectileBody.velocity.magnitude;
+        projectile.gameObject.layer = TrixieLayers.GetMask(Layers.PlayerProjectile);
+        
+        if (useMultiplier && ProjectileMultiplier > 1 && shield.ShieldIsCharged(Colour))
+        {
+            GenerateNewProjectiles(projectile, projectileBody, ProjectileMultiplier, Spread);
         }
     }
 
@@ -119,12 +174,6 @@ public class GreenShieldAbility : BaseShieldAbility
         Debug.Log("TODO IMPLEMENT ME!!!");
     }
 
-
-    private void TransitionIfCharged()
-    {
-        shield.ChargeIndicator.SetCharged(true);
-        state = States.Charged;
-    }
 
     private IEnumerator ReturnShieldRoutine()
     {
@@ -142,8 +191,6 @@ public class GreenShieldAbility : BaseShieldAbility
 
     private void GenerateNewProjectiles(Projectile projectile, Rigidbody2D projectileBody, int numProjectiles, float spread, bool ignoreFirst = true)
     {
-        projectile.gameObject.layer = TrixieLayers.GetMask(Layers.PlayerProjectile);
-
         float directionModifier = 1f;
         for (int i = ignoreFirst ? 1 : 0; i < ProjectileMultiplier; i++)
         {

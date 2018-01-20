@@ -14,7 +14,7 @@ public class ShieldPower {
     {
         bluePower = 3;
         redPower = 3;
-        greenPower = 0;
+        greenPower = 3;
         UpdateShieldUI();
     }
 

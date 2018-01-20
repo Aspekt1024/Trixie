@@ -12,6 +12,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         None, Charging, Charged, Activating, Activated, Returning
     }
     protected States state;
+    protected bool isShielding;
 
     protected ShieldComponent shield;
     protected Rigidbody2D body;
@@ -28,13 +29,32 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         projectile.Destroy();
     }
 
+    public virtual void BeginShielding()
+    {
+        if (state == States.Activated || state == States.Activating)
+        {
+            ReturnShield();
+        }
+        else
+        {
+            isShielding = true;
+            gameObject.SetActive(true);
+            body.isKinematic = true;
+            anim.Play("Static", 0, 0f);
+        }
+    }
+
+    public virtual void StopShielding()
+    {
+        isShielding = false;
+        body.isKinematic = true;
+        body.velocity = Vector2.zero;
+        gameObject.SetActive(false);
+    }
+
     private void Awake()
     {
         shield = Player.Instance.GetComponent<ShieldComponent>();
-    }
-
-    protected virtual void Start()
-    {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }

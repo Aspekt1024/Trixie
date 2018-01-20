@@ -176,6 +176,7 @@ public class ShieldComponent : MonoBehaviour {
     {
         activateButtonHeld = true;
         if (state == States.Disabled || state == States.Shielding || !stats.ShieldUnlocked()) return false;
+        Activate();
 
         if (state == States.Firing)
         {
@@ -191,17 +192,13 @@ public class ShieldComponent : MonoBehaviour {
     private void Activate()
     {
         state = States.Shielding;
-        body.isKinematic = true;
-        ShieldObject.SetActive(true);
         positioner.SetShieldPosition();
-        anim.Play("Static", 0, 0f);
+
+        abilities[currentAbilityIndex].BeginShielding();
 
         if (shootButtonHeld)
         {
             abilities[currentAbilityIndex].ActivatePressed();
-        }
-        else
-        {
         }
     }
 
@@ -239,6 +236,8 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
+
+    public bool ShieldIsCharged(EnergyTypes.Colours colour) { return power.ShieldFullyCharged(colour); }
     public bool IsAwaitingActivation() { return activateButtonHeld; }
     public bool IsShielding() { return state == States.Shielding; }
     public bool IsFiring() { return state == States.Firing; }
@@ -261,10 +260,8 @@ public class ShieldComponent : MonoBehaviour {
         {
             state = States.Disabled;
         }
-        body.isKinematic = true;
-        body.velocity = Vector2.zero;
         abilities[currentAbilityIndex].DisableShield();
-        ShieldObject.SetActive(false);
+        abilities[currentAbilityIndex].StopShielding();
     }
 
     private void SetShieldColour(EnergyTypes.Colours colour)

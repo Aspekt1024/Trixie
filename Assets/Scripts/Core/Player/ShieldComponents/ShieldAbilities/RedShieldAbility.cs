@@ -18,12 +18,12 @@ public class RedShieldAbility : BaseShieldAbility
 
     private float timer;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         Colour = EnergyTypes.Colours.Red;
         trajectory = GetComponentInChildren<ShieldTrajectory>();
         shield.ProjectileCollider.enabled = false;
+        trajectory.Disable();
     }
 
     public override void ActivatePressed()

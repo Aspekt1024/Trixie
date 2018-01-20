@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
 
+// TODO remove this! it's only used for projectiles and projectile collisions are handled by the abilities
+// Just need to move the shield power to the ability.
 public class ShieldCollisionHandler : MonoBehaviour {
     
     private ShieldComponent shieldComponent;
@@ -30,13 +32,6 @@ public class ShieldCollisionHandler : MonoBehaviour {
             if (projectile.GetColour() == shieldComponent.GetColour())
             {
                 shieldComponent.AddShieldPower();
-            }
-            else
-            {
-                if (shieldComponent.IsShielding())
-                {
-                    shieldComponent.DisableShield(shieldComponent.DisableTime);
-                }
             }
         }
     }
