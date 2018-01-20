@@ -26,6 +26,10 @@ public abstract class BaseShieldAbility : MonoBehaviour {
 
     public virtual void ProjectileImpact(Projectile projectile)
     {
+        if (projectile.GetColour() != Colour)
+        {
+            shield.DisableShield(shield.DisableTime);
+        }
         projectile.Destroy();
     }
 

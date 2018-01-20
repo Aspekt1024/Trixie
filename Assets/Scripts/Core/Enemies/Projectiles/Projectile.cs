@@ -298,7 +298,7 @@ namespace TrixieCore
             body.velocity = transform.right * speed;
         }
 
-        public void Activate(Vector3 startPoint, float angle, float speed, EnergyTypes.Colours colour, Transform homingTarget = null)
+        public void Activate(Vector3 startPoint, float angle, float speed, EnergyTypes.Colours colour, Transform homingTarget = null, bool isPlayerProjectile = false)
         {
             // TODO make obsolete. Replace with below
             settings.ProjectileColour = colour;
@@ -307,14 +307,21 @@ namespace TrixieCore
                 settings.IsHoming = true;
                 settings.HomingTarget = homingTarget;
             }
-            Activate(startPoint, angle, speed, settings);
+            Activate(startPoint, angle, speed, settings, isPlayerProjectile);
         }
 
-        public void Activate(Vector3 startPoint, float angle, float speed, ProjectileSettings newSettings)
+        public void Activate(Vector3 startPoint, float angle, float speed, ProjectileSettings newSettings, bool isPlayerProjectile = false)
         {
             SetProjectileSettings(newSettings);
             gameObject.SetActive(true);
-            gameObject.layer = TrixieLayers.GetMask(Layers.Projectile);
+            if (isPlayerProjectile)
+            {
+                gameObject.layer = TrixieLayers.GetMask(Layers.PlayerProjectile);
+            }
+            else
+            {
+                gameObject.layer = TrixieLayers.GetMask(Layers.Projectile);
+            }
             transform.position = startPoint;
             transform.eulerAngles = new Vector3(0f, 0f, angle);
             originalSpeed = speed;
@@ -362,7 +369,7 @@ namespace TrixieCore
             settings = newSettings;
 
             SetColour(settings.ProjectileColour);
-            if (settings.HasGravity) { body.gravityScale = settings.GravityScale; }
+            body.gravityScale = settings.HasGravity ? settings.GravityScale : 0f;
             if (!settings.IsHoming) { settings.HomingTarget = null; }
         }
 

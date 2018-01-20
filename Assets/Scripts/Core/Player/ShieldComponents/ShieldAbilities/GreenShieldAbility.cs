@@ -9,6 +9,8 @@ public class GreenShieldAbility : BaseShieldAbility
     public float Spread = 10f;
     public bool HasCooldown = true;
     public float CooldownTime = 1.5f;
+    public GameObject ProjectilePrefab;
+    public float ProjectileSpeed = 15f;
 
     private int numProjectilesStored;
     private float timer;
@@ -169,10 +171,26 @@ public class GreenShieldAbility : BaseShieldAbility
 
     private void ReleaseProjectiles()
     {
+        if (numProjectilesStored > 0)
+        {
+            GameObject firstProjectile = ObjectPooler.Instance.GetPooledProjectile(ProjectilePrefab.name);
+            Projectile.ProjectileSettings settings = new Projectile.ProjectileSettings()
+            {
+                ProjectileColour = EnergyTypes.Colours.Green,
+                HasGravity = false,
+            };
+            Projectile projectile = firstProjectile.GetComponent<Projectile>();
+            projectile.Activate(transform.position, transform.eulerAngles.z, ProjectileSpeed, settings, isPlayerProjectile: true);
+
+            if (numProjectilesStored > 1)
+            {
+                GenerateNewProjectiles(projectile, firstProjectile.GetComponent<Rigidbody2D>(), numProjectilesStored - 1, Spread);
+            }
+        }
+
         numProjectilesStored = 0;
         timer = 0f;
         state = States.None;
-        Debug.Log("TODO IMPLEMENT ME!!!");
     }
 
 
@@ -190,19 +208,17 @@ public class GreenShieldAbility : BaseShieldAbility
         shield.OnReturn();
     }
 
-    private void GenerateNewProjectiles(Projectile projectile, Rigidbody2D projectileBody, int numProjectiles, float spread, bool ignoreFirst = true)
+    private void GenerateNewProjectiles(Projectile projectile, Rigidbody2D projectileBody, int numProjectiles, float spread)
     {
         float directionModifier = 1f;
-        for (int i = ignoreFirst ? 1 : 0; i < ProjectileMultiplier; i++)
+        for (int i = 1; i < numProjectiles; i++)
         {
             GameObject newProjectile = ObjectPooler.Instance.GetPooledProjectile(projectile.name.Substring(0, projectile.name.Length - "(Clone)".Length));
 
             float angle = transform.eulerAngles.z + Spread * directionModifier * Mathf.CeilToInt(i / 2f);
             
             Projectile newProjScript = newProjectile.GetComponent<Projectile>();
-            newProjScript.Activate(projectile.transform.position, angle, projectileBody.velocity.magnitude, projectile.GetSettings());
-
-            newProjectile.layer = TrixieLayers.GetMask(Layers.PlayerProjectile);
+            newProjScript.Activate(projectile.transform.position, angle, projectileBody.velocity.magnitude, projectile.GetSettings(), isPlayerProjectile: true);
 
             directionModifier *= -1f;
         }

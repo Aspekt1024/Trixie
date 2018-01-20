@@ -152,6 +152,7 @@ public class ShieldComponent : MonoBehaviour {
                 break;
             }
         }
+        abilities[currentAbilityIndex].DisableShield();
         currentAbilityIndex = index;
         SetShieldColour(abilities[currentAbilityIndex].Colour);
     }

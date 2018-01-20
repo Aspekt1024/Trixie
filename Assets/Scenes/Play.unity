@@ -11980,6 +11980,9 @@ MonoBehaviour:
   Spread: 10
   HasCooldown: 1
   CooldownTime: 1.5
+  ProjectilePrefab: {fileID: 1243651706264206, guid: 97d28903a68d20444863eab3cfe14320,
+    type: 2}
+  ProjectileSpeed: 15
 --- !u!4 &1139643303 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4255941687314474, guid: 218bb6a1e07082e4493ab23417d15821,
