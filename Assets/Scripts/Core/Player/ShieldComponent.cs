@@ -26,7 +26,6 @@ public class ShieldComponent : MonoBehaviour {
     private bool activateButtonHeld;
     private bool shootButtonHeld;
     
-    private EnergyTypes.Colours shieldColour;
     private int currentAbilityIndex;
 
     private enum States
@@ -118,67 +117,43 @@ public class ShieldComponent : MonoBehaviour {
 
     public void AddShieldPower(int powerToAdd = 1)
     {
-        power.AddPower(shieldColour, powerToAdd);
+        power.AddPower(abilities[currentAbilityIndex].Colour, powerToAdd);
     }
 
     public void ReduceShieldPower(int powerToRemove = 1)
     {
-        power.ReducePower(shieldColour, powerToRemove);
+        power.ReducePower(abilities[currentAbilityIndex].Colour, powerToRemove);
     }
 
     public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
     {
         stats.ObtainedUnlock(unlockType);
-        if (!stats.ColourUnlocked(shieldColour))
+        if (!stats.ColourUnlocked(abilities[currentAbilityIndex].Colour))
         {
             CycleShieldColour();
         }
-        else
-        {
-            SetShieldColour(shieldColour);
-        }
+        SetShieldColour(abilities[currentAbilityIndex].Colour);
     }
 
     public void CycleShieldColour()
     {
         if (!stats.ShieldUnlocked() || state == States.Disabled || state == States.Firing || shootButtonHeld) return;
 
-        switch (shieldColour)
+        int index = currentAbilityIndex;
+
+        index++;
+        if (index == abilities.Length) index = 0;
+        while (!stats.ColourUnlocked(abilities[index].Colour))
         {
-            case EnergyTypes.Colours.Blue:
-                if (stats.ColourUnlocked(EnergyTypes.Colours.Red))
-                {
-                    SetShieldColour(EnergyTypes.Colours.Red);
-                }
-                else
-                {
-                    shieldColour = EnergyTypes.Colours.Red;
-                    CycleShieldColour();
-                }
+            index++;
+            if (index == abilities.Length) index = 0;
+            if (currentAbilityIndex == index)
+            {
                 break;
-            case EnergyTypes.Colours.Red:
-                if (stats.ColourUnlocked(EnergyTypes.Colours.Green))
-                {
-                    SetShieldColour(EnergyTypes.Colours.Green);
-                }
-                else
-                {
-                    shieldColour = EnergyTypes.Colours.Green;
-                    CycleShieldColour();
-                }
-                break;
-            case EnergyTypes.Colours.Green:
-                if (stats.ColourUnlocked(EnergyTypes.Colours.Blue))
-                {
-                    SetShieldColour(EnergyTypes.Colours.Blue);
-                }
-                else
-                {
-                    shieldColour = EnergyTypes.Colours.Blue;
-                    CycleShieldColour();
-                }
-                break;
+            }
         }
+        currentAbilityIndex = index;
+        SetShieldColour(abilities[currentAbilityIndex].Colour);
     }
     
     public bool ShieldActivatePressed()
@@ -225,7 +200,7 @@ public class ShieldComponent : MonoBehaviour {
         shootButtonHeld = true;
         //if (!shieldStats.ShootUnlocked()) return;
 
-        if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
+        if (state == States.Shielding)
         {
             abilities[currentAbilityIndex].ActivatePressed();
         }
@@ -235,7 +210,7 @@ public class ShieldComponent : MonoBehaviour {
     {
         shootButtonHeld = false;
         
-        if (state == States.Shielding && power.ShieldFullyCharged(shieldColour))
+        if (state == States.Shielding)
         {
             bool shootSuccess = abilities[currentAbilityIndex].ActivateReleased();
             if (shootSuccess)
@@ -250,7 +225,7 @@ public class ShieldComponent : MonoBehaviour {
     public bool IsAwaitingActivation() { return activateButtonHeld; }
     public bool IsShielding() { return state == States.Shielding; }
     public bool IsFiring() { return state == States.Firing; }
-    public EnergyTypes.Colours GetColour() { return shieldColour; }
+    public EnergyTypes.Colours GetColour() { return abilities[currentAbilityIndex].Colour; }
     
     public void DisableShield(float secondsToDisable)
     {
@@ -275,27 +250,17 @@ public class ShieldComponent : MonoBehaviour {
 
     private void SetShieldColour(EnergyTypes.Colours colour)
     {
-        shieldColour = colour;
         if (stats.ShieldUnlocked())
         {
             GameUIManager.ShowShieldIndicator();
-            GameUIManager.SetShieldColour(shieldColour);
+            GameUIManager.SetShieldColour(abilities[currentAbilityIndex].Colour);
         }
         else
         {
             GameUIManager.HideShieldIndicator();
         }
 
-        for (int i = 0; i < abilities.Length; i++)
-        {
-            if (abilities[i].Colour == shieldColour)
-            {
-                currentAbilityIndex = i;
-                break;
-            }
-        }
-
-        switch (shieldColour)
+        switch (abilities[currentAbilityIndex].Colour)
         {
             case EnergyTypes.Colours.Blue:
                 ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);

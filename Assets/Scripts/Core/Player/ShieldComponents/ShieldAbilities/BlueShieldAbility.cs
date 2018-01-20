@@ -24,8 +24,9 @@ public class BlueShieldAbility : BaseShieldAbility
 
     private HashSet<Projectile> projectiles = new HashSet<Projectile>();
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         Colour = EnergyTypes.Colours.Blue;
         shield.ProjectileCollider.enabled = false;
         Telegraph.SetActive(false);

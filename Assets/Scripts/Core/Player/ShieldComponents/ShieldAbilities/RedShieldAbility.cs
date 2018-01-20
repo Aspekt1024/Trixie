@@ -18,8 +18,9 @@ public class RedShieldAbility : BaseShieldAbility
 
     private float timer;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         Colour = EnergyTypes.Colours.Red;
         trajectory = GetComponentInChildren<ShieldTrajectory>();
         shield.ProjectileCollider.enabled = false;

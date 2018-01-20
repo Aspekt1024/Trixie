@@ -52,7 +52,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         shield = Player.Instance.GetComponent<ShieldComponent>();
         body = GetComponent<Rigidbody2D>();
