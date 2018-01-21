@@ -139,4 +139,10 @@ public class GameManager : MonoBehaviour {
     
 #endregion
 
+    public static void RestartGame()
+    {
+        RespawnPlayerStart();
+        Instance.ToggleMenu();
+    }
+
 }

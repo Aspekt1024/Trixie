@@ -39,6 +39,15 @@ public class ShootTestEnemy : BaseEnemy {
     {
         if (state == States.Dead) return;
 
+        if (Vector2.Distance(Player.Instance.transform.position, transform.position) < 30f)
+        {
+            HasAggro();
+        }
+        else if (hasAggro)
+        {
+            LostAggro();
+        }
+
         if (Turrets != null)
         {
             Vector2 distVector = Player.Instance.transform.position - Turrets.transform.position;
@@ -86,6 +95,7 @@ public class ShootTestEnemy : BaseEnemy {
         body.isKinematic = true;
         coll.enabled = false;
         Sprites.SetActive(false);
+        LostAggro();
 
         Turrets.gameObject.SetActive(false);
         ExplosionEffect.SetActive(true);

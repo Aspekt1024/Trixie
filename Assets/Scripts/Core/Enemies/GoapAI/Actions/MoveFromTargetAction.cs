@@ -49,7 +49,6 @@ public class MoveFromTargetAction : ReGoapAction<GoapLabels, object> {
     {
         base.Run(previous, next, settings, goalState, done, fail);
         Vector2 targetPosition = GetSafePosition();
-        Debug.Log(targetPosition - (Vector2)transform.position);
         gotoState.GoTo(targetPosition, OnDoneCallback, OnFailCallback);
 
         if (!memory.CheckCondition(GoapLabels.CanSeePlayer) || memory.CheckCondition(GoapLabels.HasDistanceFromPlayer))

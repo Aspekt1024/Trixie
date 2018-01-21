@@ -43,6 +43,11 @@ public class MenuControl : MonoBehaviour {
         mainCanvasGroup.blocksRaycasts = false;
     }
 
+    public void RestartButtonPressed()
+    {
+        GameManager.RestartGame();
+    }
+
     public void ExitButtonPressed()
     {
         Application.Quit();

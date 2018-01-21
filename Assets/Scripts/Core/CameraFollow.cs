@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour {
+public class CameraFollow : MonoBehaviour
+{
 
     public enum FollowTypes
     {
@@ -11,15 +12,14 @@ public class CameraFollow : MonoBehaviour {
     public FollowTypes FollowType = FollowTypes.PlayerAndAggro;
     public float FollowSpeed = 5f;
     public float TargetRange = 20f;
-    
+
     private float xMin = 0f;
-    private float xMax = 1000f;
+    private float xMax = 10000f;
     private float yMin = 0f;
-    private float yMax = 40f;
-    
+    private float yMax = 40000f;
+
     private float xOffset = 0f;
     private float yOffset = 0f;
-    private float sizeOffset = 0f;
 
     private bool focusOverrideMode;
 
@@ -28,14 +28,14 @@ public class CameraFollow : MonoBehaviour {
     private HashSet<Transform> objectsToFollow;
     private Vector2 focusPoint;
 
-    private void Start ()
+    private void Start()
     {
         playerTf = Player.Instance.transform;
         playerBody = playerTf.GetComponent<Rigidbody2D>();
         objectsToFollow = new HashSet<Transform>();
     }
-	
-	private void FixedUpdate ()
+
+    private void FixedUpdate()
     {
         if (focusOverrideMode)
         {
@@ -127,11 +127,30 @@ public class CameraFollow : MonoBehaviour {
     {
         float cameraSpeed = 2f;
 
-        float maxDistFromCenter = Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 2f)).y - Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 4f)).y; // TODO there is a better way to do this
-        float playerDistFromCenter = Mathf.Abs(playerTf.position.y - Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 2f)).y);
+        Vector2 screenSize = GetScreenSizeInUnits();
 
-        targetPos.y = Mathf.Lerp(targetPos.y, Player.Instance.transform.position.y, playerDistFromCenter / maxDistFromCenter);
+        Vector2 maxDistFromCenter = new Vector2(screenSize.x * 0.4f, screenSize.y * 0.4f);
+        Vector2 triggerDistance = new Vector2(screenSize.x * 0.35f, screenSize.y * 0.3f);
+        Vector2 playerDistFromCenter = playerTf.position - Camera.main.ScreenToWorldPoint(new Vector2(Screen.width / 2f, Screen.height / 2f));
+        playerDistFromCenter = new Vector2(Mathf.Abs(playerDistFromCenter.x), Mathf.Abs(playerDistFromCenter.y));
+
+        // Favour the player
+        if (playerDistFromCenter.x > triggerDistance.x)
+        {
+            targetPos.x = Mathf.Lerp(targetPos.x, Player.Instance.transform.position.x, (playerDistFromCenter.x - triggerDistance.x) / (maxDistFromCenter.x - triggerDistance.x));
+        }
+
+        if (playerDistFromCenter.y > triggerDistance.y)
+        {
+            targetPos.y = Mathf.Lerp(targetPos.y, Player.Instance.transform.position.y, (playerDistFromCenter.y - triggerDistance.y) / (maxDistFromCenter.y - triggerDistance.y));
+        }
+
         Vector2 newPos = Vector2.Lerp(transform.position, targetPos, cameraSpeed * Time.deltaTime);
         transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
+    }
+
+    private Vector2 GetScreenSizeInUnits()
+    {
+        return Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)) - Camera.main.ScreenToWorldPoint(Vector2.zero);
     }
 }
