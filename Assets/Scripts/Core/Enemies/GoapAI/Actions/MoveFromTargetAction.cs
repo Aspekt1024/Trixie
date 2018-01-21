@@ -32,7 +32,7 @@ public class MoveFromTargetAction : ReGoapAction<GoapLabels, object> {
     public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         preconditions.Clear();
-        //preconditions.Set(GoapLabels.AttackIsOnCooldown, true);
+        //TODO preconditions.Set(GoapLabels.AttackIsOnCooldown, true);
         return preconditions;
     }
 
