@@ -19,6 +19,7 @@ public class CameraFollow : MonoBehaviour {
     
     private float xOffset = 0f;
     private float yOffset = 0f;
+    private float sizeOffset = 0f;
 
     private bool focusOverrideMode;
 
@@ -42,7 +43,7 @@ public class CameraFollow : MonoBehaviour {
         }
         else if (FollowType == FollowTypes.PlayerOnly || objectsToFollow == null || objectsToFollow.Count == 0)
         {
-            FollowBody();
+            FollowPlayer();
         }
         else
         {
@@ -82,7 +83,7 @@ public class CameraFollow : MonoBehaviour {
         transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
     }
 
-    private void FollowBody()
+    private void FollowPlayer()
     {
         if (playerBody != null)
         {
@@ -101,24 +102,36 @@ public class CameraFollow : MonoBehaviour {
 
     private void FocusAllBodies()
     {
-        Vector2 targetPos = 2 * playerTf.position;  // Favour the player
-        int objectsInRange = 0;
+        Vector2 centerPoint = GetCenterPoint();
+        Vector3 newPosition = centerPoint + new Vector2(xOffset, yOffset);
+
+        LerpCameraPosition(centerPoint);
+    }
+
+    private Vector2 GetCenterPoint()
+    {
+        var bounds = new Bounds(playerTf.position, Vector3.zero);
+
         foreach (Transform tf in objectsToFollow)
         {
             if (Vector2.Distance(tf.position, playerTf.position) <= TargetRange)
             {
-                targetPos += (Vector2)tf.position;
-                objectsInRange++;
+                bounds.Encapsulate(tf.position);
             }
         }
-        targetPos /= (objectsInRange + 2);
 
-        LerpCameraPosition(targetPos);
+        return bounds.center;
     }
 
     private void LerpCameraPosition(Vector2 targetPos)
     {
-        Vector2 newPos = Vector2.Lerp(transform.position, targetPos, 2 * Time.deltaTime);
+        float cameraSpeed = 2f;
+
+        float maxDistFromCenter = Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 2f)).y - Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 4f)).y; // TODO there is a better way to do this
+        float playerDistFromCenter = Mathf.Abs(playerTf.position.y - Camera.main.ScreenToWorldPoint(new Vector2(0f, Screen.height / 2f)).y);
+
+        targetPos.y = Mathf.Lerp(targetPos.y, Player.Instance.transform.position.y, playerDistFromCenter / maxDistFromCenter);
+        Vector2 newPos = Vector2.Lerp(transform.position, targetPos, cameraSpeed * Time.deltaTime);
         transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
     }
 }
