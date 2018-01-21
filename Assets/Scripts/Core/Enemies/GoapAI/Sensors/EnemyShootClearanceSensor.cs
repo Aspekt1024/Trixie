@@ -59,7 +59,6 @@ public class EnemyShootClearanceSensor : ReGoapSensor<GoapLabels, object>
                 }
             }
         }
-        Debug.Log("can hit player: " + hitPlayer);
         memory.GetWorldState().Set(GoapLabels.CanHitPlayer, hitPlayer);
     }
 }

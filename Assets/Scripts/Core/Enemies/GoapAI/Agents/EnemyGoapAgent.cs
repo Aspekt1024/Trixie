@@ -24,15 +24,9 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
         parent = GetComponentInParent<BaseEnemy>();
     }
 
-    public A GetAction<A>() where A : ReGoapAction<GoapLabels, object>
-    {
-        return ActionsObject.GetComponent<A>();
-    }
-
-    public S GetSensor<S>() where S : ReGoapSensor<GoapLabels, object>
-    {
-        return SensorsObject.GetComponent<S>();
-    }
+    public A GetAction<A>() where A : ReGoapAction<GoapLabels, object> { return ActionsObject.GetComponent<A>(); }
+    public S GetSensor<S>() where S : ReGoapSensor<GoapLabels, object> { return SensorsObject.GetComponent<S>(); }
+    public G GetGoal<G>() where G : ReGoapGoal<GoapLabels, object> { return GoalsObject.GetComponent<G>(); }
 
     public IReGoapSensor<GoapLabels, object>[] GetSensors()
     {

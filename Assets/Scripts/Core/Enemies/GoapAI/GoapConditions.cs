@@ -1,6 +1,4 @@
-﻿
-
-namespace TrixieCore.Goap
+﻿namespace TrixieCore.Goap
 {
     public enum GoapLabels
     {
@@ -8,6 +6,10 @@ namespace TrixieCore.Goap
         CanSeePlayer, IsDying, CanAttack, TargetFound, HasSeenPlayerRecently,
         IsAtStartingPoint, NotSeenPlayerRecently, CanSensePlayer,
         LastKnownPlayerPosition, HasCorrectProjectileColour,
-        WeakProjectileColour, CanHitPlayer
+        WeakProjectileColour, CanHitPlayer,
+        AttackIsOnCooldown, HasDistanceFromPlayer,
+
+
+        Goal_HasDistanceFromPlayer
     }
 }

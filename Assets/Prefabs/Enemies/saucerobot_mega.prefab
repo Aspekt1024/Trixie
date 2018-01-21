@@ -35,6 +35,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1229555239471848
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4201856881600088}
+  - component: {fileID: 114513715711344638}
+  - component: {fileID: 114996382036690486}
+  - component: {fileID: 114511624153616706}
+  - component: {fileID: 114145407488156960}
+  m_Layer: 12
+  m_Name: Actions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1295076460605224
 GameObject:
   m_ObjectHideFlags: 1
@@ -179,6 +198,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1771471397570798
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4203446848889816}
+  - component: {fileID: 114686034756470460}
+  - component: {fileID: 114629466897888714}
+  - component: {fileID: 114215275447429574}
+  m_Layer: 12
+  m_Name: Goals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1862557234001852
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,17 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4170064680277678}
   - component: {fileID: 114495577634935754}
-  - component: {fileID: 114739547610589724}
-  - component: {fileID: 114834680209825144}
-  - component: {fileID: 114955578405074528}
   - component: {fileID: 114393423326129218}
-  - component: {fileID: 114980912500589762}
-  - component: {fileID: 114398301122514226}
-  - component: {fileID: 114209202367594588}
-  - component: {fileID: 114475653145009976}
-  - component: {fileID: 114362115492229802}
-  - component: {fileID: 114294257932048074}
-  - component: {fileID: 114860589938038908}
   - component: {fileID: 114215351750706758}
   - component: {fileID: 114087299643945204}
   - component: {fileID: 114460574355074416}
@@ -223,6 +250,24 @@ GameObject:
   m_Layer: 9
   m_Name: Explosion
   m_TagString: Projectile
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1947880406954270
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4177078115711144}
+  - component: {fileID: 114296225440994306}
+  - component: {fileID: 114819114507361354}
+  - component: {fileID: 114484924731288730}
+  m_Layer: 12
+  m_Name: Sensors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,8 +324,24 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4203446848889816}
+  - {fileID: 4201856881600088}
+  - {fileID: 4177078115711144}
   m_Father: {fileID: 4277417068403142}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4177078115711144
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1947880406954270}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4170064680277678}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4199617284096922
@@ -295,6 +356,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4277417068403142}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4201856881600088
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1229555239471848}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4170064680277678}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4203446848889816
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771471397570798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4170064680277678}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4269243465702236
 Transform:
@@ -475,6 +562,19 @@ MonoBehaviour:
   CheckForStuck: 0
   StuckCheckDelay: 1
   MaxStuckDistance: 0.1
+--- !u!114 &114145407488156960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1229555239471848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baa431171f0f4e4b9bab8dbbff7cfd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: GoapAction
+  Cost: 1
 --- !u!114 &114186839754416450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -520,19 +620,20 @@ MonoBehaviour:
     tagsChange: -1
     tagsSet: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
---- !u!114 &114209202367594588
+--- !u!114 &114215275447429574
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1771471397570798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4baa431171f0f4e4b9bab8dbbff7cfd6, type: 3}
+  m_Script: {fileID: 11500000, guid: 413943e6bc2831f49924df686eb692ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: GoapAction
-  Cost: 1
+  Name: Idle
+  Priority: 1
+  ErrorDelay: 0.5
 --- !u!114 &114215351750706758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -577,34 +678,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
---- !u!114 &114294257932048074
+--- !u!114 &114296225440994306
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1947880406954270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b644c60fee79ca4d8449ce447fd9937, type: 3}
+  m_Script: {fileID: 11500000, guid: c6eef6de5ff8721419810f8d08c89f43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: GenericGoal
-  Priority: 10
-  ErrorDelay: 0.5
---- !u!114 &114362115492229802
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b011c424b05a4f42b511893282417a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: EliminateEnemyGoal
-  Priority: 100
-  ErrorDelay: 0.5
 --- !u!114 &114393423326129218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -617,19 +701,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SensorsUpdateDelay: 0.3
---- !u!114 &114398301122514226
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46701c002e949647815d64b2e226694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Looking for target
-  Cost: 1
 --- !u!114 &114460574355074416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -642,19 +713,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
---- !u!114 &114475653145009976
+--- !u!114 &114484924731288730
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1947880406954270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eba514074ed4b94294d086e066e31c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 404a5f5e0c3f7df4e981a0ddb6813cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: ReturnToStart
-  Cost: 1
 --- !u!114 &114495577634935754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -670,6 +739,9 @@ MonoBehaviour:
   CalculationDelay: 0.5
   BlackListGoalOnFailure: 0
   CalculateNewGoalOnStart: 1
+  GoalsObject: {fileID: 1771471397570798}
+  ActionsObject: {fileID: 1229555239471848}
+  SensorsObject: {fileID: 1947880406954270}
 --- !u!114 &114503093177974268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -710,6 +782,33 @@ MonoBehaviour:
     NumTimesToBounce: 200
     HasGravity: 1
     GravityScale: 2
+--- !u!114 &114511624153616706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1229555239471848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eba514074ed4b94294d086e066e31c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: GoapAction
+  Cost: 1
+--- !u!114 &114513715711344638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1229555239471848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1574a8c61f8be3c4db73a50de1d705aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: GoapAction
+  Cost: 1
+  CooldownDuration: 1
 --- !u!114 &114600655294276392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -726,17 +825,34 @@ MonoBehaviour:
   Sprites: {fileID: 1731328018401620}
   ExplosionEffect: {fileID: 1880370588611760}
   AI: {fileID: 1862557234001852}
---- !u!114 &114739547610589724
+--- !u!114 &114629466897888714
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1771471397570798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b07f4f8f8eeb1740925cdebcc1b5f5b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b644c60fee79ca4d8449ce447fd9937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: Find
+  Priority: 10
+  ErrorDelay: 0.5
+--- !u!114 &114686034756470460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771471397570798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b011c424b05a4f42b511893282417a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Eliminate
+  Priority: 100
+  ErrorDelay: 0.5
 --- !u!114 &114802462534978154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -752,57 +868,31 @@ MonoBehaviour:
   RedIndicator: {fileID: 4533092469680826}
   GreenIndicator: {fileID: 4901411072661280}
   IndicatorEffect: {fileID: 198051370306246462}
-  AttackActionRef: {fileID: 114980912500589762}
---- !u!114 &114834680209825144
+  AttackActionRef: {fileID: 114513715711344638}
+--- !u!114 &114819114507361354
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1947880406954270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6eef6de5ff8721419810f8d08c89f43, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b07f4f8f8eeb1740925cdebcc1b5f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114860589938038908
+--- !u!114 &114996382036690486
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
+  m_GameObject: {fileID: 1229555239471848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 413943e6bc2831f49924df686eb692ee, type: 3}
+  m_Script: {fileID: 11500000, guid: b46701c002e949647815d64b2e226694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: IdleGoal
-  Priority: 1
-  ErrorDelay: 0.5
---- !u!114 &114955578405074528
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 404a5f5e0c3f7df4e981a0ddb6813cb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114980912500589762
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862557234001852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1574a8c61f8be3c4db73a50de1d705aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Attack
+  Name: GoapAction
   Cost: 1
-  CooldownDuration: 0.7
 --- !u!198 &198051370306246462
 ParticleSystem:
   m_ObjectHideFlags: 1
