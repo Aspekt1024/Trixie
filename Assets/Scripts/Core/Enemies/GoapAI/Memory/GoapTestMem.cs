@@ -1,15 +1,42 @@
 ﻿using ReGoap.Unity;
 using UnityEngine;
+using ReGoap.Core;
 using TrixieCore.Goap;
 
-public class GoapTestMem : ReGoapMemoryAdvanced<GoapLabels, object>
+public class GoapTestMem : ReGoapMemory<GoapLabels, object>
 {
+    public float SensorsUpdateDelay = 0.3f;
+    private EnemyGoapAgent agent;
+    private float sensorsUpdateCooldown;
+    private IReGoapSensor<GoapLabels, object>[] sensors;
+
     protected override void Awake()
     {
-        base.Awake();
+        agent = GetComponent<EnemyGoapAgent>();
+        state = ReGoapState<GoapLabels, object>.Instantiate();
+        sensors = agent.GetSensors();
+
+        foreach (var sensor in sensors)
+        {
+            sensor.Init(this);
+        }
+
         GetWorldState().Set(GoapLabels.HasCorrectProjectileColour, true);
     }
 
+    private void Update()
+    {
+        if (Time.time > sensorsUpdateCooldown)
+        {
+            sensorsUpdateCooldown = Time.time + SensorsUpdateDelay;
+
+            foreach (var sensor in sensors)
+            {
+                sensor.UpdateSensor();
+            }
+        }
+    }
+    
     public Vector2 GetLastKnownPlayerPosition()
     {
         if (GetWorldState().HasKey(GoapLabels.LastKnownPlayerPosition))
@@ -33,5 +60,10 @@ public class GoapTestMem : ReGoapMemoryAdvanced<GoapLabels, object>
             return false;
         }
     }
+
+
+
+    
+
 
 }

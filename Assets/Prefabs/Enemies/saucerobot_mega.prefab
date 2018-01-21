@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4277417068403142}
   - component: {fileID: 114600655294276392}
+  - component: {fileID: 114506814868460796}
   - component: {fileID: 114193555685456924}
   - component: {fileID: 114186839754416450}
   - component: {fileID: 114503093177974268}
   - component: {fileID: 114222299537621156}
-  - component: {fileID: 114506814868460796}
   - component: {fileID: 58320391621990190}
   - component: {fileID: 50020700131628362}
   - component: {fileID: 114802462534978154}
@@ -437,7 +437,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UpdateFrequency: 2
-  Speed: 600
+  Speed: 700
   ForceMode: 0
   nextWaypointDistance: 3
   MinDistToTarget: 5
@@ -802,7 +802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Attack
   Cost: 1
-  CooldownDuration: 1
+  CooldownDuration: 0.7
 --- !u!198 &198051370306246462
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -20919,7 +20919,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -756795171
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 1
   m_SortMode: 0
@@ -21027,7 +21027,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -756795171
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -21081,7 +21081,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -756795171
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -21135,7 +21135,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -756795171
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -21189,7 +21189,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -756795171
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 1
   m_SortMode: 0

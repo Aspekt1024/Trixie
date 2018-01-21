@@ -5,16 +5,17 @@ using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
 
-[RequireComponent(typeof(GotoState))]
 public class ReturnToStartPointAction : ReGoapAction<GoapLabels, object> {
-    
+
+    private EnemyGoapAgent agentAI;
     private GotoState gotoState;
     private Vector2 startPosition;
     
     protected override void Awake()
     {
         base.Awake();
-        gotoState = GetComponent<GotoState>();
+        agentAI = GetComponentInParent<EnemyGoapAgent>();
+        gotoState = agentAI.GetComponent<GotoState>();
         startPosition = transform.position;
     }
 

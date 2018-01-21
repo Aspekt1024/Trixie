@@ -85,7 +85,6 @@ namespace TrixieCore
             if (hitPlayer && gameObject.activeSelf && !hitShield)
             {
                 hitPlayer = false;
-                Debug.Log("damaging player");
                 Player.Instance.Damage();
                 ShowImpact();
             }

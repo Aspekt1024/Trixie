@@ -5,9 +5,9 @@ using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
 
-[RequireComponent(typeof(EnemyProjectileSensor))]
 public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {
 
+    private EnemyGoapAgent agentAI;
     private GoapTestMem memory;
     private EnemyProjectileSensor projectileSensor;
     private ShootComponent shootComponent;
@@ -15,8 +15,9 @@ public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {
     protected override void Awake()
     {
         base.Awake();
-        memory = GetComponent<GoapTestMem>();
-        projectileSensor = GetComponent<EnemyProjectileSensor>();
+        agentAI = GetComponentInParent<EnemyGoapAgent>();
+        memory = (GoapTestMem)agentAI.GetMemory();
+        projectileSensor = agentAI.GetSensor<EnemyProjectileSensor>();
     }
 
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
@@ -47,7 +48,7 @@ public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {
         
         if (shootComponent == null)
         {
-            shootComponent = GetComponent<EnemyGoapAgent>().Parent.GetComponent<ShootComponent>();
+            shootComponent = GetComponentInParent<EnemyGoapAgent>().Parent.GetComponent<ShootComponent>();
         }
         
         switch (projectileSensor.GetWeakColour())

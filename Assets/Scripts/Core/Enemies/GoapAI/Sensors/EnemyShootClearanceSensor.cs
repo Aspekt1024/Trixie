@@ -14,7 +14,7 @@ public class EnemyShootClearanceSensor : ReGoapSensor<GoapLabels, object>
 
     private void Start()
     {
-        memory = GetComponent<GoapTestMem>();
+        memory = GetComponentInParent<EnemyGoapAgent>().GetMemory();
         shootComponent = GetComponentInParent<ShootComponent>();
         shootPoint = shootComponent.ShootPoint.transform;
         hitLayers = 1 << TrixieLayers.GetMask(Layers.Terrain) | 1 << TrixieLayers.GetMask(Layers.Player);
@@ -59,6 +59,7 @@ public class EnemyShootClearanceSensor : ReGoapSensor<GoapLabels, object>
                 }
             }
         }
+        Debug.Log("can hit player: " + hitPlayer);
         memory.GetWorldState().Set(GoapLabels.CanHitPlayer, hitPlayer);
     }
 }

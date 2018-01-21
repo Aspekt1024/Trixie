@@ -5,17 +5,18 @@ using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
 
-[RequireComponent(typeof(GotoState))]
 public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
 
+    private EnemyGoapAgent agentAI;
     private GoapTestMem memory;
     private GotoState gotoState;
     
     protected override void Awake()
     {
         base.Awake();
-        gotoState = GetComponent<GotoState>();
-        memory = GetComponent<GoapTestMem>();
+        agentAI = GetComponentInParent<EnemyGoapAgent>();
+        gotoState = agentAI.GetComponent<GotoState>();
+        memory = (GoapTestMem)agentAI.GetMemory();
     }
 
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)

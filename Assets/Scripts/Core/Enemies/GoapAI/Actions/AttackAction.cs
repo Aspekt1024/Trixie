@@ -38,7 +38,7 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     {
         base.Awake();
         shootComponent = GetComponentInParent<ShootComponent>();
-        animState = GetComponent<AnimateState>();
+        animState = GetComponentInParent<EnemyGoapAgent>().GetComponent<AnimateState>();
     }
     
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)

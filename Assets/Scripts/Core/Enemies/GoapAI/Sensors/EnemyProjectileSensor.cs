@@ -5,24 +5,44 @@ using TrixieCore;
 
 public class EnemyProjectileSensor : ReGoapSensor<GoapLabels, object>
 {
+    private EnemyGoapAgent agent;
+    private AttackAction attackAction;
+
     private Projectile lastProjectile;
     private EnergyTypes.Colours weakColour;
-    private AttackAction attackAction;
-    
+
+    private bool watchingEvents;
+
     private void Start()
     {
-        memory = GetComponent<GoapTestMem>();
+        agent = GetComponentInParent<EnemyGoapAgent>();
+        attackAction = agent.GetAction<AttackAction>();
+        memory = agent.GetComponent<GoapTestMem>();
+        OnEnable();
     }
     
     private void OnEnable()
     {
-        attackAction = GetComponent<AttackAction>();
-        attackAction.OnShoot += Shot;
+        if (watchingEvents) return;
+
+        if (attackAction == null)
+        {
+            watchingEvents = false;
+        }
+        else
+        {
+            watchingEvents = true;
+            attackAction.OnShoot += Shot;
+        }
     }
 
     private void OnDisable()
     {
-        attackAction.OnShoot -= Shot;
+        if (watchingEvents)
+        {
+            attackAction.OnShoot -= Shot;
+        }
+        watchingEvents = false;
     }
 
     private void Shot(Projectile projectile)

@@ -9,13 +9,14 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
 
     private void Start()
     {
-        enemyScript = GetComponent<EnemyGoapAgent>().Parent;
-        vision = GetComponentInParent<VisionComponent>();
+        var agent = GetComponentInParent<EnemyGoapAgent>();
+        enemyScript = agent.Parent;
+        vision = enemyScript.GetComponent<VisionComponent>();
+        memory = agent.GetMemory();
     }
 
     public override void UpdateSensor()
     {
-        memory = GetComponent<GoapTestMem>();
         var worldState = memory.GetWorldState();
 
         worldState.Set(GoapLabels.TargetFound, vision.CanSeePlayer());
