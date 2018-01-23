@@ -5,12 +5,15 @@ using TrixieCore;
 
 public class GreenShieldAbility : BaseShieldAbility
 {
-    public int ProjectileMultiplier = 1;
+    public int ProjectileMultiplier = 3;
     public float Spread = 10f;
     public bool HasCooldown = true;
     public float CooldownTime = 1.5f;
     public GameObject ProjectilePrefab;
-    public float ProjectileSpeed = 15f;
+    public float ProjectileSpeed = 22f;
+    public bool AbsorbsGreenWhenActive = true;
+    public bool CanReflectOtherColours = true;
+    public bool NeedsPowerUpToReflect = true;
 
     private int numProjectilesStored;
     private float timer;
@@ -124,6 +127,8 @@ public class GreenShieldAbility : BaseShieldAbility
     }
 #endregion
 
+
+
     public override void ProjectileImpact(Projectile projectile)
     {
         if (projectile.GetColour() == Colour)
@@ -132,9 +137,16 @@ public class GreenShieldAbility : BaseShieldAbility
         }
         else
         {
-            if (state == States.Activated && shield.ShieldIsCharged(Colour))
+            if (state == States.Activated && CanReflectOtherColours)
             {
-                ReflectProjectile(projectile, false);
+                if (shield.ShieldIsCharged(Colour) && NeedsPowerUpToReflect)
+                {
+                    ReflectProjectile(projectile, false);
+                }
+                else if (!NeedsPowerUpToReflect)
+                {
+                    ReflectProjectile(projectile, false);
+                }
             }
             else
             {
@@ -146,12 +158,12 @@ public class GreenShieldAbility : BaseShieldAbility
 
     private void ManipulateProjectile(Projectile projectile)
     {
-        if (state == States.Activated)
+        if (state == States.Activated && AbsorbsGreenWhenActive)
         {
             numProjectilesStored++;
             projectile.Disable();
         }
-        else if (state == States.None || state == States.Charged)
+        else if (state == States.None || state == States.Charged || state == States.Activated)
         {
             ReflectProjectile(projectile);
         }
