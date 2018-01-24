@@ -11,12 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfe511f5ae84c24e82fbf88db7e24ae, type: 3}
   m_Name: Forest Terrain
   m_EditorClassIdentifier: 
-  _fillMaterial: {fileID: 2100000, guid: 54d2b5e38a41daa418c160fcf4f626f8, type: 2}
+  _fillMaterial: {fileID: 2100000, guid: b45ba740cc42a284b86762690de5f8e3, type: 2}
   _edgeMaterial: {fileID: 2100000, guid: 89cdb2dc95637f6419d103c42f562fc6, type: 2}
   _descriptors:
   - applyTo: 0
     zOffset: -1
-    yOffset: 0.4
+    yOffset: 0.75
     leftCap:
       serializedVersion: 2
       x: 0
