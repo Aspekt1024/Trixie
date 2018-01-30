@@ -22,6 +22,7 @@ public class Player : MonoBehaviour {
 
     private bool isGrounded;
     private bool isAgainstWall;
+    private bool isOnBouncyGround;
 
     public bool IsGrounded
     {
@@ -33,6 +34,12 @@ public class Player : MonoBehaviour {
     {
         get { return isAgainstWall; }
         set { isAgainstWall = value; }
+    }
+
+    public bool IsOnBouncyGround
+    {
+        get { return isOnBouncyGround; }
+        set { isOnBouncyGround = value; }
     }
     
     private void Awake ()
@@ -157,6 +164,8 @@ public class Player : MonoBehaviour {
         {
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             body.velocity = new Vector2(body.velocity.x, 30f);
+            collision.collider.GetComponent<Bulb>().Bounce();
+            jumpComponent.SetGrounded();
         }
         else if (collision.collider.tag == "Enemy")
         {

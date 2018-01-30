@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerJumpComponent : MonoBehaviour {
 
     public float JumpVelocity = 15f;
+    public float BouncyJumpVelocity = 20f;
     public float FallVelocity = 15f;
     public float MaxFallVelocity = 25f;
 
@@ -165,7 +166,7 @@ public class PlayerJumpComponent : MonoBehaviour {
         anim.SetBool("grounded", false);
         jumpTimer = 0f;
         body.velocity = new Vector2(body.velocity.x, JumpVelocity);
-        targetVerticalVelocity = JumpVelocity * 0.5f;
+        targetVerticalVelocity = (Player.Instance.IsOnBouncyGround ? BouncyJumpVelocity : JumpVelocity) * 0.5f;
     }
 
     private void EaseOutOfJump()
@@ -195,6 +196,12 @@ public class PlayerJumpComponent : MonoBehaviour {
     private void UpdateVelocity()
     {
         body.velocity = new Vector2(body.velocity.x, Mathf.Lerp(body.velocity.y, targetVerticalVelocity, 2f * Time.deltaTime));
+    }
+
+    public void SetGrounded()
+    {
+        state = States.Grounded;
+        anim.SetBool("grounded", true);
     }
 
     private void CheckGrounded()

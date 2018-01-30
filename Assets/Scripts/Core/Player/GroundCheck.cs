@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore;
 
 /// <summary>
 /// Checks if Trixie is touching the ground
@@ -13,7 +14,7 @@ public class GroundCheck : MonoBehaviour {
     
     private void FixedUpdate()
     {
-        int terrainLayer = 1 << LayerMask.NameToLayer("Terrain");
+        int terrainLayer = 1 << TrixieLayers.GetMask(Layers.Terrain) | 1 << TrixieLayers.GetMask(Layers.BouncyMaterial);
         RaycastHit2D hitResultsLeft = Physics2D.BoxCast(LeftGroundTrigger.transform.position, LeftGroundTrigger.bounds.size, 0f, Vector3.forward, Mathf.Infinity, terrainLayer);
         RaycastHit2D hitResultsRight = Physics2D.BoxCast(RightGroundTrigger.transform.position, RightGroundTrigger.bounds.size, 0f, Vector3.forward, Mathf.Infinity, terrainLayer);
         RaycastHit2D hitResultsMid = Physics2D.BoxCast(MidGroundTrigger.transform.position, MidGroundTrigger.bounds.size, 0f, Vector3.forward, Mathf.Infinity, terrainLayer);
@@ -37,6 +38,15 @@ public class GroundCheck : MonoBehaviour {
         else
         {
             Player.Instance.IsAgainstWall = true;
+        }
+
+        if (hit.collider.gameObject.layer == TrixieLayers.GetMask(Layers.BouncyMaterial))
+        {
+            Player.Instance.IsOnBouncyGround = true;
+        }
+        else
+        {
+            Player.Instance.IsOnBouncyGround = false;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TrixieCore
 {
     public enum Layers
     {
-        Projectile, Enemy, Player, Terrain, Shield, PlayerProjectile
+        Projectile, Enemy, Player, Terrain, Shield, PlayerProjectile, BouncyMaterial
     }
 
     public class TrixieLayers : MonoBehaviour

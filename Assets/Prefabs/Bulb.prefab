@@ -21,7 +21,10 @@ GameObject:
   - component: {fileID: 4281815854894486}
   - component: {fileID: 212149885421100330}
   - component: {fileID: 58085698015579136}
+  - component: {fileID: 114586775215638716}
   - component: {fileID: 114977994868917620}
+  - component: {fileID: 50394327383662184}
+  - component: {fileID: 95473439460959272}
   m_Layer: 16
   m_Name: Bulb
   m_TagString: BouncyBulb
@@ -42,6 +45,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50394327383662184
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968578093334834}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!58 &58085698015579136
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -57,6 +80,34 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.57}
   serializedVersion: 2
   m_Radius: 1.16
+--- !u!95 &95473439460959272
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968578093334834}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36734c820b4e487439612925356d07ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114586775215638716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968578093334834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0fa0160c89949742bbcaa86e942ec6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114977994868917620
 MonoBehaviour:
   m_ObjectHideFlags: 1
