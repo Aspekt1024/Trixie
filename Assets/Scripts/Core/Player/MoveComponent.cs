@@ -49,6 +49,7 @@ public class MoveComponent : MonoBehaviour {
 
     public void MoveRight()
     {
+        playerAnim.SetBool("isRunning", true);
         timeSinceSpeedChange = 0f;
         targetSpeed = MoveSpeed;
         playerRenderer.transform.localScale = new Vector3()
@@ -61,6 +62,7 @@ public class MoveComponent : MonoBehaviour {
 
     public void MoveLeft()
     {
+        playerAnim.SetBool("isRunning", true);
         timeSinceSpeedChange = 0f;
         targetSpeed = -MoveSpeed;
         playerRenderer.transform.localScale = new Vector3()
@@ -73,6 +75,7 @@ public class MoveComponent : MonoBehaviour {
 
     public void MoveReleased()
     {
+        playerAnim.SetBool("isRunning", false);
         timeSinceSpeedChange = 0f;
         targetSpeed = 0f;
     }
