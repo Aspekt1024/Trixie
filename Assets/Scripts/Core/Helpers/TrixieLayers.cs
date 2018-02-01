@@ -10,6 +10,11 @@ namespace TrixieCore
         Projectile, Enemy, Player, Terrain, Shield, PlayerProjectile, BouncyMaterial
     }
 
+    public enum SortingLayers
+    {
+        Background
+    }
+
     public class TrixieLayers : MonoBehaviour
     {
         private static TrixieLayers instance;
