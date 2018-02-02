@@ -253,7 +253,7 @@ public class ShieldComponent : MonoBehaviour {
     {
         if (stats.ShieldUnlocked())
         {
-            GameUIManager.ShowShieldIndicator();
+            GameUIManager.ShowShieldIndicator(stats);
             GameUIManager.SetShieldColour(abilities[currentAbilityIndex].Colour);
         }
         else

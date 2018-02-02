@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ShieldUI : MonoBehaviour {
     
     public ShieldUIModule BlueShieldModule;
-    public ShieldUIModule PinkShieldModule;
-    public ShieldUIModule YellowShieldModule;
+    public ShieldUIModule RedShieldModule;
+    public ShieldUIModule GreenShieldModule;
 
     private void Start ()
     {
@@ -20,17 +20,17 @@ public class ShieldUI : MonoBehaviour {
         {
             case EnergyTypes.Colours.Blue:
                 BlueShieldModule.SelectShield();
-                PinkShieldModule.DeselectShield();
-                YellowShieldModule.DeselectShield();
+                RedShieldModule.DeselectShield();
+                GreenShieldModule.DeselectShield();
                 break;
             case EnergyTypes.Colours.Red:
-                PinkShieldModule.SelectShield();
+                RedShieldModule.SelectShield();
                 BlueShieldModule.DeselectShield();
-                YellowShieldModule.DeselectShield();
+                GreenShieldModule.DeselectShield();
                 break;
             case EnergyTypes.Colours.Green:
-                YellowShieldModule.SelectShield();
-                PinkShieldModule.DeselectShield();
+                GreenShieldModule.SelectShield();
+                RedShieldModule.DeselectShield();
                 BlueShieldModule.DeselectShield();
                 break;
             default:
@@ -46,10 +46,10 @@ public class ShieldUI : MonoBehaviour {
                 BlueShieldModule.SetShieldPower(powerRatio);
                 break;
             case EnergyTypes.Colours.Red:
-                PinkShieldModule.SetShieldPower(powerRatio);
+                RedShieldModule.SetShieldPower(powerRatio);
                 break;
             case EnergyTypes.Colours.Green:
-                YellowShieldModule.SetShieldPower(powerRatio);
+                GreenShieldModule.SetShieldPower(powerRatio);
                 break;
             default:
                 break;
@@ -59,29 +59,30 @@ public class ShieldUI : MonoBehaviour {
     public void HideShieldIndicator()
     {
         // TODO hide shields when not available
-        PinkShieldModule.Hide();
+        RedShieldModule.Hide();
         BlueShieldModule.Hide();
-        YellowShieldModule.Hide();
+        GreenShieldModule.Hide();
     }
 
-    public void ShowShieldIndicator()
+    public void ShowShieldIndicator(ShieldStats stats)
     {
-        // TODO show shields when available
-        PinkShieldModule.Show();
-        BlueShieldModule.Show();
-        YellowShieldModule.Show();
+        if (stats.ColourUnlocked(EnergyTypes.Colours.Red)) { RedShieldModule.Show(); }
+        if (stats.ColourUnlocked(EnergyTypes.Colours.Blue)) { BlueShieldModule.Show(); }
+        if (stats.ColourUnlocked(EnergyTypes.Colours.Green)) { GreenShieldModule.Show(); }
     }
 
     public void ShowShieldsEnabled()
     {
-        // TODO show animation
-        ShowShieldIndicator();
+        RedShieldModule.Enable();
+        BlueShieldModule.Enable();
+        GreenShieldModule.Enable();
     }
 
     public void ShowShieldsDisabled()
     {
-        // TODO show animation
-        HideShieldIndicator();
+        RedShieldModule.Disable();
+        BlueShieldModule.Disable();
+        GreenShieldModule.Disable();
     }
 
 }

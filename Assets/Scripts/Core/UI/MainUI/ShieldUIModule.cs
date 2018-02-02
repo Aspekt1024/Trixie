@@ -4,28 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ShieldUIModule : MonoBehaviour {
+
+    public Sprite SelectedOutline;
+    public Sprite UnselectedOutline;
     
-    public Image ShieldImage;
-    private Image backgroundImage;
+    public Image ShieldFillImage;
+    public Image OutlineImage;
+    public Image Background;
 
     private float powerLevelPercent;
     private bool selected;
 
-    private void Awake()
-    {
-        backgroundImage = GetComponent<Image>();
-    }
-
+    private float colorModifier = 1f;
+    
     public void Hide()
     {
-        backgroundImage.enabled = false;
-        ShieldImage.enabled = false;
+        OutlineImage.enabled = false;
+        ShieldFillImage.enabled = false;
+        Background.enabled = false;
     }
 
     public void Show()
     {
-        backgroundImage.enabled = true;
-        ShieldImage.enabled = true;
+        OutlineImage.enabled = true;
+        ShieldFillImage.enabled = true;
+        Background.enabled = true;
     }
 
     public void SelectShield()
@@ -46,8 +49,33 @@ public class ShieldUIModule : MonoBehaviour {
         SetShieldGraphic();
     }
 
+    public void Disable()
+    {
+        colorModifier = 0.3f;
+    }
+
+    public void Enable()
+    {
+        colorModifier = 1f;
+    }
+
     private void SetShieldGraphic()
     {
-        ShieldImage.fillAmount = powerLevelPercent;
+        if (selected)
+        {
+            OutlineImage.sprite = SelectedOutline;
+            OutlineImage.color = Color.white * colorModifier;
+            ShieldFillImage.color = Color.white * colorModifier;
+            Background.color = Color.white * colorModifier * 0.5f;
+        }
+        else
+        {
+            OutlineImage.sprite = SelectedOutline;
+            OutlineImage.color = Color.white * 0.5f * colorModifier;
+            ShieldFillImage.color = Color.white * 0.7f * colorModifier;
+            Background.color = Color.white * 0.5f * colorModifier;
+        }
+        
+        ShieldFillImage.fillAmount = powerLevelPercent;
     }
 }
