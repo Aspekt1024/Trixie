@@ -62,7 +62,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
             isShielding = true;
             gameObject.SetActive(true);
             body.isKinematic = true;
-            anim.Play("Static", 0, 0f);
+            anim.Play("Activate" + Colour.ToString(), 0, 0f);
         }
     }
 

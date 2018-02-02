@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class ShieldPositioner : MonoBehaviour {
 
+    public float DistFromCenter = 0.5f;
+
     private Transform centerPoint;
-
     private Animator playerAnim;
-
-    private const float distFromCenter = 1.2f;
 
     public void Setup(Transform centerPointReference)
     {
@@ -21,11 +20,10 @@ public class ShieldPositioner : MonoBehaviour {
         Vector2 aimDirection = GameManager.GetAimDirection();
         if (aimDirection == Vector2.zero) return;
 
-        Vector2 distVector = (aimDirection - (Vector2)centerPoint.position).normalized * distFromCenter;
+        Vector2 distVector = (aimDirection - (Vector2)centerPoint.position).normalized * DistFromCenter;
         transform.position = centerPoint.position + (Vector3)distVector;
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);
-        transform.localEulerAngles = new Vector3(0f, 0f, angle);
-
+        
         if (Player.Instance.IsLookingRight())
         {
             playerAnim.SetFloat("lookAngle", angle / 360f);
@@ -34,5 +32,17 @@ public class ShieldPositioner : MonoBehaviour {
         {
             playerAnim.SetFloat("lookAngle", Mathf.Sign(angle) * (0.5f - Mathf.Abs(angle) / 360f));
         }
+
+        if (Mathf.Abs(angle) > 90f)
+        {
+            transform.localEulerAngles = new Vector3(0f, 0f, angle + 180f);
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+        }
+        else
+        {
+            transform.localEulerAngles = new Vector3(0f, 0f, angle);
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+        }
+
     }
 }

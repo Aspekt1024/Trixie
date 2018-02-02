@@ -261,17 +261,9 @@ public class ShieldComponent : MonoBehaviour {
             GameUIManager.HideShieldIndicator();
         }
 
-        switch (abilities[currentAbilityIndex].Colour)
+        if (ShieldObject.activeSelf)
         {
-            case EnergyTypes.Colours.Blue:
-                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-                break;
-            case EnergyTypes.Colours.Red:
-                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, .7f, 1f);
-                break;
-            case EnergyTypes.Colours.Green:
-                ShieldObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0f, 1f);
-                break;
+            anim.Play("Activate" + abilities[currentAbilityIndex].Colour.ToString(), 0, 0f);
         }
     }
 }
