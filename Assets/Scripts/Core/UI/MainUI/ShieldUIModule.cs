@@ -52,11 +52,13 @@ public class ShieldUIModule : MonoBehaviour {
     public void Disable()
     {
         colorModifier = 0.3f;
+        SetShieldGraphic();
     }
 
     public void Enable()
     {
         colorModifier = 1f;
+        SetShieldGraphic();
     }
 
     private void SetShieldGraphic()
