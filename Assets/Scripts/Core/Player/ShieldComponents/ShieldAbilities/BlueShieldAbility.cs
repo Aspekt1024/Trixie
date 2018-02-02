@@ -5,12 +5,29 @@ using TrixieCore;
 
 public class BlueShieldAbility : BaseShieldAbility
 {
-    public bool DestroysProjectiles = true;
-    public bool DamageOnMaxCharge = true;
-    public int DamageToEnemies = 3;
     public bool SlowsProjectiles = true;
     public float ProjectileSpeedMultiplier = 0.2f;
     public float EffectRadius = 20f;
+
+    public enum EnemyEffects
+    {
+        Stun, Damage, NoEffect
+    }
+    public EnemyEffects EffectOnEnemies;
+    public float EnemyStunTime = 1f;
+    public int DamageToEnemies = 3;
+
+    public enum ProjectileEffects
+    {
+        Destroy, NoEffect
+    }
+    public ProjectileEffects EffectOnProjectiles;
+
+    public bool PermaSlowProjectiles;
+    public float ProjectileSpeedReturnDelay = 1f;
+
+    public float ShieldDuration = 3f;
+        
     public enum ChargeTypes
     {
         Chargeup, Cooldown
@@ -20,7 +37,8 @@ public class BlueShieldAbility : BaseShieldAbility
     public float CooldownTime = 1f;
     public GameObject Telegraph;
 
-    private float timer;
+    private float chargeTimer;
+    private float durationTimer;
 
     private HashSet<Projectile> projectiles = new HashSet<Projectile>();
 
@@ -35,6 +53,7 @@ public class BlueShieldAbility : BaseShieldAbility
     public override void ActivatePressed()
     {
         Telegraph.SetActive(true);
+        durationTimer = 0f;
 
         if (ChargeType == ChargeTypes.Chargeup)
         {
@@ -44,6 +63,8 @@ public class BlueShieldAbility : BaseShieldAbility
 
     public override bool ActivateReleased()
     {
+        if (state != States.Charged && state != States.Charging) return false;
+
         shield.ChargeIndicator.StopCharge();
         Telegraph.SetActive(false);
         bool activateSuccess = false;
@@ -56,7 +77,7 @@ public class BlueShieldAbility : BaseShieldAbility
 
         if (ChargeType == ChargeTypes.Chargeup)
         {
-            timer = 0f;
+            chargeTimer = 0f;
             if (state == States.Charging)
             {
                 state = States.None;
@@ -81,7 +102,7 @@ public class BlueShieldAbility : BaseShieldAbility
     {
         if (state == States.Activating)
         {
-            timer = 0f;
+            chargeTimer = 0f;
         }
         state = States.None;
         Telegraph.SetActive(false);
@@ -96,7 +117,7 @@ public class BlueShieldAbility : BaseShieldAbility
             case States.None:
                 if (ChargeType == ChargeTypes.Cooldown)
                 {
-                    if (timer > CooldownTime)
+                    if (chargeTimer > CooldownTime)
                     {
                         state = States.Charged;
                     }
@@ -107,16 +128,22 @@ public class BlueShieldAbility : BaseShieldAbility
                 }
                 else
                 {
-                    timer = 0f;
+                    chargeTimer = 0f;
                 }
                 break;
             case States.Charging:
-                timer += deltaTime;
-                shield.ChargeIndicator.SetCharge(timer / (ChargeType == ChargeTypes.Chargeup ? ChargeupTime : CooldownTime));
+                chargeTimer += deltaTime;
+                durationTimer += deltaTime;
+                shield.ChargeIndicator.SetCharge(chargeTimer / (ChargeType == ChargeTypes.Chargeup ? ChargeupTime : CooldownTime));
                 SlowProjectiles();
                 TransitionIfCharged();
                 break;
             case States.Charged:
+                durationTimer += deltaTime;
+                if (durationTimer >= ShieldDuration)
+                {
+                    ActivateReleased();
+                }
                 SlowProjectiles();
                 break;
             case States.Activating:
@@ -135,13 +162,13 @@ public class BlueShieldAbility : BaseShieldAbility
 
         LayerMask layerMask = 0;
 
-        if (DestroysProjectiles)
+        if (EffectOnProjectiles == ProjectileEffects.Destroy)
         {
             layerMask |= 1 << TrixieLayers.GetMask(Layers.Projectile);
         }
         if (DamageToEnemies > 0)
         {
-            if ((DamageOnMaxCharge && true) || !DamageOnMaxCharge)  // TODO check max charge
+            if (EffectOnEnemies == EnemyEffects.Damage || EffectOnEnemies == EnemyEffects.Stun)  // TODO check max charge
             {
                 layerMask |= 1 << TrixieLayers.GetMask(Layers.Enemy);
             }
@@ -157,7 +184,15 @@ public class BlueShieldAbility : BaseShieldAbility
             }
             else if (results[i].gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
-                results[i].GetComponent<BaseEnemy>().DamageEnemy(results[i].transform.position - transform.position, DamageToEnemies);
+                BaseEnemy enemy = results[i].GetComponent<BaseEnemy>();
+                if (EffectOnEnemies == EnemyEffects.Damage)
+                {
+                    enemy.DamageEnemy(results[i].transform.position - transform.position, DamageToEnemies);
+                }
+                else if (EffectOnEnemies == EnemyEffects.Stun)
+                {
+                    enemy.Stun(results[i].transform.position - transform.position, EnemyStunTime);
+                }
             }
         }
     }
@@ -194,7 +229,11 @@ public class BlueShieldAbility : BaseShieldAbility
     {
         foreach (Projectile projectile in projectiles)
         {
-            projectile.SetSpeedMultiplier(1f);
+            if (!PermaSlowProjectiles)
+            {
+                projectile.SetSpeedMultiplier(1f, ProjectileSpeedReturnDelay);
+            }
+
             projectile.OnDestroyed -= RemoveDestroyedProjectileFromList;
         }
 
@@ -218,19 +257,19 @@ public class BlueShieldAbility : BaseShieldAbility
 
         if (ChargeType == ChargeTypes.Cooldown)
         {
-            timer = 0f;
+            chargeTimer = 0f;
         }
         shield.OnReturn();
     }
 
     private void TransitionIfCharged()
     {
-        if (ChargeType == ChargeTypes.Chargeup && timer > ChargeupTime)
+        if (ChargeType == ChargeTypes.Chargeup && chargeTimer > ChargeupTime)
         {
             shield.ChargeIndicator.SetCharged(ChargeType == ChargeTypes.Cooldown);
             state = States.Charged;
         }
-        else if (ChargeType == ChargeTypes.Cooldown && timer > CooldownTime)
+        else if (ChargeType == ChargeTypes.Cooldown && chargeTimer > CooldownTime)
         {
             shield.ChargeIndicator.SetCharged(ChargeType == ChargeTypes.Cooldown);
             state = States.Charged;

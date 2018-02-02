@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemy : MonoBehaviour {
+public abstract class BaseEnemy : MonoBehaviour {
 
     public float AggroRadius;
     public bool hasAggro;
@@ -19,14 +19,15 @@ public class BaseEnemy : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
     
-    protected virtual void Update()
-    {
-    }
+    protected virtual void Update() { }
     
     public void SetOnDeathAction(Action callback)
     {
         OnDeathCallback = callback;
     }
+
+    public virtual void Stun(Vector2 direction, float stunTime) { }
+    protected virtual void OnDamaged() { }
 
     public virtual void DamageEnemy(Vector2 direction, int damage = 1)
     {
@@ -54,7 +55,6 @@ public class BaseEnemy : MonoBehaviour {
             LostAggro();
         }
     }
-    protected virtual void OnDamaged() { }
 
     public void HasAggro()
     {

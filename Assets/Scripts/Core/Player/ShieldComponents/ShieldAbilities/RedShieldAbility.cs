@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class RedShieldAbility : BaseShieldAbility
 {
+    public bool ShootRequiresFullCharge = true;
     public float ShootSpeed = 75f;
     public float ShootDistance = 30f;
+    public float Damage = 2f;
     public enum ChargeTypes
     {
         Chargeup, Cooldown
@@ -29,6 +31,7 @@ public class RedShieldAbility : BaseShieldAbility
 
     public override void ActivatePressed()
     {
+        if (ShootRequiresFullCharge && !power.ShieldFullyCharged()) return;
         trajectory.Enable();
 
         if (ChargeType == ChargeTypes.Chargeup)

@@ -4,85 +4,47 @@ using UnityEngine;
 
 public class ShieldPower {
 
-    private const int MAX_POWER = 3;
+    private float maxCharge = 3;
+    private float charge = 0;
+    private BaseShieldAbility shieldParent;
 
-    private int bluePower;
-    private int redPower;
-    private int greenPower;
-
-    public ShieldPower()
+    public ShieldPower(BaseShieldAbility parent, float maxCharge = 3, float initialCharge = 0)
     {
-        bluePower = 3;
-        redPower = 3;
-        greenPower = 3;
+        this.maxCharge = maxCharge;
+        charge = initialCharge;
+        shieldParent = parent;
         UpdateShieldUI();
     }
 
-    public bool ShieldFullyCharged(EnergyTypes.Colours colour)
+    public bool ShieldFullyCharged()
     {
-        int charge = 0;
-        switch (colour)
-        {
-            case EnergyTypes.Colours.Blue:
-                charge = bluePower;
-                break;
-            case EnergyTypes.Colours.Red:
-                charge = redPower;
-                break;
-            case EnergyTypes.Colours.Green:
-                charge = greenPower;
-                break;
-            default:
-                charge = 0;
-                break;
-        }
-        return charge == MAX_POWER;
+        return charge == maxCharge;
     }
 
-    public int GetPower(EnergyTypes.Colours colour)
+    public void SetMaxCharge(float newMaxCharge)
     {
-        switch (colour)
-        {
-            case EnergyTypes.Colours.Blue:
-                return bluePower;
-            case EnergyTypes.Colours.Red:
-                return redPower;
-            case EnergyTypes.Colours.Green:
-                return greenPower;
-            default:
-                return 0;
-        }
+        maxCharge = newMaxCharge;
     }
 
-    public void AddPower(EnergyTypes.Colours colour, int powerToAdd = 1)
+    public float GetPower()
     {
-        switch (colour)
-        {
-            case EnergyTypes.Colours.Blue:
-                bluePower = Mathf.Clamp(bluePower + 1, 0, MAX_POWER);
-                break;
-            case EnergyTypes.Colours.Red:
-                redPower = Mathf.Clamp(redPower + 1, 0, MAX_POWER);
-                break;
-            case EnergyTypes.Colours.Green:
-                greenPower = Mathf.Clamp(greenPower + 1, 0, MAX_POWER);
-                break;
-            default:
-                break;
-        }
+        return charge;
+    }
+
+    public void AddPower(float powerToAdd = 1f)
+    {
+        charge = Mathf.Clamp(charge + powerToAdd, 0, maxCharge);
         UpdateShieldUI();
     }
 
-    public void ReducePower(EnergyTypes.Colours colour, int powerToRemove)
+    public void ReducePower(float powerToRemove)
     {
-        AddPower(colour, -powerToRemove);
+        AddPower(-powerToRemove);
     }
 
     private void UpdateShieldUI()
     {
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Blue, bluePower);
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Green, greenPower);
-        GameUIManager.SetShieldPower(EnergyTypes.Colours.Red, redPower);
+        GameUIManager.SetShieldPower(shieldParent.Colour, charge / maxCharge);
     }
 
 }

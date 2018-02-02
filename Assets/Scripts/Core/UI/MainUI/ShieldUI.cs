@@ -38,18 +38,18 @@ public class ShieldUI : MonoBehaviour {
         }
     }
 
-    public void SetShieldPower(EnergyTypes.Colours colour, int power)
+    public void SetShieldPower(EnergyTypes.Colours colour, float powerRatio)
     {
         switch (colour)
         {
             case EnergyTypes.Colours.Blue:
-                BlueShieldModule.SetShieldPower(power);
+                BlueShieldModule.SetShieldPower(powerRatio);
                 break;
             case EnergyTypes.Colours.Red:
-                PinkShieldModule.SetShieldPower(power);
+                PinkShieldModule.SetShieldPower(powerRatio);
                 break;
             case EnergyTypes.Colours.Green:
-                YellowShieldModule.SetShieldPower(power);
+                YellowShieldModule.SetShieldPower(powerRatio);
                 break;
             default:
                 break;

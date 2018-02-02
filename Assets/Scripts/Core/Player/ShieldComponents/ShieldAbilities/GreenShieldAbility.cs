@@ -17,14 +17,12 @@ public class GreenShieldAbility : BaseShieldAbility
 
     private int numProjectilesStored;
     private float timer;
-    private ShieldCollisionHandler collisionHandler;
 
     protected override void Awake()
     {
         base.Awake();
         Colour = EnergyTypes.Colours.Green;
         shield.ProjectileCollider.enabled = false;
-        collisionHandler = shield.ShieldCollider.GetComponent<ShieldCollisionHandler>();
     }
 
     public override void UpdateCharge(float deltaTime)
@@ -133,6 +131,7 @@ public class GreenShieldAbility : BaseShieldAbility
     {
         if (projectile.GetColour() == Colour)
         {
+            power.AddPower();
             ManipulateProjectile(projectile);
         }
         else

@@ -5,8 +5,14 @@ using TrixieCore;
 
 public abstract class BaseShieldAbility : MonoBehaviour {
 
+    public float MaxCharge = 3;
+    public float InitialCharge = 0;
+    public bool DisabledOnWrongColour = true;
+    public bool LosesPowerOnWrongColour = true;
+    public float PowerLossOnWrongColour = 1;
+
     [HideInInspector] public EnergyTypes.Colours Colour;
-    
+   
     protected enum States
     {
         None, Charging, Charged, Activating, Activated, Returning
@@ -17,6 +23,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
     protected ShieldComponent shield;
     protected Rigidbody2D body;
     protected Animator anim;
+    protected ShieldPower power;
     
     public abstract void ActivatePressed();
     public abstract bool ActivateReleased();
@@ -26,9 +33,20 @@ public abstract class BaseShieldAbility : MonoBehaviour {
 
     public virtual void ProjectileImpact(Projectile projectile)
     {
-        if (projectile.GetColour() != Colour)
+        if (projectile.GetColour() == Colour)
         {
-            shield.DisableShield(shield.DisableTime);
+            power.AddPower(1f);
+        }
+        else
+        { 
+            if (DisabledOnWrongColour)
+            {
+                shield.DisableShield(shield.DisableTime);
+            }
+            if (LosesPowerOnWrongColour)
+            {
+                power.ReducePower(PowerLossOnWrongColour);
+            }
         }
         projectile.Destroy();
     }
@@ -48,6 +66,8 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         }
     }
 
+    public bool IsAtMaxCharge() { return power.ShieldFullyCharged(); }
+
     public virtual void StopShielding()
     {
         isShielding = false;
@@ -61,5 +81,6 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         shield = Player.Instance.GetComponent<ShieldComponent>();
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        power = new ShieldPower(this, MaxCharge, InitialCharge);
     }
 }

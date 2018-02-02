@@ -79,4 +79,9 @@ public class SauceRobot : BaseEnemy {
     {
         gameObject.SetActive(false);
     }
+
+    public override void Stun(Vector2 direction, float stunTime)
+    {
+        Debug.Log("you stunned enemy!");
+    }
 }

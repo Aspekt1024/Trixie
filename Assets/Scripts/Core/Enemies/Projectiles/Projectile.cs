@@ -355,8 +355,20 @@ namespace TrixieCore
 
         public void SetSpeedMultiplier(float multiplier)
         {
+            if (!gameObject.activeSelf) return;
             body.gravityScale = settings.GravityScale * multiplier;
             body.velocity = body.velocity.normalized * originalSpeed * multiplier;
+        }
+
+        public void SetSpeedMultiplier(float multiplier, float delay)
+        {
+            StartCoroutine(SetSpeedAfterDelay(multiplier, delay));
+        }
+
+        private IEnumerator SetSpeedAfterDelay(float multiplier, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SetSpeedMultiplier(multiplier);
         }
 
         protected virtual void SetColourGraphic(Color color)

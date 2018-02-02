@@ -12,8 +12,7 @@ public class ShieldComponent : MonoBehaviour {
     public Collider2D ProjectileCollider;
     public Transform CenterPoint;
     public ShieldChargeIndicator ChargeIndicator;
-
-    private ShieldPower power;
+    
     private ShieldStats stats;
     private ShieldPositioner positioner;
     private BaseShieldAbility[] abilities;
@@ -37,7 +36,6 @@ public class ShieldComponent : MonoBehaviour {
     private void Start()
     {
         stats = new ShieldStats();
-        power = new ShieldPower();
         positioner = ShieldObject.GetComponent<ShieldPositioner>();
 
         GetAbilities();
@@ -58,6 +56,18 @@ public class ShieldComponent : MonoBehaviour {
         abilities[0] = ShieldObject.GetComponent<BlueShieldAbility>();
         abilities[1] = ShieldObject.GetComponent<RedShieldAbility>();
         abilities[2] = ShieldObject.GetComponent<GreenShieldAbility>();
+    }
+
+    public BaseShieldAbility GetAbility(EnergyTypes.Colours colour)
+    {
+        foreach (var ability in abilities)
+        {
+            if (ability.Colour == colour)
+            {
+                return ability;
+            }
+        }
+        return null;
     }
 
     private void Update()
@@ -113,16 +123,6 @@ public class ShieldComponent : MonoBehaviour {
     public bool HasShield()
     {
         return stats.ShieldUnlocked();
-    }
-
-    public void AddShieldPower(int powerToAdd = 1)
-    {
-        power.AddPower(abilities[currentAbilityIndex].Colour, powerToAdd);
-    }
-
-    public void ReduceShieldPower(int powerToRemove = 1)
-    {
-        power.ReducePower(abilities[currentAbilityIndex].Colour, powerToRemove);
     }
 
     public void ObtainedUnlock(ItemUnlock.UnlockType unlockType)
@@ -222,7 +222,7 @@ public class ShieldComponent : MonoBehaviour {
     }
 
     public bool ShieldIsDisabled() { return state == States.Disabled; }
-    public bool ShieldIsCharged(EnergyTypes.Colours colour) { return power.ShieldFullyCharged(colour); }
+    public bool ShieldIsCharged(EnergyTypes.Colours colour) { return abilities[currentAbilityIndex].IsAtMaxCharge(); }
     public bool IsAwaitingActivation() { return activateButtonHeld; }
     public bool IsShielding() { return state == States.Shielding; }
     public bool IsFiring() { return state == States.Firing; }
