@@ -63,6 +63,7 @@ public class EnemyGuy : BaseEnemy {
         if (damageRoutine != null) StopCoroutine(damageRoutine);
         patrolComponent.Deactivate();
         anim.Play("Explosion", 0, 0f);
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
         coll.enabled = false;
         body.isKinematic = true;
         transform.localScale = Vector3.one * 1.8f;

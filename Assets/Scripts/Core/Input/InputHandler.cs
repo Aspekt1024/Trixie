@@ -52,6 +52,19 @@ namespace TrixieInput
             }
         }
 
+        public Vector2 GetMoveDirection()
+        {
+            switch (mode)
+            {
+                case InputMode.Keyboard:
+                    return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                case InputMode.Controller:
+                    return controllerInput.GetMoveDirection();
+                default:
+                    return Vector2.right;
+            }
+        }
+
     }
 }
 

@@ -29,6 +29,7 @@ public class SmartBot : BaseEnemy {
         AI.SetActive(false);
         Sprites.SetActive(false);
         ExplosionEffect.SetActive(true);
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
 
         StartCoroutine(DestroyCompletionDelay(2f));
     }

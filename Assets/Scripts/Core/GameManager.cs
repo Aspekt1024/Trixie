@@ -59,6 +59,15 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static Vector2 GetMoveDirection()
+    {
+        if (Instance.state == States.Playing)
+        {
+            return Instance.inputHandler.GetMoveDirection();
+        }
+        return Vector2.zero;
+    }
+
     public static void RespawnPlayerStart()
     {
         Instance.RespawnHandler.SetObjectToPoint(Instance.Player.transform);

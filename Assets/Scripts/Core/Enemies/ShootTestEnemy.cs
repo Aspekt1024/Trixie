@@ -99,6 +99,7 @@ public class ShootTestEnemy : BaseEnemy {
 
         Turrets.gameObject.SetActive(false);
         ExplosionEffect.SetActive(true);
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
     }
 
     private IEnumerator ShowDamaged(Vector2 direction)

@@ -6,6 +6,7 @@ namespace TrixieInput
 {
     public class ControllerInputHandler
     {
+        public string VERTICAL_AXIS = "Vertical";
         public string HORIZONTAL_AXIS = "Horizontal";
         public string SHOOT = "Fire1";
         public string AIM_AXIS_X = "AimX";
@@ -36,12 +37,10 @@ namespace TrixieInput
         private Dictionary<KeyCode, Action> getKeyUpBindings = new Dictionary<KeyCode, Action>();
         private Dictionary<KeyCode, Action> getKeyBindings = new Dictionary<KeyCode, Action>();
 
-        private Vector2 aimDirection;
 
         public ControllerInputHandler(GameManager manager)
         {
             gameManager = manager;
-            aimDirection = Vector2.right;
 
             getKeyDownBindings.Add(A_BUTTON, gameManager.JumpPressed);
             getKeyDownBindings.Add(L_BUMPER, gameManager.ShieldPressed);
@@ -123,13 +122,25 @@ namespace TrixieInput
         public Vector2 GetAimDirection()
         {
             Vector2 aimAxis = new Vector2(Input.GetAxis(AIM_AXIS_X), Input.GetAxis(AIM_AXIS_Y));
-
+            Vector2 aimDirection = Vector2.right;
             if (aimAxis.magnitude > 0.2f)
             {
                 aimDirection = new Vector2(aimAxis.x, -aimAxis.y);
             }
 
             return aimDirection + (Vector2)Player.Instance.transform.position;
+        }
+
+        public Vector2 GetMoveDirection()
+        {
+            Vector2 moveAxis = new Vector2(Input.GetAxis(HORIZONTAL_AXIS), Input.GetAxis(VERTICAL_AXIS));
+            Vector2 moveDirection = Vector2.right;
+
+            if (moveAxis.magnitude > 0.2f)
+            {
+                moveDirection = moveAxis;
+            }
+            return moveDirection;
         }
     }
 }

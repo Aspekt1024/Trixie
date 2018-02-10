@@ -325,6 +325,8 @@ namespace TrixieCore
             transform.eulerAngles = new Vector3(0f, 0f, angle);
             originalSpeed = speed;
             body.velocity = transform.right * speed;
+            
+            AudioMaster.PlayAudio(AudioMaster.AudioClips.EnemyShoot, transform.position - Player.Instance.transform.position);
         }
 
         public void SetSinePath(float amplitude, float wavelength, float phase, float speed)

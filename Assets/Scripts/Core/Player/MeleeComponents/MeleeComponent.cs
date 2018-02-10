@@ -6,10 +6,11 @@ public class MeleeComponent : MonoBehaviour {
 
     public float MeleeCooldown = 0.4f;
     public float MeleeDuration = 0.1f;
-    public MeleeCollider meleeCollider;
+    public MeleeCollider meleeColliderHorizontal;
+    public MeleeCollider meleeColliderVertical;
 
     private bool isActive;
-    
+
     private enum States
     {
         None, Attacking, Disabled
@@ -43,17 +44,40 @@ public class MeleeComponent : MonoBehaviour {
 
     private IEnumerator Melee()
     {
+        Vector2 direction = GameManager.GetMoveDirection();
+        string animationName = "Melee";
+        if (direction.y > Mathf.Abs(direction.x))
+        {
+            animationName += "Up";
+            meleeColliderVertical.EnableCollider();
+            meleeColliderVertical.transform.localEulerAngles = Vector3.zero;
+        }
+        else if (direction.y < -Mathf.Abs(direction.x))
+        {
+            animationName += "Down";
+            meleeColliderVertical.EnableCollider();
+            meleeColliderVertical.transform.localEulerAngles = new Vector3(0f, 0f, 180f);
+        }
+        else
+        {
+            meleeColliderHorizontal.EnableCollider();
+        }
+
+        animationName += Player.Instance.GetComponent<ShieldComponent>().GetColour().ToString();
+
+        anim.Play(animationName, 0, 0f);
         isActive = true;
-        meleeCollider.EnableCollider();
         state = States.Attacking;
         float meleeTimer = 0f;
-        anim.Play("Melee", 0, 0f);
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Melee1);
+
         while (meleeTimer < MeleeCooldown)
         {
             if (meleeTimer > MeleeDuration)
             {
                 isActive = false;
-                meleeCollider.DisableCollider();
+                meleeColliderHorizontal.DisableCollider();
+                meleeColliderVertical.DisableCollider();
             }
             meleeTimer += Time.deltaTime;
             yield return null;

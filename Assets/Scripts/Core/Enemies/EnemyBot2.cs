@@ -47,6 +47,7 @@ public class EnemyBot2 : BaseEnemy {
         enemyCollider.enabled = false;
         anim.Play("Explosion", 0, 0f);
         state = States.Dead;
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
     }
 
 }
