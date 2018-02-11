@@ -19,6 +19,7 @@ ExportedObj/
 *.booproj
 *.svd
 *.ide
+/.vs/
 
 
 # Unity3D generated meta files
@@ -30,3 +31,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Trixie Specific
+/Audio/Universal Sound FX/
+/Audio/CasualGameSounds/
