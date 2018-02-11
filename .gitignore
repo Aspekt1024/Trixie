@@ -33,5 +33,6 @@ sysinfo.txt
 *.unitypackage
 
 #Trixie Specific
-/Audio/Universal Sound FX/
-/Audio/CasualGameSounds/
+/Assets/Audio/Universal Sound FX/
+/Assets/Audio/CasualGameSounds/
+/Assets/Audio/Fantasy SFX for Particle Distort Texture effect library/
