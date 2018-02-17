@@ -8,6 +8,7 @@ public class ShootTestEnemy : BaseEnemy {
     public Transform Turrets;
     public GameObject ExplosionEffect;
     public GameObject Sprites;
+    public GameObject StunEffect;
 
     private float cooldown;
 
@@ -21,7 +22,7 @@ public class ShootTestEnemy : BaseEnemy {
 
     private enum States
     {
-        None, TakingDamage, Dead
+        None, TakingDamage, Dead, Stunned
     }
     private States state;
 
@@ -33,11 +34,12 @@ public class ShootTestEnemy : BaseEnemy {
         coll = GetComponent<Collider2D>();
         spriteRenderer = Sprites.GetComponentsInChildren<SpriteRenderer>();
         ExplosionEffect.SetActive(false);
+        StunEffect.SetActive(false);
     }
 
     protected override void Update()
     {
-        if (state == States.Dead) return;
+        if (state == States.Dead || state == States.Stunned) return;
 
         if (Vector2.Distance(Player.Instance.transform.position, transform.position) < 30f)
         {
@@ -127,5 +129,37 @@ public class ShootTestEnemy : BaseEnemy {
         body.velocity = Vector2.zero;
         yield return new WaitForSeconds(0.7f);
         state = States.None;
+    }
+
+    private Coroutine stunRoutine;
+    public override void Stun(Vector2 direction, float stunTime)
+    {
+        if (stunRoutine != null) StopCoroutine(stunRoutine);
+        stunRoutine = StartCoroutine(StunRoutine(stunTime));
+    }
+
+    private IEnumerator StunRoutine(float stunTime)
+    {
+        state = States.Stunned;
+        Color origiginalColor = spriteRenderer[0].color;
+        StunEffect.SetActive(true);
+        SetRendererColour(new Color(0.3f, 0.3f, 1f, 1f));
+        float timer = 0;
+        while(timer < stunTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        StunEffect.SetActive(false);
+        SetRendererColour(origiginalColor);
+        state = States.None;
+    }
+
+    private void SetRendererColour(Color color)
+    {
+        foreach (SpriteRenderer r in spriteRenderer)
+        {
+            r.color = color;
+        }
     }
 }

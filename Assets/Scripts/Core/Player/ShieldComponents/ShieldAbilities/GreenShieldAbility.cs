@@ -171,7 +171,8 @@ public class GreenShieldAbility : BaseShieldAbility
     private void ReflectProjectile(Projectile projectile, bool useMultiplier = true)
     {
         Rigidbody2D projectileBody = projectile.GetComponent<Rigidbody2D>();
-        projectileBody.velocity = transform.right * projectileBody.velocity.magnitude;
+        Vector2 direction = transform.right * Mathf.Sign(transform.localScale.x);
+        projectileBody.velocity = direction * projectileBody.velocity.magnitude;
         projectile.gameObject.layer = TrixieLayers.GetMask(Layers.PlayerProjectile);
         
         if (useMultiplier && ProjectileMultiplier > 1 && shield.ShieldIsCharged(Colour))
@@ -221,12 +222,14 @@ public class GreenShieldAbility : BaseShieldAbility
 
     private void GenerateNewProjectiles(Projectile projectile, Rigidbody2D projectileBody, int numProjectiles, float spread)
     {
+        float centerAngle = Mathf.Atan2(projectileBody.velocity.y, projectileBody.velocity.x) * Mathf.Rad2Deg;
+
         float directionModifier = 1f;
         for (int i = 1; i < numProjectiles; i++)
         {
             GameObject newProjectile = ObjectPooler.Instance.GetPooledProjectile(projectile.name.Substring(0, projectile.name.Length - "(Clone)".Length));
 
-            float angle = transform.eulerAngles.z + Spread * directionModifier * Mathf.CeilToInt(i / 2f);
+            float angle = centerAngle + Spread * directionModifier * Mathf.CeilToInt(i / 2f);
             
             Projectile newProjScript = newProjectile.GetComponent<Projectile>();
             newProjScript.Activate(projectile.transform.position, angle, projectileBody.velocity.magnitude, projectile.GetSettings(), isPlayerProjectile: true);
