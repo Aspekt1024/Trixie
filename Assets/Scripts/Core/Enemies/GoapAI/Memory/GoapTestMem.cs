@@ -35,6 +35,11 @@ public class GoapTestMem : ReGoapMemory<GoapLabels, object>
                 sensor.UpdateSensor();
             }
         }
+
+        if (CheckCondition(GoapLabels.CanHitPlayer) && CheckCondition(GoapLabels.CanAttack))
+        {
+            agent.RecalculateGoal();
+        }
     }
     
     public Vector2 GetLastKnownPlayerPosition()

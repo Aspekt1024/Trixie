@@ -26,7 +26,7 @@ public class EventArea : MonoBehaviour {
                 BaseEnemy enemy = WatchedObject.GetComponent<BaseEnemy>();
                 if (enemy != null)
                 {
-                    enemy.SetOnDeathAction(OnExitEffectSuccess);
+                    enemy.OnDeathCallback += OnExitEffectSuccess;
                 }
             }
         }
@@ -38,11 +38,19 @@ public class EventArea : MonoBehaviour {
 
     private void OnExitEffectSuccess()
     {
+        float delayTime = 2f;
+        Invoke("DestroyCompletionDelay", delayTime);
+    }
+
+
+    private void DestroyCompletionDelay()
+    {
         foreach (var obj in triggerableObjects)
         {
             obj.Reset();
         }
     }
+
 
     private void Activate()
     {

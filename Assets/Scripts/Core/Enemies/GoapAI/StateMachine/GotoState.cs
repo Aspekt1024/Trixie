@@ -8,10 +8,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(GoapStateMachine))]
 [RequireComponent(typeof(IdleState))]
-[RequireComponent(typeof(EnemyAITest))]
+[RequireComponent(typeof(EnemyPathfinder))]
 public class GotoState : MachineState
 {
-    private EnemyAITest pathfinder;
+    private EnemyPathfinder pathfinder;
     private Action onDoneMovementCallback;
     private Action onFailureMovementCallback;
     private Vector3 targetPosition;
@@ -37,7 +37,7 @@ public class GotoState : MachineState
     protected override void Awake()
     {
         base.Awake();
-        pathfinder = GetComponentInParent<EnemyAITest>();
+        pathfinder = GetComponentInParent<EnemyPathfinder>();
     }
 
     #region Work
@@ -50,7 +50,7 @@ public class GotoState : MachineState
         bool isStuck = CheckIfStuck();
         if (isStuck)
         {
-            Debug.Log("I am stuck");
+            //Debug.Log("I am stuck");
         }
     }
 
@@ -68,6 +68,11 @@ public class GotoState : MachineState
     {
         if (Time.time > stuckCheckCooldown)
         {
+            if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
+            {
+                return false;
+            }
+
             stuckCheckCooldown = Time.time + StuckCheckDelay;
             if ((lastStuckCheckUpdatePosition - transform.position).magnitude < MaxStuckDistance)
             {

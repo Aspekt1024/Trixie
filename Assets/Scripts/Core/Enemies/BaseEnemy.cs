@@ -5,29 +5,35 @@ using UnityEngine;
 
 public abstract class BaseEnemy : MonoBehaviour {
 
+    public GameObject AI;
+    public GameObject Model;
+    public GameObject DeathEffect;
+
     public float AggroRadius;
-    public bool hasAggro;
+    public event Action OnDeathCallback = delegate { };
 
     protected HealthComponent healthComponent;
     protected Animator anim;
-    private bool directionFlipped;
-    private Action OnDeathCallback;
+    protected Collider2D coll;
+    protected Rigidbody2D body;
 
-    private void Awake()
+    protected bool hasAggro;
+
+    private Coroutine damagedRoutine;
+    private bool directionFlipped;
+
+    protected virtual void Awake()
     {
         healthComponent = GetComponent<HealthComponent>();
         anim = GetComponent<Animator>();
+        body = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
+        DeathEffect.SetActive(false);
     }
     
     protected virtual void Update() { }
     
-    public void SetOnDeathAction(Action callback)
-    {
-        OnDeathCallback = callback;
-    }
-
     public virtual void Stun(Vector2 direction, float stunTime) { }
-    protected virtual void OnDamaged() { }
 
     public virtual void DamageEnemy(Vector2 direction, int damage = 1)
     {
@@ -39,20 +45,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         else
         {
             OnDamaged();
-        }
-    }
-    
-    protected virtual void DestroyEnemy()
-    {
-        // TODO setup delegate
-        if (OnDeathCallback != null)
-        {
-            OnDeathCallback.Invoke();
-        }
-
-        if (hasAggro)
-        {
-            LostAggro();
         }
     }
 
@@ -103,5 +95,59 @@ public abstract class BaseEnemy : MonoBehaviour {
     public bool DirectionFlipped
     {
         get { return directionFlipped; }
+    }
+    
+    protected virtual void OnDamaged()
+    {
+        if (damagedRoutine != null)
+        {
+            StopCoroutine(damagedRoutine);
+        }
+        damagedRoutine = StartCoroutine(ShowDamaged());
+    }
+
+    protected virtual IEnumerator ShowDamaged()
+    {
+        SetSpriteColour(new Color(1f, 0f, 0f, 0.5f));
+        yield return new WaitForSeconds(0.2f);
+        SetSpriteColour(Color.white);
+    }
+
+    protected void SetSpriteColour(Color color)
+    {
+        foreach (var sr in Model.GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr.color = color;
+        }
+    }
+
+    protected virtual void DestroyEnemy()
+    {
+        AI.SetActive(false);
+        Model.SetActive(false);
+        DeathEffect.SetActive(true);
+
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
+
+        body.velocity = Vector2.zero;
+        coll.enabled = false;
+
+        if (OnDeathCallback != null)
+        {
+            OnDeathCallback.Invoke();
+            OnDeathCallback = null;
+        }
+
+        if (hasAggro)
+        {
+            LostAggro();
+        }
+    }
+
+    protected virtual void ResetEnemy()
+    {
+        AI.SetActive(true);
+        Model.SetActive(true);
+        DeathEffect.SetActive(false);
     }
 }

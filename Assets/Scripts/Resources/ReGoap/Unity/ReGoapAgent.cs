@@ -58,6 +58,18 @@ namespace ReGoap.Unity
             }
         }
 
+        private void Update()
+        {
+            if (currentActionState != null)
+            {
+                ShowAction(currentActionState.Action);
+            }
+            if (currentGoal !=  null)
+            {
+                ShowGoal(currentGoal);
+            }
+        }
+
         protected virtual void OnEnable()
         {
 
@@ -210,6 +222,9 @@ namespace ReGoap.Unity
                 currentActionState.Action.Run(previous != null ? previous.Action : null, next, currentActionState.Settings, currentGoal.GetGoalState(), WarnActionEnd, WarnActionFailure);
             }
         }
+
+        protected virtual void ShowAction(IReGoapAction<T, W> action) { }
+        protected virtual void ShowGoal(IReGoapGoal<T, W> goal) { }
 
         public virtual void WarnActionFailure(IReGoapAction<T, W> thisAction)
         {

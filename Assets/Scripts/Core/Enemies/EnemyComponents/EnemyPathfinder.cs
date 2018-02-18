@@ -7,7 +7,7 @@ using Pathfinding;
 [RequireComponent(typeof(VisionComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Seeker))]
-public class EnemyAITest : MonoBehaviour {
+public class EnemyPathfinder : MonoBehaviour {
 
     public float UpdateFrequency = 2f;
     public float Speed = 300f;

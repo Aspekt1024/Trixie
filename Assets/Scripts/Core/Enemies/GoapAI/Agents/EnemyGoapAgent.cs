@@ -23,7 +23,7 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
         base.Awake();
         parent = GetComponentInParent<BaseEnemy>();
     }
-
+    
     public A GetAction<A>() where A : ReGoapAction<GoapLabels, object> { return ActionsObject.GetComponent<A>(); }
     public S GetSensor<S>() where S : ReGoapSensor<GoapLabels, object> { return SensorsObject.GetComponent<S>(); }
     public G GetGoal<G>() where G : ReGoapGoal<GoapLabels, object> { return GoalsObject.GetComponent<G>(); }
@@ -51,5 +51,26 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
     {
         goals = new List<IReGoapGoal<GoapLabels, object>>(GoalsObject.GetComponents<IReGoapGoal<GoapLabels, object>>());
         possibleGoalsDirty = true;
+    }
+
+    public void RecalculateGoal()
+    {
+        CalculateNewGoal(true);
+    }
+
+    protected override void ShowAction(IReGoapAction<GoapLabels, object> action)
+    {
+        if (parent.GetType().Equals(typeof(SmartBot)))
+        {
+            ((SmartBot)parent).SetActionText(action.GetType().ToString());
+        }
+    }
+
+    protected override void ShowGoal(IReGoapGoal<GoapLabels, object> goal)
+    {
+        if (parent.GetType().Equals(typeof(SmartBot)))
+        {
+            ((SmartBot)parent).SetGoalText(goal.GetType().ToString());
+        }
     }
 }

@@ -12,4 +12,5 @@ public class FindEnemyGoal : ReGoapGoal<GoapLabels, object> {
         base.Awake();
         goal.Set(GoapLabels.FindTarget, true);
     }
+
 }

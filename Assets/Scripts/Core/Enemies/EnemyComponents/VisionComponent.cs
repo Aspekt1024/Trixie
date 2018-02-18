@@ -78,7 +78,7 @@ public class VisionComponent : MonoBehaviour {
             return;
         }
         
-        RaycastHit2D hit = Physics2D.CircleCast(VisionCenterPoint.position, 0.593f, distVector, Radius, visibleLayers);
+        RaycastHit2D hit = Physics2D.Raycast(VisionCenterPoint.position, distVector, Radius, visibleLayers);
         if (hit.collider == null)
         {
             canSeePlayer = false;

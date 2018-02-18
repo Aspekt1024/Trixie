@@ -22,8 +22,15 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         effects.Clear();
-        effects.Set(GoapLabels.FindTarget, true);
+        effects.Set(GoapLabels.CanHitPlayer, true);
         return effects;
+    }
+
+    public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
+    {
+        preconditions.Clear();
+        preconditions.Set(GoapLabels.HasSeenPlayerRecently, true);
+        return preconditions;
     }
 
     public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
@@ -40,7 +47,7 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
         base.Run(previous, next, settings, goalState, done, fail);
         gotoState.GoTo(memory.GetLastKnownPlayerPosition(), OnDoneCallback, OnFailCallback);
 
-        if (memory.CheckCondition(GoapLabels.CanSeePlayer) || memory.CheckCondition(GoapLabels.CanHitPlayer))
+        if (memory.CheckCondition(GoapLabels.CanHitPlayer))
         {
             gotoState.Exit();
         }
@@ -52,15 +59,8 @@ public class LookForTargetAction : ReGoapAction<GoapLabels, object> {
     
     private void OnDoneCallback()
     {
-        if (memory.CheckCondition(GoapLabels.CanSeePlayer))
-        {
-            failCallback(this);
-            //doneCallback(this);
-        }
-        else
-        {
-            failCallback(this);
-        }
+        //doneCallback(this);
+        failCallback(this);
     }
 
     private void OnFailCallback()

@@ -6,6 +6,7 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
 {
     private BaseEnemy enemyScript;
     private VisionComponent vision;
+    private AttackAction attackAction;
 
     private void Start()
     {
@@ -13,6 +14,7 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
         enemyScript = agent.Parent;
         vision = enemyScript.GetComponent<VisionComponent>();
         memory = agent.GetMemory();
+        attackAction = agent.GetAction<AttackAction>();
     }
 
     public override void UpdateSensor()
@@ -21,6 +23,7 @@ public class EnemySensor : ReGoapSensor<GoapLabels, object>
 
         worldState.Set(GoapLabels.TargetFound, vision.CanSeePlayer());
         worldState.Set(GoapLabels.CanSeePlayer, vision.CanSeePlayer());
+        worldState.Set(GoapLabels.CanAttack, attackAction.CanAttack);
         worldState.Set(GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty());
         worldState.Set(GoapLabels.NotSeenPlayerRecently, !vision.HasSeenPlayerRecenty());
         worldState.Set(GoapLabels.CanSensePlayer, Vector2.Distance(enemyScript.transform.position, Player.Instance.transform.position) < enemyScript.AggroRadius);

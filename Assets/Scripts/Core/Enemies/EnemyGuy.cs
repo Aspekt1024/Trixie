@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemyGuy : BaseEnemy {
     
     private BasicPatrolComponent patrolComponent;
-    private CapsuleCollider2D coll;
-    private Rigidbody2D body;
     private SpriteRenderer spriteRenderer;
 
     private enum States
@@ -19,8 +17,6 @@ public class EnemyGuy : BaseEnemy {
 
     private void Start()
     {
-        coll = GetComponent<CapsuleCollider2D>();
-        body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         patrolComponent = GetComponent<BasicPatrolComponent>();
         patrolComponent.Activate();

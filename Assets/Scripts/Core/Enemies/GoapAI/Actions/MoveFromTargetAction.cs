@@ -32,13 +32,14 @@ public class MoveFromTargetAction : ReGoapAction<GoapLabels, object> {
     public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         preconditions.Clear();
+        preconditions.Set(GoapLabels.CanHitPlayer, true);
         //TODO preconditions.Set(GoapLabels.AttackIsOnCooldown, true);
         return preconditions;
     }
 
     public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
-        if (memory.CheckCondition(GoapLabels.HasDistanceFromPlayer) || !memory.CheckCondition(GoapLabels.CanSeePlayer))
+        if (memory.CheckCondition(GoapLabels.HasDistanceFromPlayer) && memory.CheckCondition(GoapLabels.CanSeePlayer))
         {
             return false;
         }

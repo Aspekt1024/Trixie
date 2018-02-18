@@ -8,7 +8,7 @@ public class SauceRobot : BaseEnemy {
     private Transform movementTf;
     private Vector2 startPosition;
     
-    private EnemyAITest pathFinder;
+    private EnemyPathfinder pathFinder;
     private VisionComponent vision;
     private SpriteRenderer spriteRenderer;
     
@@ -17,7 +17,7 @@ public class SauceRobot : BaseEnemy {
     {
         movementTf = new GameObject("MovementTf").transform;
         
-        pathFinder = GetComponent<EnemyAITest>();
+        pathFinder = GetComponent<EnemyPathfinder>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         vision = GetComponent<VisionComponent>();
         vision.Activate();

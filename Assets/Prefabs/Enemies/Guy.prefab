@@ -68,8 +68,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1733618387015758}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 80, y: 11.6, z: 0}
-  m_LocalScale: {x: 0.46373, y: 0.4637255, z: 0.4637255}
+  m_LocalPosition: {x: -26.4, y: 40.1, z: 0.091796875}
+  m_LocalScale: {x: 0.48351565, y: 0.48350185, z: 0.48350185}
   m_Children:
   - {fileID: 4289942630850788}
   m_Father: {fileID: 0}
@@ -87,7 +87,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -119,7 +119,7 @@ Animator:
   m_GameObject: {fileID: 1733618387015758}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 27e950fea0099a248b76a993000b6401, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -151,6 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c33f437e12f43d4e8840bfa789907a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AI: {fileID: 1286078963769098}
+  Model: {fileID: 1286078963769098}
+  DeathEffect: {fileID: 1286078963769098}
+  AggroRadius: 0
 --- !u!114 &114811720686323818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,7 +202,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1978376989
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300004, guid: 3c4e8e519512c55418de4241e09d6748, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

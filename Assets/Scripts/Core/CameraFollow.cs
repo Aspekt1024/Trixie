@@ -12,6 +12,7 @@ public class CameraFollow : MonoBehaviour
     public FollowTypes FollowType = FollowTypes.PlayerAndAggro;
     public float FollowSpeed = 5f;
     public float TargetRange = 20f;
+    public float Strength = 1f;
 
     private float xMin = 0f;
     private float xMax = 10000f;
@@ -119,8 +120,8 @@ public class CameraFollow : MonoBehaviour
                 bounds.Encapsulate(tf.position);
             }
         }
-
-        return bounds.center;
+        
+        return Vector2.Lerp(playerTf.position, bounds.center, Strength);
     }
 
     private void LerpCameraPosition(Vector2 targetPos)

@@ -6,8 +6,6 @@ public class ShootTestEnemy : BaseEnemy {
 
     public float ShootCooldown = 1f;
     public Transform Turrets;
-    public GameObject ExplosionEffect;
-    public GameObject Sprites;
     public GameObject StunEffect;
 
     private float cooldown;
@@ -16,8 +14,6 @@ public class ShootTestEnemy : BaseEnemy {
 
     private float cdTimer = 0f;
     private Coroutine damageRoutine;
-    private Rigidbody2D body;
-    private Collider2D coll;
     private SpriteRenderer[] spriteRenderer;
 
     private enum States
@@ -30,10 +26,8 @@ public class ShootTestEnemy : BaseEnemy {
     {
         cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
         shooters = GetComponents<ShootComponent>();
-        body = GetComponent<Rigidbody2D>();
-        coll = GetComponent<Collider2D>();
-        spriteRenderer = Sprites.GetComponentsInChildren<SpriteRenderer>();
-        ExplosionEffect.SetActive(false);
+        spriteRenderer = Model.GetComponentsInChildren<SpriteRenderer>();
+        DeathEffect.SetActive(false);
         StunEffect.SetActive(false);
     }
 
@@ -41,8 +35,9 @@ public class ShootTestEnemy : BaseEnemy {
     {
         if (state == States.Dead || state == States.Stunned) return;
 
-        if (Vector2.Distance(Player.Instance.transform.position, transform.position) < 30f)
+        if (Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius)
         {
+            // TODO only if raycasted *or* has seen recently. proper aggro. not this through the walls crap
             HasAggro();
         }
         else if (hasAggro)
@@ -96,11 +91,11 @@ public class ShootTestEnemy : BaseEnemy {
         body.velocity = Vector2.zero;
         body.isKinematic = true;
         coll.enabled = false;
-        Sprites.SetActive(false);
+        Model.SetActive(false);
         LostAggro();
 
         Turrets.gameObject.SetActive(false);
-        ExplosionEffect.SetActive(true);
+        DeathEffect.SetActive(true);
         AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
     }
 
