@@ -7,6 +7,8 @@ public class HealthComponent : MonoBehaviour {
     public int MaxHealth = 5;
     public float InvincibilityTimeAfterHit = 0f;
 
+    private float invincibilityTimer;
+
     private enum States
     {
         None, Invincible
@@ -20,12 +22,24 @@ public class HealthComponent : MonoBehaviour {
         health = MaxHealth;
     }
 
+    private void Update()
+    {
+        if (state != States.Invincible) return;
+
+        invincibilityTimer += Time.deltaTime;
+        if (invincibilityTimer >= InvincibilityTimeAfterHit)
+        {
+            state = States.None;
+        }
+    }
+
     public void TakeDamage(int damage = 1)
     {
         if (state == States.Invincible) return;
 
         if (InvincibilityTimeAfterHit > 0f)
         {
+            invincibilityTimer = 0f;
             state = States.Invincible;
         }
         
