@@ -10,6 +10,7 @@ public class MeleeComponent : MonoBehaviour {
     public MeleeCollider meleeColliderVertical;
 
     private bool isActive;
+    private Coroutine meleeRoutine;
 
     private enum States
     {
@@ -28,7 +29,12 @@ public class MeleeComponent : MonoBehaviour {
     {
         if (state == States.None)
         {
-            StartCoroutine(Melee());
+            if (meleeRoutine != null)
+            {
+                StopCoroutine(meleeRoutine);
+                TurnOffTriggers();
+            }
+            meleeRoutine = StartCoroutine(Melee());
             return true;
         }
         else
@@ -73,16 +79,18 @@ public class MeleeComponent : MonoBehaviour {
 
         while (meleeTimer < MeleeCooldown)
         {
-            if (meleeTimer > MeleeDuration)
-            {
-                isActive = false;
-                meleeColliderHorizontal.DisableCollider();
-                meleeColliderVertical.DisableCollider();
-            }
             meleeTimer += Time.deltaTime;
             yield return null;
         }
+        TurnOffTriggers();
         state = States.None;
+    }
+
+    private void TurnOffTriggers()
+    {
+        isActive = false;
+        meleeColliderHorizontal.DisableCollider();
+        meleeColliderVertical.DisableCollider();
     }
 
     public bool MeleeIsActive()
