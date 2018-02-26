@@ -12,10 +12,11 @@ public class AudioMaster : MonoBehaviour {
     public AudioClip Jump;
     public AudioClip Melee1;
     public AudioClip Melee2;
+    public AudioClip Hit1;
 
     public enum AudioClips
     {
-        EnemyShoot, Explosion1, Explosion2, BulbJump, Jump, Melee1, Melee2
+        EnemyShoot, Explosion1, Explosion2, BulbJump, Jump, Melee1, Melee2, Hit1
     }
 
     public static AudioMaster Instance;
@@ -65,6 +66,7 @@ public class AudioMaster : MonoBehaviour {
             { AudioClips.Jump, Jump },
             { AudioClips.Melee1, Melee1 },
             { AudioClips.Melee2, Melee2 },
+            { AudioClips.Hit1, Hit1 },
         };
     }
 }

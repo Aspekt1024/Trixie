@@ -44,7 +44,7 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
         else
         {
-            OnDamaged();
+            OnDamaged(direction);
         }
     }
 
@@ -61,7 +61,12 @@ public abstract class BaseEnemy : MonoBehaviour {
         hasAggro = false;
         GameManager.Instance.MainCamera.GetComponent<CameraFollow>().StopFollowingObject(transform);
     }
-    
+
+    public bool IsDead()
+    {
+        return healthComponent.IsDead();
+    }
+
     public void LookAtPosition(Vector2 position)
     {
         if (transform.position.x > position.x)
@@ -97,17 +102,18 @@ public abstract class BaseEnemy : MonoBehaviour {
         get { return directionFlipped; }
     }
     
-    protected virtual void OnDamaged()
+    protected virtual void OnDamaged(Vector2 direction)
     {
         if (damagedRoutine != null)
         {
             StopCoroutine(damagedRoutine);
         }
-        damagedRoutine = StartCoroutine(ShowDamaged());
+        damagedRoutine = StartCoroutine(ShowDamaged(direction));
     }
 
-    protected virtual IEnumerator ShowDamaged()
+    protected virtual IEnumerator ShowDamaged(Vector2 direction)
     {
+        AudioMaster.PlayAudio(AudioMaster.AudioClips.Hit1);
         SetSpriteColour(new Color(1f, 0f, 0f, 0.5f));
         yield return new WaitForSeconds(0.2f);
         SetSpriteColour(Color.white);
@@ -129,6 +135,7 @@ public abstract class BaseEnemy : MonoBehaviour {
 
         AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
 
+        body.gravityScale = 0;
         body.velocity = Vector2.zero;
         coll.enabled = false;
 

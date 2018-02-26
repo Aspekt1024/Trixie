@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
     private ShieldComponent shieldComponent;
     private PlayerHealthComponent healthComponent;
     private MeleeComponent meleeComponent;
+    private RangedComponent rangedComponent;
 
     private bool isGrounded;
     private bool isAgainstWall;
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour {
         shieldComponent = GetComponent<ShieldComponent>();
         healthComponent = GetComponent<PlayerHealthComponent>();
         meleeComponent = GetComponent<MeleeComponent>();
+        rangedComponent = GetComponent<RangedComponent>();
     }
 
     private void Update()
@@ -73,13 +75,24 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void Melee()
+    public void MeleePressed()
     {
-        if (shieldComponent.HasShield())
-        {
-            shieldComponent.DisableShield();
-            meleeComponent.Activate();
-        }
+        meleeComponent.MeleePressed();
+    }
+
+    public void MeleeReleased()
+    {
+        meleeComponent.MeleeReleased();
+    }
+
+    public void RangedAttackPressed()
+    {
+        rangedComponent.RangedPressed();
+    }
+
+    public void RangedAttackReleased ()
+    {
+        rangedComponent.RangedReleased();
     }
 
     public void MoveLeft()

@@ -15,8 +15,6 @@ public class RedShieldAbility : BaseShieldAbility
     public ChargeTypes ChargeType;
     public float ChargeupTime = 1f;
     public float CooldownTime = 1f;
-    
-    private ShieldTrajectory trajectory;
 
     private float timer;
 
@@ -24,15 +22,12 @@ public class RedShieldAbility : BaseShieldAbility
     {
         base.Awake();
         Colour = EnergyTypes.Colours.Red;
-        trajectory = GetComponentInChildren<ShieldTrajectory>();
         shield.ProjectileCollider.enabled = false;
-        trajectory.Disable();
     }
 
     public override void ActivatePressed()
     {
         if (ShootRequiresFullCharge && !power.ShieldFullyCharged()) return;
-        trajectory.Enable();
 
         if (ChargeType == ChargeTypes.Chargeup)
         {
@@ -43,7 +38,6 @@ public class RedShieldAbility : BaseShieldAbility
     public override bool ActivateReleased()
     {
         shield.ChargeIndicator.StopCharge();
-        trajectory.Disable();
         bool shootSuccess = false;
 
         if (state == States.Charged && shield.IsShielding())
@@ -80,13 +74,7 @@ public class RedShieldAbility : BaseShieldAbility
             timer = 0f;
         }
         state = States.None;
-        if (trajectory == null)
-        {
-            // TODO if this wasn't a prototype... fix this.
-            trajectory = GetComponentInChildren<ShieldTrajectory>();
-        }
         shield.ProjectileCollider.enabled = false;
-        trajectory.Disable();
         shield.ChargeIndicator.StopCharge();
     }
 
@@ -139,7 +127,7 @@ public class RedShieldAbility : BaseShieldAbility
         shield.ProjectileCollider.enabled = true;
         shield.ShieldCollider.isTrigger = true;
         body.isKinematic = false;
-        body.velocity = ShootSpeed * body.transform.right;
+        body.velocity = ShootSpeed * GetMoveDirection().normalized;
         anim.Play("Shoot", 0, 0f);
     }
 
@@ -183,6 +171,27 @@ public class RedShieldAbility : BaseShieldAbility
         {
             shield.ChargeIndicator.SetCharged(ChargeType == ChargeTypes.Cooldown);
             state = States.Charged;
+        }
+    }
+
+    private Vector2 GetMoveDirection()
+    {
+        Vector2 dir = GameManager.GetMoveDirection();
+        if (dir.y > Mathf.Abs(dir.x))
+        {
+            return Vector2.up;
+        }
+        else if (dir.y < -Mathf.Abs(dir.x))
+        {
+            return Vector2.down;
+        }
+        else if (Player.Instance.IsLookingRight())
+        {
+            return Vector2.right;
+        }
+        else
+        {
+            return Vector2.left;
         }
     }
 }

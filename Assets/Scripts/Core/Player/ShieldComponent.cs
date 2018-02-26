@@ -7,6 +7,7 @@ using TrixieCore;
 public class ShieldComponent : MonoBehaviour {
 
     public float DisableTime = 3f;
+    public bool FullRotationControl = false;
     public GameObject ShieldObject;
     public Collider2D ShieldCollider;
     public Collider2D ProjectileCollider;
@@ -32,6 +33,7 @@ public class ShieldComponent : MonoBehaviour {
         None, Shielding, Firing, Disabled
     }
     private States state;
+    
 
     private void Start()
     {
@@ -48,6 +50,26 @@ public class ShieldComponent : MonoBehaviour {
         
         SetShieldColour(EnergyTypes.Colours.Blue);
         positioner.Setup(CenterPoint);
+    }
+
+    private void Activate()
+    {
+        state = States.Shielding;
+        if (FullRotationControl)
+        {
+            positioner.SetShieldPosition();
+        }
+        else
+        {
+            positioner.SetShieldPositionFixed();
+        }
+
+        abilities[currentAbilityIndex].BeginShielding();
+
+        if (shootButtonHeld)
+        {
+            abilities[currentAbilityIndex].ActivatePressed();
+        }
     }
 
     private void GetAbilities()
@@ -82,7 +104,14 @@ public class ShieldComponent : MonoBehaviour {
             case States.None:
                 break;
             case States.Shielding:
-                positioner.SetShieldPosition();
+                if (FullRotationControl)
+                {
+                    positioner.SetShieldPosition();
+                }
+                else
+                {
+                    positioner.SetShieldPositionFixed();
+                }
                 break;
             case States.Firing:
                 break;
@@ -95,6 +124,11 @@ public class ShieldComponent : MonoBehaviour {
                 }
                 break;
         }
+    }
+
+    public Vector2 GetShieldDirection()
+    {
+        return positioner.shieldDirection;
     }
     
     public void ProjectileImpact(Projectile projectile)
@@ -172,19 +206,6 @@ public class ShieldComponent : MonoBehaviour {
             Activate();
         }
         return true;
-    }
-
-    private void Activate()
-    {
-        state = States.Shielding;
-        positioner.SetShieldPosition();
-
-        abilities[currentAbilityIndex].BeginShielding();
-
-        if (shootButtonHeld)
-        {
-            abilities[currentAbilityIndex].ActivatePressed();
-        }
     }
 
     public bool ShieldDeactivatePressed()

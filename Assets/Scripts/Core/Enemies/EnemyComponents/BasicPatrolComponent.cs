@@ -29,14 +29,15 @@ public class BasicPatrolComponent : MonoBehaviour {
 
     private GameObject startingPlatform;
 
-    private void Start()
+    private bool isSwitchingDirection;
+
+    private void Awake()
     {
-        currentDirection = MoveDirections.Left;
+        currentDirection = MoveDirections.Right;
         state = States.None;
         body = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         originalScale = transform.localScale;
-        GetStartingPlatform();
     }
 
     public void Activate()
@@ -57,18 +58,9 @@ public class BasicPatrolComponent : MonoBehaviour {
         switch (state)
         {
             case States.None:
-                //UpdateVelocity();
                 break;
             case States.Moving:
-                if (AtWallOrEdge())
-                {
-                    waitTime = 0f;
-                    state = States.SwitchingDirection;
-                }
-                else
-                {
-                    UpdateVelocity();
-                }
+                UpdateVelocity();
                 break;
             case States.SwitchingDirection:
                 waitTime += Time.deltaTime;
@@ -83,27 +75,19 @@ public class BasicPatrolComponent : MonoBehaviour {
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void TurnAround()
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-        {
-            if (collision.gameObject != startingPlatform)
-            {
-                SwitchDirection();
-            }
-        }
-    }
+        if (isSwitchingDirection) return;
 
+        isSwitchingDirection = true;
+        SwitchDirection();
+        isSwitchingDirection = false;
+    }
+    
     private void UpdateVelocity()
     {
         float velocityDireciton = currentDirection == MoveDirections.Left ? -1f : 1f;
         body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, targetVelocity * velocityDireciton, Time.deltaTime * Acceleration), body.velocity.y);
-    }
-
-    private bool AtWallOrEdge()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * (currentDirection == MoveDirections.Right ? 1 : -1), GetComponent<CapsuleCollider2D>().bounds.extents.x, 1 << LayerMask.NameToLayer("Terrain"));
-        return hit.collider != null;
     }
 
     private void SwitchDirection()
@@ -131,14 +115,5 @@ public class BasicPatrolComponent : MonoBehaviour {
             lookDirectionScaleModifier = -1f;
         }
         transform.localScale = new Vector3(lookDirectionScaleModifier * originalScale.x, originalScale.y, 1f);
-    }
-
-    private void GetStartingPlatform()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f, 1 << LayerMask.NameToLayer("Terrain"));
-        if (hit.collider != null)
-        {
-            startingPlatform = hit.collider.gameObject;
-        }
     }
 }

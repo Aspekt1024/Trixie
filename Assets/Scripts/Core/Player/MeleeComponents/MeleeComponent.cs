@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ShieldComponent))]
 public class MeleeComponent : MonoBehaviour {
 
-    public float MeleeCooldown = 0.4f;
+    public float PowerupTime = 0.6f;
+    public float MeleeCooldown = 0.1f;
     public float MeleeDuration = 0.1f;
     public MeleeCollider meleeColliderHorizontal;
     public MeleeCollider meleeColliderVertical;
 
     private bool isActive;
     private Coroutine meleeRoutine;
+    private ShieldComponent shieldComponent;
+
+    private float heldTime;
 
     private enum States
     {
-        None, Attacking, Disabled
+        None, Held, Disabled, PoweredUp
     }
     private States state;
 
@@ -22,10 +27,55 @@ public class MeleeComponent : MonoBehaviour {
 
     private void Start()
     {
+        shieldComponent = GetComponent<ShieldComponent>();
         anim = GetComponent<Animator>();
     }
 
-    public bool Activate()
+    private void Update()
+    {
+        switch (state)
+        {
+            case States.None:
+                break;
+            case States.Held:
+                heldTime = Time.deltaTime;
+                if (heldTime >= PowerupTime)
+                {
+                    state = States.PoweredUp;
+                }
+                break;
+            case States.PoweredUp:
+                break;
+            case States.Disabled:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void MeleePressed()
+    {
+        if (state == States.Disabled) return;
+
+        if (shieldComponent.HasShield())
+        {
+            shieldComponent.DisableShield();
+            Activate();
+        }
+        heldTime = 0f;
+        state = States.Held;
+    }
+
+    public void MeleeReleased()
+    {
+        if (heldTime >= PowerupTime)
+        {
+
+        }
+        state = States.None;
+    }
+
+    private bool Activate()
     {
         if (state == States.None)
         {
@@ -46,6 +96,11 @@ public class MeleeComponent : MonoBehaviour {
     public void Disable()
     {
         state = States.Disabled;
+    }
+
+    public EnergyTypes.Colours GetMeleeColour()
+    {
+        return shieldComponent.GetColour();
     }
 
     private IEnumerator Melee()
@@ -73,7 +128,6 @@ public class MeleeComponent : MonoBehaviour {
 
         anim.Play(animationName, 0, 0f);
         isActive = true;
-        state = States.Attacking;
         float meleeTimer = 0f;
         AudioMaster.PlayAudio(AudioMaster.AudioClips.Melee1);
 
@@ -83,7 +137,6 @@ public class MeleeComponent : MonoBehaviour {
             yield return null;
         }
         TurnOffTriggers();
-        state = States.None;
     }
 
     private void TurnOffTriggers()

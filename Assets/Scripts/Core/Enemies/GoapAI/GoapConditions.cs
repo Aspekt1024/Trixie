@@ -10,6 +10,10 @@
         AttackIsOnCooldown, HasDistanceFromPlayer,
 
 
-        Goal_HasDistanceFromPlayer
+        Goal_HasDistanceFromPlayer,
+
+        Guy_Goal_Patrol,
+        Guy_Grounded, Guy_GroundedForward,
+        Guy_WallForward
     }
 }

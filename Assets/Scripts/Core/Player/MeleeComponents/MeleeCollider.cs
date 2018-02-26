@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class MeleeCollider : MonoBehaviour {
 
+    private MeleeComponent meleeComponent;
     private PolygonCollider2D meleeCollider;
 
     private void Start()
     {
+        meleeComponent = Player.Instance.GetComponent<MeleeComponent>();
         meleeCollider = GetComponent<PolygonCollider2D>();
         meleeCollider.enabled = false;
     }
@@ -26,7 +28,26 @@ public class MeleeCollider : MonoBehaviour {
     {
         if (collision.tag == "Enemy")
         {
-            collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, 1);
+            HitEnemy(collision.GetComponent<BaseEnemy>());
+        }
+    }
+
+    private void HitEnemy(BaseEnemy enemy)
+    {
+        Vector2 direction = enemy.transform.position - transform.position;
+        switch (meleeComponent.GetMeleeColour())
+        {
+            case EnergyTypes.Colours.Blue:
+                enemy.DamageEnemy(direction, 1);
+                break;
+            case EnergyTypes.Colours.Red:
+                enemy.DamageEnemy(direction, 1);
+                break;
+            case EnergyTypes.Colours.Green:
+                enemy.Stun(direction, 1);
+                break;
+            default:
+                break;
         }
     }
 }

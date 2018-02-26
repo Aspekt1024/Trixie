@@ -51,6 +51,8 @@ namespace TrixieInput
 
             getKeyUpBindings.Add(A_BUTTON, gameManager.JumpReleased);
             getKeyUpBindings.Add(L_BUMPER, gameManager.ShieldReleased);
+            getKeyUpBindings.Add(Y_BUTTON, gameManager.InteractReleased);
+            getKeyUpBindings.Add(X_BUTTON, gameManager.MeleeReleased);
         }
 
         public bool ProcessInput()

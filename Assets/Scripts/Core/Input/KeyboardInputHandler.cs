@@ -81,6 +81,11 @@ namespace TrixieInput
             
             return inputReceived;
         }
+
+        public Vector2 GetAimDirection()
+        {
+            return Camera.main.ScreenToWorldPoint(Input.mousePosition) - Player.Instance.transform.position;
+        }
     }
 }
 

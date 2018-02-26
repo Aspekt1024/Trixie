@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class ShieldPositioner : MonoBehaviour {
 
-    public float DistFromCenter = 0.5f;
+    public float DistFromCenter = 1.5f;
+    public float ShieldAngle = -10f;
+    public float OffsetY = -.5f;
 
     private Transform centerPoint;
     private Animator playerAnim;
+
+    public Vector2 shieldDirection;
 
     public void Setup(Transform centerPointReference)
     {
@@ -44,5 +48,65 @@ public class ShieldPositioner : MonoBehaviour {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
         }
 
+    }
+
+    public void SetShieldPositionFixed()
+    {
+        Vector2 direction = GameManager.GetAimDirection() - (Vector2)centerPoint.position;
+        if (direction.y > Mathf.Abs(direction.x))
+        {
+            shieldDirection = Vector3.up;
+            if (Player.Instance.IsLookingRight())
+            {
+                playerAnim.SetFloat("lookAngle", 90f / 360f);
+                transform.localPosition = new Vector2(-OffsetY, DistFromCenter);
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, 90f + ShieldAngle);
+            }
+            else
+            {
+                playerAnim.SetFloat("lookAngle", 90f / 360f);
+                transform.localPosition = new Vector2(OffsetY, DistFromCenter);
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, -90f - ShieldAngle);
+            }
+        }
+        else if (direction.y < -Mathf.Abs(direction.x))
+        {
+            shieldDirection = Vector3.down;
+            if (Player.Instance.IsLookingRight())
+            {
+                playerAnim.SetFloat("lookAngle", -90f / 360f);
+                transform.localPosition = new Vector2(-OffsetY, -DistFromCenter);
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, 90f - ShieldAngle);
+            }
+            else
+            {
+                playerAnim.SetFloat("lookAngle", -90f / 360f);
+                transform.localPosition = new Vector2(OffsetY, -DistFromCenter);
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, -90f + ShieldAngle);
+            }
+        }
+        else
+        {
+            if (Player.Instance.IsLookingRight())
+            {
+                shieldDirection = Vector3.right;
+                playerAnim.SetFloat("lookAngle", 0 / 360f);
+                transform.localPosition = new Vector2(DistFromCenter, OffsetY);
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, ShieldAngle);
+            }
+            else
+            {
+                shieldDirection = Vector3.left;
+                playerAnim.SetFloat("lookAngle", 0 / 360f);
+                transform.localPosition = new Vector2(-DistFromCenter, OffsetY);
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
+                transform.localEulerAngles = new Vector3(0f, 0f, -ShieldAngle);
+            }
+        }
     }
 }

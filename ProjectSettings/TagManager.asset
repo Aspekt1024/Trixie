@@ -63,11 +63,11 @@ TagManager:
   - name: Enemy
     uniqueID: 2316590307
     locked: 0
-  - name: Shield
-    uniqueID: 1883581843
-    locked: 0
   - name: Player
     uniqueID: 165297545
+    locked: 0
+  - name: Shield
+    uniqueID: 1883581843
     locked: 0
   - name: Projectile
     uniqueID: 3538172125

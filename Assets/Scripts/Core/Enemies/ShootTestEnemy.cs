@@ -10,7 +10,7 @@ public class ShootTestEnemy : BaseEnemy {
 
     private float cooldown;
 
-    private ShootComponent[] shooters;
+    private ShootComponent shootComponent;
 
     private float cdTimer = 0f;
     private Coroutine damageRoutine;
@@ -25,7 +25,7 @@ public class ShootTestEnemy : BaseEnemy {
     private void Start()
     {
         cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
-        shooters = GetComponents<ShootComponent>();
+        shootComponent = GetComponent<ShootComponent>();
         spriteRenderer = Model.GetComponentsInChildren<SpriteRenderer>();
         DeathEffect.SetActive(false);
         StunEffect.SetActive(false);
@@ -63,10 +63,7 @@ public class ShootTestEnemy : BaseEnemy {
         {
             cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
             cdTimer = 0f;
-            foreach (ShootComponent shooter in shooters)
-            {
-                shooter.Shoot(Player.Instance.gameObject);
-            }
+            shootComponent.Shoot(Player.Instance.gameObject);
         }
     }
     
@@ -94,12 +91,17 @@ public class ShootTestEnemy : BaseEnemy {
         Model.SetActive(false);
         LostAggro();
 
+        if (stunRoutine != null)
+        {
+            StopCoroutine(stunRoutine);
+        }
+        StunEffect.SetActive(false);
         Turrets.gameObject.SetActive(false);
         DeathEffect.SetActive(true);
         AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
     }
 
-    private IEnumerator ShowDamaged(Vector2 direction)
+    protected override IEnumerator ShowDamaged(Vector2 direction)
     {
         state = States.TakingDamage;
 
@@ -136,7 +138,7 @@ public class ShootTestEnemy : BaseEnemy {
     private IEnumerator StunRoutine(float stunTime)
     {
         state = States.Stunned;
-        Color origiginalColor = spriteRenderer[0].color;
+        Color originalColor = spriteRenderer[0].color;
         StunEffect.SetActive(true);
         SetRendererColour(new Color(0.3f, 0.3f, 1f, 1f));
         float timer = 0;
@@ -146,7 +148,7 @@ public class ShootTestEnemy : BaseEnemy {
             yield return null;
         }
         StunEffect.SetActive(false);
-        SetRendererColour(origiginalColor);
+        SetRendererColour(originalColor);
         state = States.None;
     }
 

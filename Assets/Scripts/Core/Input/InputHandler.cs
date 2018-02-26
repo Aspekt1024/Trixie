@@ -44,7 +44,7 @@ namespace TrixieInput
             switch (mode)
             {
                 case InputMode.Keyboard:
-                    return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    return keyboardInput.GetAimDirection();
                 case InputMode.Controller:
                     return controllerInput.GetAimDirection();
                 default:
@@ -57,7 +57,7 @@ namespace TrixieInput
             switch (mode)
             {
                 case InputMode.Keyboard:
-                    return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    return keyboardInput.GetAimDirection();
                 case InputMode.Controller:
                     return controllerInput.GetMoveDirection();
                 default:

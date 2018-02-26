@@ -58,6 +58,7 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
         CalculateNewGoal(true);
     }
 
+    #region Debug
     protected override void ShowAction(IReGoapAction<GoapLabels, object> action)
     {
         if (parent.GetType().Equals(typeof(SmartBot)))
@@ -66,11 +67,17 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
         }
     }
 
+
     protected override void ShowGoal(IReGoapGoal<GoapLabels, object> goal)
     {
         if (parent.GetType().Equals(typeof(SmartBot)))
         {
             ((SmartBot)parent).SetGoalText(goal.GetType().ToString());
         }
+        else if (parent.GetType().Equals(typeof(Guy2)))
+        {
+            //Debug.Log(goal.GetType().ToString());
+        }
     }
+    #endregion
 }

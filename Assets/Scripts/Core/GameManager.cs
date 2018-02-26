@@ -136,8 +136,10 @@ public class GameManager : MonoBehaviour {
     public void MoveReleased() { Player.MoveReleased(); }
     public void JumpPressed() { Player.Jump(); }
     public void JumpReleased() { Player.JumpReleased(); }
-    public void MeleePressed() { Player.Melee(); }
-    public void InteractPressed() { }
+    public void MeleePressed() { Player.MeleePressed(); }
+    public void MeleeReleased() { Player.MeleeReleased(); }
+    public void InteractPressed() { Player.RangedAttackPressed(); }
+    public void InteractReleased() { Player.RangedAttackReleased(); }
     public void CycleItemsPressed() { }
     public void UseItemPressed() { }
     public void ShootPressed() { Player.ShootPressed(); }

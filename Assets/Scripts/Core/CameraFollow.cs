@@ -14,10 +14,10 @@ public class CameraFollow : MonoBehaviour
     public float TargetRange = 20f;
     public float Strength = 1f;
 
-    private float xMin = 0f;
+    private float xMin = -10000f;
     private float xMax = 10000f;
     private float yMin = 0f;
-    private float yMax = 40000f;
+    private float yMax = 10000f;
 
     private float xOffset = 0f;
     private float yOffset = 0f;

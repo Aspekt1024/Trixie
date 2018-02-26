@@ -247,6 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4795504326984408}
   - component: {fileID: 114883637711703298}
+  - component: {fileID: 114040080753040292}
   - component: {fileID: 58418724458934954}
   - component: {fileID: 95537106025121594}
   - component: {fileID: 50029469680125866}
@@ -431,7 +432,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1956489234289242}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.94, y: 29, z: 0.18359375}
+  m_LocalPosition: {x: 86.7, y: -12, z: 0.18359375}
   m_LocalScale: {x: 4, y: 4, z: 1.9529699}
   m_Children:
   - {fileID: 4240165465098730}
@@ -536,6 +537,38 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114040080753040292
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1956489234289242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90306ae699aec284690b381ea8c89ab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NumProjectiles: 1
+  RadialSpread: 0
+  DelayBetweenProjectiles: 0
+  Cooldown: 1
+  IndicationDelay: 0.5
+  ProjectilePrefab: {fileID: 1243651706264206, guid: 97d28903a68d20444863eab3cfe14320,
+    type: 2}
+  ProjectileSpeed: 20
+  ShootPoint: {fileID: 1023004647409990}
+  ProjectileSettings:
+    ProjectileColour: 2
+    IsHoming: 0
+    HomingTarget: {fileID: 0}
+    IsAMine: 0
+    IsSticky: 0
+    StickyTime: 0
+    BouncesOffShield: 0
+    BouncesOffTerrain: 0
+    NumTimesToBounce: 0
+    HasGravity: 0
+    GravityScale: 0
 --- !u!114 &114257053068949688
 MonoBehaviour:
   m_ObjectHideFlags: 1
