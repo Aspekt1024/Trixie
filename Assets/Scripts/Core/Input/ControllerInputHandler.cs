@@ -125,7 +125,7 @@ namespace TrixieInput
         {
             Vector2 aimAxis = new Vector2(Input.GetAxis(AIM_AXIS_X), Input.GetAxis(AIM_AXIS_Y));
             Vector2 aimDirection = Vector2.right;
-            if (aimAxis.magnitude > 0.2f)
+            if (aimAxis.magnitude > 0.3f)
             {
                 aimDirection = new Vector2(aimAxis.x, -aimAxis.y);
             }
@@ -138,7 +138,7 @@ namespace TrixieInput
             Vector2 moveAxis = new Vector2(Input.GetAxis(HORIZONTAL_AXIS), Input.GetAxis(VERTICAL_AXIS));
             Vector2 moveDirection = Vector2.right;
 
-            if (moveAxis.magnitude > 0.2f)
+            if (moveAxis.magnitude > 0.3f)
             {
                 moveDirection = moveAxis;
             }
