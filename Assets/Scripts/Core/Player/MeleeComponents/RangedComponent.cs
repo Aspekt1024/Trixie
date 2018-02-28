@@ -59,7 +59,20 @@ public class RangedComponent : MonoBehaviour {
     {
         if (chargingTime > PowerupTime)
         {
-            PowerAttackRed();
+            switch (shieldComponent.GetColour())
+            {
+                case EnergyTypes.Colours.Blue:
+                    PowerAttackBlue();
+                    break;
+                case EnergyTypes.Colours.Red:
+                    PowerAttackRed();
+                    break;
+                case EnergyTypes.Colours.Green:
+                    PowerAttackGreen();
+                    break;
+                default:
+                    break;
+            }
         }
         isChargingUp = false;
         indicator.SetChargeState(ChargeIndicator.States.None);
@@ -80,7 +93,52 @@ public class RangedComponent : MonoBehaviour {
 
     private void AttackGreen()
     {
+        float projectileSpeed = 36f;
+        GameObject proj = Instantiate(ProjectilePrefab);
+        proj.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * projectileSpeed;
+        proj.transform.position = (Vector2)transform.position + proj.GetComponent<Rigidbody2D>().velocity.normalized;
+        proj.GetComponent<Collider2D>().isTrigger = true;
 
+        Vector2 target = (Vector2)transform.position + new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * 5f;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 15f, 1 << TrixieCore.TrixieLayers.GetMask(TrixieCore.Layers.Enemy));
+        if (colliders.Length > 0)
+        {
+            StartCoroutine(DirectGreenAtTarget(proj.GetComponent<Rigidbody2D>(), colliders[0].transform));
+        }
+        else
+        {
+            StartCoroutine(DirectGreenTargetMissing(proj.GetComponent<Rigidbody2D>(), target));
+        }
+    }
+
+    private IEnumerator DirectGreenTargetMissing(Rigidbody2D projectile, Vector2 target)
+    {
+        Vector3 originalScale = projectile.transform.localScale;
+        Vector2 originalVelocity = projectile.velocity;
+        float timer = 0f;
+        float duration = .3f;
+        while (timer < duration)
+        {
+            projectile.transform.localScale = originalScale * Mathf.Lerp(1f, 0.4f, timer / duration);
+            projectile.velocity = originalVelocity.magnitude * Vector2.Lerp(originalVelocity, target - projectile.position, timer / duration).normalized; 
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(projectile.gameObject);
+    }
+
+    private IEnumerator DirectGreenAtTarget(Rigidbody2D projectile, Transform target)
+    {
+        Vector2 originalVelocity = projectile.velocity;
+        float timer = 0f;
+        float duration = .4f;
+        while (projectile.gameObject.activeSelf && !target.GetComponent<BaseEnemy>().IsDead())
+        {
+            projectile.velocity = originalVelocity.magnitude * Vector2.Lerp(originalVelocity, (Vector2)target.position - projectile.position, timer / duration).normalized;
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void PowerAttackRed()
@@ -97,6 +155,16 @@ public class RangedComponent : MonoBehaviour {
             proj.transform.position = (Vector2)transform.position + proj.GetComponent<Rigidbody2D>().velocity.normalized * 1f;
             angle += spread;
         }
+    }
+
+    private void PowerAttackGreen()
+    {
+
+    }
+
+    private void PowerAttackBlue()
+    {
+
     }
 
     private Vector2 GetMoveDirection()

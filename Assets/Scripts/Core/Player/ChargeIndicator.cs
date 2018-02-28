@@ -23,6 +23,8 @@ public class ChargeIndicator : MonoBehaviour {
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        anim.enabled = false;
+        spriteRenderer.sprite = null;
     }
 
     public void SetChargeState(States newState)
