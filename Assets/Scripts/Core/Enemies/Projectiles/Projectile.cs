@@ -118,8 +118,15 @@ namespace TrixieCore
             }
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
-                collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
-                ShowImpact();
+                if (collision.gameObject.tag == "Enemy")
+                {
+                    collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+                    ShowImpact();
+                }
+                else
+                {
+                    ShowImpact();
+                }
             }
 
         }

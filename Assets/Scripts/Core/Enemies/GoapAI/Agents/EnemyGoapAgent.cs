@@ -74,7 +74,7 @@ public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
         {
             ((SmartBot)parent).SetGoalText(goal.GetType().ToString());
         }
-        else if (parent.GetType().Equals(typeof(Guy2)))
+        else if (parent.GetType().Equals(typeof(TrixieCore.Guy2)))
         {
             //Debug.Log(goal.GetType().ToString());
         }
