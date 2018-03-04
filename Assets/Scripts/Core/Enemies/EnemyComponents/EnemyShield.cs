@@ -12,8 +12,14 @@ namespace TrixieCore
 
         private Collider2D coll;
         private SpriteRenderer sr;
-
+        
         private LayerMask[] layers;
+
+        private enum States
+        {
+            Inactive, Active, MoveToInactive
+        }
+        private States state;
 
         private void Start()
         {
@@ -26,21 +32,39 @@ namespace TrixieCore
             };
         }
 
+        private void Update()
+        {
+            switch (state)
+            {
+                case States.Inactive:
+                    break;
+                case States.Active:
+                    break;
+                case States.MoveToInactive:
+                    state = States.Inactive;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void Activate()
         {
             sr.enabled = true;
             coll.enabled = true;
+            state = States.Active;
         }
 
         public void Deactivate()
         {
             sr.enabled = false;
             coll.enabled = false;
+            state = States.MoveToInactive;
         }
 
         public bool IsActive()
         {
-            return coll.enabled;
+            return state == States.Active || state == States.MoveToInactive;
         }
 
         public void HitShield(EnergyTypes.Colours energyColour, int damage = 1)

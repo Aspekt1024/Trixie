@@ -42,10 +42,6 @@ namespace TrixieCore
             {
                 base.DamageEnemy(direction, energyType, damage);
             }
-            else
-            {
-                Shield.HitShield(energyType);
-            }
         }
 
     }

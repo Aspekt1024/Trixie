@@ -29,11 +29,15 @@ namespace TrixieCore
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.tag == "Enemy" && collision.tag == "Enemy")
+            if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
                 if (collision.tag == "Enemy")
                 {
                     HitEnemy(collision.GetComponent<BaseEnemy>());
+                }
+                else if (collision.tag == "Shield")
+                {
+                    collision.GetComponent<EnemyShield>().HitShield(meleeComponent.GetMeleeColour());
                 }
             }
         }
