@@ -520,7 +520,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.8, y: 0.35}
+  m_Offset: {x: -0.5, y: 0.35}
   m_Size: {x: 5.96, y: 8.91}
   m_Direction: 0
 --- !u!95 &95870343201214324
@@ -592,6 +592,7 @@ MonoBehaviour:
   WallSensor: {fileID: 4751997402303552}
   EdgeSensor: {fileID: 4077359278810368}
   GroundSensor: {fileID: 4408751256659960}
+  DebugPoint: {fileID: 1270798978434384, guid: a0b861aa6c6a95848ab0bdd74bb15378, type: 2}
 --- !u!114 &114394291176006364
 MonoBehaviour:
   m_ObjectHideFlags: 1

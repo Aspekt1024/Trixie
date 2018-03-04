@@ -71,6 +71,11 @@ namespace TrixieCore
             return healthComponent.IsDead();
         }
 
+        public float GetHorizontalVelocity()
+        {
+            return body.velocity.x;
+        }
+
         public void LookAtPosition(Vector2 position)
         {
             if (transform.position.x > position.x)
