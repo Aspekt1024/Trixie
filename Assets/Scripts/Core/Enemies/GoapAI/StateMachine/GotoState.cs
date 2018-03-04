@@ -2,144 +2,148 @@
 using ReGoap.Utilities;
 using UnityEngine;
 
-// generic goto state, can be used in most games, override Tick and Enter if you are using 
-//  a navmesh / pathfinding library 
-//  (ex. tell the library to search a path in Enter, when done move to the next waypoint in Tick)
-
-[RequireComponent(typeof(GoapStateMachine))]
-[RequireComponent(typeof(IdleState))]
-[RequireComponent(typeof(EnemyPathfinder))]
-public class GotoState : MachineState
+namespace TrixieCore.Goap
 {
-    private EnemyPathfinder pathfinder;
-    private Action onDoneMovementCallback;
-    private Action onFailureMovementCallback;
-    private Vector3 targetPosition;
+    // generic goto state, can be used in most games, override Tick and Enter if you are using 
+    //  a navmesh / pathfinding library 
+    //  (ex. tell the library to search a path in Enter, when done move to the next waypoint in Tick)
 
-    private enum States
+    [RequireComponent(typeof(GoapStateMachine))]
+    [RequireComponent(typeof(IdleState))]
+    [RequireComponent(typeof(EnemyPathfinder))]
+    public class GotoState : MachineState
     {
-        Disabled, Pulsed, Active, Success, Failure
-    }
-    private States state;
-    
-    // additional feature, check for stuck, userful when using rigidbody or raycasts for movements
-    private Vector3 lastStuckCheckUpdatePosition;
-    private float stuckCheckCooldown;
-    public bool CheckForStuck;
-    public float StuckCheckDelay = 1f;
-    public float MaxStuckDistance = 0.1f;
+        private EnemyPathfinder pathfinder;
+        private Action onDoneMovementCallback;
+        private Action onFailureMovementCallback;
+        private Vector3 targetPosition;
 
-    public void SetTargetPosition(Vector3 position)
-    {
-        targetPosition = position;
-    }
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        pathfinder = GetComponentInParent<EnemyPathfinder>();
-    }
-
-    #region Work
-
-    protected override void Update()
-    {
-        base.Update();
-        MoveTo(targetPosition);
-
-        bool isStuck = CheckIfStuck();
-        if (isStuck)
+        private enum States
         {
-            //Debug.Log("I am stuck");
+            Disabled, Pulsed, Active, Success, Failure
         }
-    }
+        private States state;
 
-    protected virtual void MoveTo(Vector3 position)
-    {
-        pathfinder.Activate(position);
-        
-        if (pathfinder.HasFinishedPathing())
+        // additional feature, check for stuck, userful when using rigidbody or raycasts for movements
+        private Vector3 lastStuckCheckUpdatePosition;
+        private float stuckCheckCooldown;
+        public bool CheckForStuck;
+        public float StuckCheckDelay = 1f;
+        public float MaxStuckDistance = 0.1f;
+
+        public void SetTargetPosition(Vector3 position)
         {
-            state = States.Success;
+            targetPosition = position;
         }
-    }
 
-    private bool CheckIfStuck()
-    {
-        if (Time.time > stuckCheckCooldown)
+        protected override void Awake()
         {
-            if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
+            base.Awake();
+            pathfinder = GetComponentInParent<EnemyPathfinder>();
+        }
+
+        #region Work
+
+        protected override void Update()
+        {
+            base.Update();
+            MoveTo(targetPosition);
+
+            bool isStuck = CheckIfStuck();
+            if (isStuck)
             {
-                return false;
+                //Debug.Log("I am stuck");
             }
+        }
 
-            stuckCheckCooldown = Time.time + StuckCheckDelay;
-            if ((lastStuckCheckUpdatePosition - transform.position).magnitude < MaxStuckDistance)
+        protected virtual void MoveTo(Vector3 position)
+        {
+            pathfinder.Activate(position);
+
+            if (pathfinder.HasFinishedPathing())
             {
-                ReGoapLogger.Log("[GotoState] '" + name + "' is stuck.");
-                return true;
+                state = States.Success;
             }
-            lastStuckCheckUpdatePosition = transform.position;
         }
-        return false;
-    }
 
-    #endregion
-
-    #region StateHandler
-    public override void Init(GoapStateMachine stateMachine)
-    {
-        base.Init(stateMachine);
-        var transition = new SmTransition(GetPriority(), Transition);
-        var doneTransition = new SmTransition(GetPriority(), DoneTransition);
-        stateMachine.GetComponent<IdleState>().Transitions.Add(transition);
-        Transitions.Add(doneTransition);
-    }
-
-    private Type DoneTransition(IMachineState state)
-    {
-        if (this.state != States.Active)
-            return typeof(IdleState);
-        return null;
-    }
-
-    private Type Transition(IMachineState state)
-    {
-        if (this.state == States.Pulsed)
-            return typeof(GotoState);
-        return null;
-    }
-
-    public void GoTo(Vector3 position, Action onDoneMovement, Action onFailureMovement)
-    {
-        targetPosition = position;
-        GoTo(onDoneMovement, onFailureMovement);
-    }
-
-    void GoTo(Action onDoneMovement, Action onFailureMovement)
-    {
-        state = States.Pulsed;
-        onDoneMovementCallback = onDoneMovement;
-        onFailureMovementCallback = onFailureMovement;
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-        state = States.Active;
-    }
-
-    public override void Exit()
-    {
-        pathfinder.CancelPath();
-        if (state == States.Success)
+        private bool CheckIfStuck()
         {
-            onDoneMovementCallback();
+            if (Time.time > stuckCheckCooldown)
+            {
+                if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
+                {
+                    return false;
+                }
+
+                stuckCheckCooldown = Time.time + StuckCheckDelay;
+                if ((lastStuckCheckUpdatePosition - transform.position).magnitude < MaxStuckDistance)
+                {
+                    ReGoapLogger.Log("[GotoState] '" + name + "' is stuck.");
+                    return true;
+                }
+                lastStuckCheckUpdatePosition = transform.position;
+            }
+            return false;
         }
-        else
+
+        #endregion
+
+        #region StateHandler
+        public override void Init(GoapStateMachine stateMachine)
         {
-            onFailureMovementCallback();
+            base.Init(stateMachine);
+            var transition = new SmTransition(GetPriority(), Transition);
+            var doneTransition = new SmTransition(GetPriority(), DoneTransition);
+            stateMachine.GetComponent<IdleState>().Transitions.Add(transition);
+            Transitions.Add(doneTransition);
         }
+
+        private Type DoneTransition(IMachineState state)
+        {
+            if (this.state != States.Active)
+                return typeof(IdleState);
+            return null;
+        }
+
+        private Type Transition(IMachineState state)
+        {
+            if (this.state == States.Pulsed)
+                return typeof(GotoState);
+            return null;
+        }
+
+        public void GoTo(Vector3 position, Action onDoneMovement, Action onFailureMovement)
+        {
+            targetPosition = position;
+            GoTo(onDoneMovement, onFailureMovement);
+        }
+
+        void GoTo(Action onDoneMovement, Action onFailureMovement)
+        {
+            state = States.Pulsed;
+            onDoneMovementCallback = onDoneMovement;
+            onFailureMovementCallback = onFailureMovement;
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+            state = States.Active;
+        }
+
+        public override void Exit()
+        {
+            pathfinder.CancelPath();
+            if (state == States.Success)
+            {
+                onDoneMovementCallback();
+            }
+            else
+            {
+                onFailureMovementCallback();
+            }
+        }
+        #endregion
     }
-    #endregion
 }
+

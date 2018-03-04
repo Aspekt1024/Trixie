@@ -13,10 +13,17 @@ namespace TrixieCore
         private Collider2D coll;
         private SpriteRenderer sr;
 
+        private LayerMask[] layers;
+
         private void Start()
         {
             coll = GetComponent<Collider2D>();
             sr = GetComponent<SpriteRenderer>();
+
+            layers = new LayerMask[]
+            {
+                TrixieLayers.GetMask(Layers.PlayerProjectile)
+            };
         }
 
         public void Activate()
@@ -29,6 +36,19 @@ namespace TrixieCore
         {
             sr.enabled = false;
             coll.enabled = false;
+        }
+
+        public bool IsActive()
+        {
+            return coll.enabled;
+        }
+
+        public void HitShield(EnergyTypes.Colours energyColour, int damage = 1)
+        {
+            if (energyColour == ShieldColour)
+            {
+                Deactivate();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

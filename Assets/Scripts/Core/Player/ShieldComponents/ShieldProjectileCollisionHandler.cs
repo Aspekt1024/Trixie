@@ -18,7 +18,7 @@ public class ShieldProjectileCollisionHandler : MonoBehaviour {
             BaseEnemy baseEnemy = collision.GetComponent<BaseEnemy>();
             if (baseEnemy)
             {
-                baseEnemy.DamageEnemy(Vector2.zero, (int)((RedShieldAbility)ShieldComponent.GetAbility(EnergyTypes.Colours.Red)).Damage);
+                baseEnemy.DamageEnemy(Vector2.zero, EnergyTypes.Colours.Red, (int)((RedShieldAbility)ShieldComponent.GetAbility(EnergyTypes.Colours.Red)).Damage);
                 ShieldComponent.ReturnShield();
             }
         }

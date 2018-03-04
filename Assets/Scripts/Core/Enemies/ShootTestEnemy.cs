@@ -2,161 +2,167 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootTestEnemy : BaseEnemy {
+namespace TrixieCore
+{
 
-    public float ShootCooldown = 1f;
-    public Transform Turrets;
-    public GameObject StunEffect;
-
-    private float cooldown;
-
-    private ShootComponent shootComponent;
-
-    private float cdTimer = 0f;
-    private Coroutine damageRoutine;
-    private SpriteRenderer[] spriteRenderer;
-
-    private enum States
+    public class ShootTestEnemy : BaseEnemy
     {
-        None, TakingDamage, Dead, Stunned
-    }
-    private States state;
 
-    private void Start()
-    {
-        cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
-        shootComponent = GetComponent<ShootComponent>();
-        spriteRenderer = Model.GetComponentsInChildren<SpriteRenderer>();
-        DeathEffect.SetActive(false);
-        StunEffect.SetActive(false);
-    }
+        public float ShootCooldown = 1f;
+        public Transform Turrets;
+        public GameObject StunEffect;
 
-    protected override void Update()
-    {
-        if (state == States.Dead || state == States.Stunned) return;
+        private float cooldown;
 
-        if (Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius)
+        private ShootComponent shootComponent;
+
+        private float cdTimer = 0f;
+        private Coroutine damageRoutine;
+        private SpriteRenderer[] spriteRenderer;
+
+        private enum States
         {
-            // TODO only if raycasted *or* has seen recently. proper aggro. not this through the walls crap
-            HasAggro();
+            None, TakingDamage, Dead, Stunned
         }
-        else if (hasAggro)
-        {
-            LostAggro();
-        }
+        private States state;
 
-        if (Turrets != null)
-        {
-            Vector2 distVector = Player.Instance.transform.position - Turrets.transform.position;
-            float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
-            Turrets.eulerAngles = new Vector3(0f, 0f, targetRotation);
-        }
-
-        if (cdTimer < cooldown)
-        {
-            if (state == States.None)
-            {
-                cdTimer += Time.deltaTime;
-            }
-        }
-        else
+        private void Start()
         {
             cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
-            cdTimer = 0f;
-            shootComponent.Shoot(Player.Instance.gameObject);
+            shootComponent = GetComponent<ShootComponent>();
+            spriteRenderer = Model.GetComponentsInChildren<SpriteRenderer>();
+            DeathEffect.SetActive(false);
+            StunEffect.SetActive(false);
         }
-    }
-    
-    public override void DamageEnemy(Vector2 direction, int damage = 1)
-    {
-        healthComponent.TakeDamage(damage);
-        if (healthComponent.IsDead())
+
+        protected override void Update()
         {
-            DestroyEnemy();
+            if (state == States.Dead || state == States.Stunned) return;
+
+            if (Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius)
+            {
+                // TODO only if raycasted *or* has seen recently. proper aggro. not this through the walls crap
+                HasAggro();
+            }
+            else if (hasAggro)
+            {
+                LostAggro();
+            }
+
+            if (Turrets != null)
+            {
+                Vector2 distVector = Player.Instance.transform.position - Turrets.transform.position;
+                float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
+                Turrets.eulerAngles = new Vector3(0f, 0f, targetRotation);
+            }
+
+            if (cdTimer < cooldown)
+            {
+                if (state == States.None)
+                {
+                    cdTimer += Time.deltaTime;
+                }
+            }
+            else
+            {
+                cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
+                cdTimer = 0f;
+                shootComponent.Shoot(Player.Instance.gameObject);
+            }
         }
-        else
+
+        public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyColour, int damage = 1)
         {
+            healthComponent.TakeDamage(damage);
+            if (healthComponent.IsDead())
+            {
+                DestroyEnemy();
+            }
+            else
+            {
+                if (damageRoutine != null) StopCoroutine(damageRoutine);
+                damageRoutine = StartCoroutine(ShowDamaged(direction));
+            }
+        }
+
+        protected override void DestroyEnemy()
+        {
+            state = States.Dead;
             if (damageRoutine != null) StopCoroutine(damageRoutine);
-            damageRoutine = StartCoroutine(ShowDamaged(direction));
-        }
-    }
+            body.velocity = Vector2.zero;
+            body.isKinematic = true;
+            coll.enabled = false;
+            Model.SetActive(false);
+            LostAggro();
 
-    protected override void DestroyEnemy()
-    {
-        state = States.Dead;
-        if (damageRoutine != null) StopCoroutine(damageRoutine);
-        body.velocity = Vector2.zero;
-        body.isKinematic = true;
-        coll.enabled = false;
-        Model.SetActive(false);
-        LostAggro();
-
-        if (stunRoutine != null)
-        {
-            StopCoroutine(stunRoutine);
-        }
-        StunEffect.SetActive(false);
-        Turrets.gameObject.SetActive(false);
-        DeathEffect.SetActive(true);
-        AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
-    }
-
-    protected override IEnumerator ShowDamaged(Vector2 direction)
-    {
-        state = States.TakingDamage;
-
-        body.velocity = direction.normalized * 14f;
-
-        foreach (var r in spriteRenderer)
-        {
-            if (r.name != "FlameGreen")
+            if (stunRoutine != null)
             {
-                r.color = new Color(1f, 0f, 0f, 0.6f);
+                StopCoroutine(stunRoutine);
+            }
+            StunEffect.SetActive(false);
+            Turrets.gameObject.SetActive(false);
+            DeathEffect.SetActive(true);
+            AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
+        }
+
+        protected override IEnumerator ShowDamaged(Vector2 direction)
+        {
+            state = States.TakingDamage;
+
+            body.velocity = direction.normalized * 14f;
+
+            foreach (var r in spriteRenderer)
+            {
+                if (r.name != "FlameGreen")
+                {
+                    r.color = new Color(1f, 0f, 0f, 0.6f);
+                }
+            }
+            yield return new WaitForSeconds(0.3f);
+            foreach (var r in spriteRenderer)
+            {
+                if (r.name != "FlameGreen")
+                {
+                    r.color = Color.white;
+                }
+            }
+
+            body.velocity = Vector2.zero;
+            yield return new WaitForSeconds(0.7f);
+            state = States.None;
+        }
+
+        private Coroutine stunRoutine;
+        public override void Stun(Vector2 direction, float stunTime)
+        {
+            if (stunRoutine != null) StopCoroutine(stunRoutine);
+            stunRoutine = StartCoroutine(StunRoutine(stunTime));
+        }
+
+        private IEnumerator StunRoutine(float stunTime)
+        {
+            state = States.Stunned;
+            Color originalColor = spriteRenderer[0].color;
+            StunEffect.SetActive(true);
+            SetRendererColour(new Color(0.3f, 0.3f, 1f, 1f));
+            float timer = 0;
+            while (timer < stunTime)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            StunEffect.SetActive(false);
+            SetRendererColour(originalColor);
+            state = States.None;
+        }
+
+        private void SetRendererColour(Color color)
+        {
+            foreach (SpriteRenderer r in spriteRenderer)
+            {
+                r.color = color;
             }
         }
-        yield return new WaitForSeconds(0.3f);
-        foreach (var r in spriteRenderer)
-        {
-            if (r.name != "FlameGreen")
-            {
-                r.color = Color.white;
-            }
-        }
-
-        body.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.7f);
-        state = States.None;
     }
 
-    private Coroutine stunRoutine;
-    public override void Stun(Vector2 direction, float stunTime)
-    {
-        if (stunRoutine != null) StopCoroutine(stunRoutine);
-        stunRoutine = StartCoroutine(StunRoutine(stunTime));
-    }
-
-    private IEnumerator StunRoutine(float stunTime)
-    {
-        state = States.Stunned;
-        Color originalColor = spriteRenderer[0].color;
-        StunEffect.SetActive(true);
-        SetRendererColour(new Color(0.3f, 0.3f, 1f, 1f));
-        float timer = 0;
-        while(timer < stunTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        StunEffect.SetActive(false);
-        SetRendererColour(originalColor);
-        state = States.None;
-    }
-
-    private void SetRendererColour(Color color)
-    {
-        foreach (SpriteRenderer r in spriteRenderer)
-        {
-            r.color = color;
-        }
-    }
 }

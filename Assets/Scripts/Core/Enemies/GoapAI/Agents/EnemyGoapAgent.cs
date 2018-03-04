@@ -1,83 +1,86 @@
 ﻿using System.Collections.Generic;
 using ReGoap.Unity;
-using TrixieCore.Goap;
 using ReGoap.Core;
 using ReGoap.Utilities;
 using UnityEngine;
 
-public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
+namespace TrixieCore.Goap
 {
-    public GameObject GoalsObject;
-    public GameObject ActionsObject;
-    public GameObject SensorsObject;
-
-    private BaseEnemy parent;
-
-    public BaseEnemy Parent
+    public class EnemyGoapAgent : ReGoapAgent<GoapLabels, object>
     {
-        get { return parent; }
-    }
+        public GameObject GoalsObject;
+        public GameObject ActionsObject;
+        public GameObject SensorsObject;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        parent = GetComponentInParent<BaseEnemy>();
-    }
-    
-    public A GetAction<A>() where A : ReGoapAction<GoapLabels, object> { return ActionsObject.GetComponent<A>(); }
-    public S GetSensor<S>() where S : ReGoapSensor<GoapLabels, object> { return SensorsObject.GetComponent<S>(); }
-    public G GetGoal<G>() where G : ReGoapGoal<GoapLabels, object> { return GoalsObject.GetComponent<G>(); }
+        private BaseEnemy parent;
 
-    public IReGoapSensor<GoapLabels, object>[] GetSensors()
-    {
-        return SensorsObject.GetComponentsInChildren<IReGoapSensor<GoapLabels, object>>();
-    }
-
-    public override IReGoapMemory<GoapLabels, object> GetMemory()
-    {
-        if (memory == null)
+        public BaseEnemy Parent
         {
-            memory = GetComponent<IReGoapMemory<GoapLabels, object>>();
+            get { return parent; }
         }
-        return memory;
-    }
 
-    public override void RefreshActionsSet()
-    {
-        actions = new List<IReGoapAction<GoapLabels, object>>(ActionsObject.GetComponents<IReGoapAction<GoapLabels, object>>());
-    }
-    
-    public override void RefreshGoalsSet()
-    {
-        goals = new List<IReGoapGoal<GoapLabels, object>>(GoalsObject.GetComponents<IReGoapGoal<GoapLabels, object>>());
-        possibleGoalsDirty = true;
-    }
-
-    public void RecalculateGoal()
-    {
-        CalculateNewGoal(true);
-    }
-
-    #region Debug
-    protected override void ShowAction(IReGoapAction<GoapLabels, object> action)
-    {
-        if (parent.GetType().Equals(typeof(SmartBot)))
+        protected override void Awake()
         {
-            ((SmartBot)parent).SetActionText(action.GetType().ToString());
+            base.Awake();
+            parent = GetComponentInParent<BaseEnemy>();
         }
-    }
+
+        public A GetAction<A>() where A : ReGoapAction<GoapLabels, object> { return ActionsObject.GetComponent<A>(); }
+        public S GetSensor<S>() where S : ReGoapSensor<GoapLabels, object> { return SensorsObject.GetComponent<S>(); }
+        public G GetGoal<G>() where G : ReGoapGoal<GoapLabels, object> { return GoalsObject.GetComponent<G>(); }
+
+        public IReGoapSensor<GoapLabels, object>[] GetSensors()
+        {
+            return SensorsObject.GetComponentsInChildren<IReGoapSensor<GoapLabels, object>>();
+        }
+
+        public override IReGoapMemory<GoapLabels, object> GetMemory()
+        {
+            if (memory == null)
+            {
+                memory = GetComponent<IReGoapMemory<GoapLabels, object>>();
+            }
+            return memory;
+        }
+
+        public override void RefreshActionsSet()
+        {
+            actions = new List<IReGoapAction<GoapLabels, object>>(ActionsObject.GetComponents<IReGoapAction<GoapLabels, object>>());
+        }
+
+        public override void RefreshGoalsSet()
+        {
+            goals = new List<IReGoapGoal<GoapLabels, object>>(GoalsObject.GetComponents<IReGoapGoal<GoapLabels, object>>());
+            possibleGoalsDirty = true;
+        }
+
+        public void RecalculateGoal()
+        {
+            CalculateNewGoal(true);
+        }
+
+        #region Debug
+        protected override void ShowAction(IReGoapAction<GoapLabels, object> action)
+        {
+            if (parent.GetType().Equals(typeof(SmartBot)))
+            {
+                ((SmartBot)parent).SetActionText(action.GetType().ToString());
+            }
+        }
 
 
-    protected override void ShowGoal(IReGoapGoal<GoapLabels, object> goal)
-    {
-        if (parent.GetType().Equals(typeof(SmartBot)))
+        protected override void ShowGoal(IReGoapGoal<GoapLabels, object> goal)
         {
-            ((SmartBot)parent).SetGoalText(goal.GetType().ToString());
+            if (parent.GetType().Equals(typeof(SmartBot)))
+            {
+                ((SmartBot)parent).SetGoalText(goal.GetType().ToString());
+            }
+            else if (parent.GetType().Equals(typeof(TrixieCore.Guy2)))
+            {
+                //Debug.Log(goal.GetType().ToString());
+            }
         }
-        else if (parent.GetType().Equals(typeof(TrixieCore.Guy2)))
-        {
-            //Debug.Log(goal.GetType().ToString());
-        }
+        #endregion
     }
-    #endregion
 }
+

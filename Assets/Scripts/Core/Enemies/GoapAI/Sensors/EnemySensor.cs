@@ -1,51 +1,53 @@
 ﻿using ReGoap.Unity;
 using UnityEngine;
-using TrixieCore.Goap;
-
-public class EnemySensor : ReGoapSensor<GoapLabels, object>
+namespace TrixieCore.Goap
 {
-    private BaseEnemy enemyScript;
-    private VisionComponent vision;
-    private AttackAction attackAction;
-
-    private void Start()
+    public class EnemySensor : ReGoapSensor<GoapLabels, object>
     {
-        var agent = GetComponentInParent<EnemyGoapAgent>();
-        enemyScript = agent.Parent;
-        vision = enemyScript.GetComponent<VisionComponent>();
-        memory = agent.GetMemory();
-        attackAction = agent.GetAction<AttackAction>();
-    }
+        private BaseEnemy enemyScript;
+        private VisionComponent vision;
+        private AttackAction attackAction;
 
-    public override void UpdateSensor()
-    {
-        var worldState = memory.GetWorldState();
-
-        worldState.Set(GoapLabels.TargetFound, vision.CanSeePlayer());
-        worldState.Set(GoapLabels.CanSeePlayer, vision.CanSeePlayer());
-        worldState.Set(GoapLabels.CanAttack, attackAction.CanAttack);
-        worldState.Set(GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty());
-        worldState.Set(GoapLabels.NotSeenPlayerRecently, !vision.HasSeenPlayerRecenty());
-        worldState.Set(GoapLabels.CanSensePlayer, Vector2.Distance(enemyScript.transform.position, Player.Instance.transform.position) < enemyScript.AggroRadius);
-
-        Vector2 lookAtPosition = transform.position;
-        if ((bool)worldState.Get(GoapLabels.CanSensePlayer) || (bool)worldState.Get(GoapLabels.CanSeePlayer))
+        private void Start()
         {
-            lookAtPosition = Player.Instance.transform.position;
-        }
-        else if ((bool)worldState.Get(GoapLabels.HasSeenPlayerRecently))
-        {
-            lookAtPosition = vision.GetLastKnownPlayerPosition();
-        }
-        else
-        {
-            enemyScript.LostAggro();
-            return;
+            var agent = GetComponentInParent<EnemyGoapAgent>();
+            enemyScript = agent.Parent;
+            vision = enemyScript.GetComponent<VisionComponent>();
+            memory = agent.GetMemory();
+            attackAction = agent.GetAction<AttackAction>();
         }
 
-        enemyScript.HasAggro();
-        worldState.Set(GoapLabels.LastKnownPlayerPosition, lookAtPosition);
-        enemyScript.LookAtPosition(lookAtPosition);
+        public override void UpdateSensor()
+        {
+            var worldState = memory.GetWorldState();
 
+            worldState.Set(GoapLabels.TargetFound, vision.CanSeePlayer());
+            worldState.Set(GoapLabels.CanSeePlayer, vision.CanSeePlayer());
+            worldState.Set(GoapLabels.CanAttack, attackAction.CanAttack);
+            worldState.Set(GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty());
+            worldState.Set(GoapLabels.NotSeenPlayerRecently, !vision.HasSeenPlayerRecenty());
+            worldState.Set(GoapLabels.CanSensePlayer, Vector2.Distance(enemyScript.transform.position, Player.Instance.transform.position) < enemyScript.AggroRadius);
+
+            Vector2 lookAtPosition = transform.position;
+            if ((bool)worldState.Get(GoapLabels.CanSensePlayer) || (bool)worldState.Get(GoapLabels.CanSeePlayer))
+            {
+                lookAtPosition = Player.Instance.transform.position;
+            }
+            else if ((bool)worldState.Get(GoapLabels.HasSeenPlayerRecently))
+            {
+                lookAtPosition = vision.GetLastKnownPlayerPosition();
+            }
+            else
+            {
+                enemyScript.LostAggro();
+                return;
+            }
+
+            enemyScript.HasAggro();
+            worldState.Set(GoapLabels.LastKnownPlayerPosition, lookAtPosition);
+            enemyScript.LookAtPosition(lookAtPosition);
+
+        }
     }
 }
+

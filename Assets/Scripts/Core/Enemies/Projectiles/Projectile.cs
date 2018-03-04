@@ -120,7 +120,7 @@ namespace TrixieCore
             {
                 if (collision.gameObject.tag == "Enemy")
                 {
-                    collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+                    collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, GetColour());
                     ShowImpact();
                 }
                 else
@@ -154,7 +154,7 @@ namespace TrixieCore
 
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
-                collision.gameObject.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position);
+                collision.gameObject.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, GetColour());
                 ShowImpact();
             }
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Player))

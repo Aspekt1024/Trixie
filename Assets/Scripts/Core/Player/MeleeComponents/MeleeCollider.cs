@@ -2,52 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeCollider : MonoBehaviour {
-
-    private MeleeComponent meleeComponent;
-    private PolygonCollider2D meleeCollider;
-
-    private void Start()
+namespace TrixieCore
+{
+    public class MeleeCollider : MonoBehaviour
     {
-        meleeComponent = Player.Instance.GetComponent<MeleeComponent>();
-        meleeCollider = GetComponent<PolygonCollider2D>();
-        meleeCollider.enabled = false;
-    }
 
-    public void EnableCollider()
-    {
-        meleeCollider.enabled = true;
-    }
+        private MeleeComponent meleeComponent;
+        private PolygonCollider2D meleeCollider;
 
-    public void DisableCollider()
-    {
-        meleeCollider.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
+        private void Start()
         {
-            HitEnemy(collision.GetComponent<BaseEnemy>());
+            meleeComponent = Player.Instance.GetComponent<MeleeComponent>();
+            meleeCollider = GetComponent<PolygonCollider2D>();
+            meleeCollider.enabled = false;
         }
-    }
 
-    private void HitEnemy(BaseEnemy enemy)
-    {
-        Vector2 direction = enemy.transform.position - transform.position;
-        switch (meleeComponent.GetMeleeColour())
+        public void EnableCollider()
         {
-            case EnergyTypes.Colours.Blue:
-                enemy.DamageEnemy(direction, 1);
-                break;
-            case EnergyTypes.Colours.Red:
-                enemy.DamageEnemy(direction, 1);
-                break;
-            case EnergyTypes.Colours.Green:
-                enemy.Stun(direction, 1);
-                break;
-            default:
-                break;
+            meleeCollider.enabled = true;
+        }
+
+        public void DisableCollider()
+        {
+            meleeCollider.enabled = false;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "Enemy" && collision.tag == "Enemy")
+            {
+                if (collision.tag == "Enemy")
+                {
+                    HitEnemy(collision.GetComponent<BaseEnemy>());
+                }
+            }
+        }
+
+        private void HitEnemy(BaseEnemy enemy)
+        {
+            Vector2 direction = enemy.transform.position - transform.position;
+            switch (meleeComponent.GetMeleeColour())
+            {
+                case EnergyTypes.Colours.Blue:
+                    enemy.DamageEnemy(direction, meleeComponent.GetMeleeColour(), 1);
+                    break;
+                case EnergyTypes.Colours.Red:
+                    enemy.DamageEnemy(direction, meleeComponent.GetMeleeColour(), 1);
+                    break;
+                case EnergyTypes.Colours.Green:
+                    enemy.Stun(direction, 1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

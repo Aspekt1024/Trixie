@@ -36,6 +36,18 @@ namespace TrixieCore
             patrolComponent.Deactivate();
         }
 
+        public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)
+        {
+            if (!Shield.IsActive())
+            {
+                base.DamageEnemy(direction, energyType, damage);
+            }
+            else
+            {
+                Shield.HitShield(energyType);
+            }
+        }
+
     }
 }
 
