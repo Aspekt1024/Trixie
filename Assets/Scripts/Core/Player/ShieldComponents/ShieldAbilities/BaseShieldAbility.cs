@@ -10,6 +10,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
     public bool DisabledOnWrongColour = true;
     public bool LosesPowerOnWrongColour = true;
     public float PowerLossOnWrongColour = 1;
+    public bool CancelOnMove = false;
 
     [HideInInspector] public EnergyTypes.Colours Colour;
    
@@ -67,6 +68,8 @@ public abstract class BaseShieldAbility : MonoBehaviour {
     }
 
     public bool IsAtMaxCharge() { return power.ShieldFullyCharged(); }
+
+    public virtual void DisableAbility() { }
 
     public virtual void StopShielding()
     {

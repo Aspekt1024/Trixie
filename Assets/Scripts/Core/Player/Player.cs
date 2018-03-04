@@ -78,6 +78,7 @@ public class Player : MonoBehaviour {
     public void MeleePressed()
     {
         meleeComponent.MeleePressed();
+        shieldComponent.Moved();
     }
 
     public void MeleeReleased()
@@ -88,6 +89,7 @@ public class Player : MonoBehaviour {
     public void RangedAttackPressed()
     {
         rangedComponent.RangedPressed();
+        shieldComponent.Moved();
     }
 
     public void RangedAttackReleased ()
@@ -98,10 +100,12 @@ public class Player : MonoBehaviour {
     public void MoveLeft()
     {
         moveComponent.MoveLeft();
+        shieldComponent.Moved();
     }
     public void MoveRight()
     {
         moveComponent.MoveRight();
+        shieldComponent.Moved();
     }
     public void MoveReleased()
     {
@@ -110,6 +114,7 @@ public class Player : MonoBehaviour {
     public void Jump()
     {
         jumpComponent.Jump();
+        shieldComponent.Moved();
     }
 
     public void ShieldPressed()

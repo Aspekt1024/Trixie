@@ -72,6 +72,14 @@ public class ShieldComponent : MonoBehaviour {
         }
     }
 
+    public void Moved()
+    {
+        if (abilities[currentAbilityIndex].CancelOnMove)
+        {
+            abilities[currentAbilityIndex].DisableAbility();
+        }
+    }
+
     private void GetAbilities()
     {
         abilities = new BaseShieldAbility[3];
