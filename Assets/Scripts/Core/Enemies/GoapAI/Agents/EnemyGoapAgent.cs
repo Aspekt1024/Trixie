@@ -13,6 +13,7 @@ namespace TrixieCore.Goap
         public GameObject SensorsObject;
 
         private BaseEnemy parent;
+        private GoapStateMachine stateMachine;
 
         public BaseEnemy Parent
         {
@@ -23,6 +24,16 @@ namespace TrixieCore.Goap
         {
             base.Awake();
             parent = GetComponentInParent<BaseEnemy>();
+            stateMachine = GetComponent<GoapStateMachine>();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if (parent.IsDead())
+            {
+                stateMachine.enabled = false;
+            }
         }
 
         public A GetAction<A>() where A : ReGoapAction<GoapLabels, object> { return ActionsObject.GetComponent<A>(); }

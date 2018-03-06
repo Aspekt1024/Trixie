@@ -5,74 +5,69 @@ using ReGoap.Core;
 using ReGoap.Unity;
 using TrixieCore.Goap;
 
-public class GuyPatrolAction : ReGoapAction<GoapLabels, object> {
+namespace TrixieCore
+{
 
-    private EnemyGoapAgent agentAI;
-    private GuyMemory memory;
-    private BasicPatrolComponent patrolComponent;
-
-    protected override void Awake()
+    public class GuyPatrolAction : ReGoapAction<GoapLabels, object>
     {
-        base.Awake();
-        agentAI = GetComponentInParent<EnemyGoapAgent>();
-        memory = (GuyMemory)agentAI.GetMemory();
-    }
 
-    private void OnEnable()
-    {
-        patrolComponent = agentAI.Parent.GetComponent<BasicPatrolComponent>();
-    }
+        private EnemyGoapAgent agentAI;
+        private GuyMemory memory;
+        private BasicPatrolComponent patrolComponent;
 
-    public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
-    {
-        effects.Clear();
-        effects.Set(GoapLabels.Guy_Goal_Patrol, true);
-        return effects;
-    }
-
-    public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
-    {
-        preconditions.Clear();
-        return preconditions;
-    }
-
-    public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
-    {
-        if (agentAI.Parent.IsDead())
+        protected override void Awake()
         {
-            patrolComponent.Deactivate();
-            return false;
+            base.Awake();
+            agentAI = GetComponentInParent<EnemyGoapAgent>();
+            memory = (GuyMemory)agentAI.GetMemory();
         }
-        return base.CheckProceduralCondition(goapAgent, goalState, next);
-    }
 
-    public override void Run(IReGoapAction<GoapLabels, object> previous, IReGoapAction<GoapLabels, object> next, IReGoapActionSettings<GoapLabels, object> settings, ReGoapState<GoapLabels, object> goalState, Action<IReGoapAction<GoapLabels, object>> done, Action<IReGoapAction<GoapLabels, object>> fail)
-    {
-        base.Run(previous, next, settings, goalState, done, fail);
-        if (!memory.CheckCondition(GoapLabels.Guy_Grounded))
+        private void OnEnable()
         {
-            patrolComponent.Deactivate();
+            patrolComponent = agentAI.Parent.GetComponent<BasicPatrolComponent>();
         }
-        else
+
+        public override ReGoapState<GoapLabels, object> GetEffects(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
         {
-            if (memory.CheckCondition(GoapLabels.Guy_WallForward) || !memory.CheckCondition(GoapLabels.Guy_GroundedForward))
+            effects.Clear();
+            effects.Set(GoapLabels.Guy_Goal_Patrol, true);
+            return effects;
+        }
+
+        public override ReGoapState<GoapLabels, object> GetPreconditions(ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
+        {
+            preconditions.Clear();
+            return preconditions;
+        }
+
+        public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
+        {
+            if (agentAI.Parent.IsDead())
             {
-                patrolComponent.TurnAround();
+                patrolComponent.Deactivate();
+                return false;
             }
-            patrolComponent.Activate();
+            return base.CheckProceduralCondition(goapAgent, goalState, next);
         }
 
-        failCallback(this);
-    }
-    
-    private void OnDoneCallback()
-    {
-        //doneCallback(this);
-        failCallback(this);
-    }
+        public override void Run(IReGoapAction<GoapLabels, object> previous, IReGoapAction<GoapLabels, object> next, IReGoapActionSettings<GoapLabels, object> settings, ReGoapState<GoapLabels, object> goalState, Action<IReGoapAction<GoapLabels, object>> done, Action<IReGoapAction<GoapLabels, object>> fail)
+        {
+            base.Run(previous, next, settings, goalState, done, fail);
+            patrolComponent.Activate();
 
-    private void OnFailCallback()
-    {
-        failCallback(this);
+            failCallback(this);
+        }
+
+        private void OnDoneCallback()
+        {
+            //doneCallback(this);
+            failCallback(this);
+        }
+
+        private void OnFailCallback()
+        {
+            failCallback(this);
+        }
     }
 }
+

@@ -58,7 +58,7 @@ namespace ReGoap.Unity
             }
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (currentActionState != null)
             {

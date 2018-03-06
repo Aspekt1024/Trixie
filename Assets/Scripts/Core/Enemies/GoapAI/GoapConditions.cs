@@ -8,8 +8,7 @@
         LastKnownPlayerPosition, HasCorrectProjectileColour,
         WeakProjectileColour, CanHitPlayer,
         AttackIsOnCooldown, HasDistanceFromPlayer,
-
-
+        
         Goal_HasDistanceFromPlayer,
 
         Guy_Goal_Patrol,

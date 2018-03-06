@@ -141,6 +141,11 @@ namespace TrixieCore
             AI.SetActive(false);
             Model.SetActive(false);
             DeathEffect.SetActive(true);
+            
+            if (damagedRoutine !=  null)
+            {
+                StopCoroutine(damagedRoutine);
+            }
 
             AudioMaster.PlayAudio(AudioMaster.AudioClips.Explosion1);
 

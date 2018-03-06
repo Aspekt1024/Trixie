@@ -7,13 +7,31 @@ namespace TrixieCore
     public class Guy2 : BaseEnemy
     {
 
+        public float ShieldCooldown = 5f;
+
         private BasicPatrolComponent patrolComponent;
         public EnemyShield Shield;
-
+        
         private void Start()
         {
             patrolComponent = GetComponent<BasicPatrolComponent>();
+
+            Shield.ShieldColour = EnergyTypes.Colours.Red;
+            Shield.SetCooldownDuration(ShieldCooldown);
+            Shield.Deactivate();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (IsDead()) return;
+
+            hasAggro = Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius;
+
+            if (Shield.IsActive() || !hasAggro) return;
             Shield.Activate();
+            
         }
 
         protected override IEnumerator ShowDamaged(Vector2 direction)
@@ -33,7 +51,7 @@ namespace TrixieCore
         protected override void DestroyEnemy()
         {
             base.DestroyEnemy();
-            patrolComponent.Deactivate();
+            patrolComponent.DeactivateImmediate();
         }
 
         public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)

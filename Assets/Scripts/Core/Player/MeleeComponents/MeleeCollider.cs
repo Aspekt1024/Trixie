@@ -27,6 +27,11 @@ namespace TrixieCore
             meleeCollider.enabled = false;
         }
 
+        public EnergyTypes.Colours GetColour()
+        {
+            return meleeComponent.GetMeleeColour();
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))

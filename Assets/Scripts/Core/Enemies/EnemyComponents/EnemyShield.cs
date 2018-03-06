@@ -13,7 +13,8 @@ namespace TrixieCore
         private Collider2D coll;
         private SpriteRenderer sr;
         
-        private LayerMask[] layers;
+        private float shieldCooldown;
+        private float cooldownRemaining;
 
         private enum States
         {
@@ -21,19 +22,19 @@ namespace TrixieCore
         }
         private States state;
 
-        private void Start()
+        private void Awake()
         {
             coll = GetComponent<Collider2D>();
             sr = GetComponent<SpriteRenderer>();
-
-            layers = new LayerMask[]
-            {
-                TrixieLayers.GetMask(Layers.PlayerProjectile)
-            };
         }
 
         private void Update()
         {
+            if (cooldownRemaining > 0)
+            {
+                cooldownRemaining -= Time.deltaTime;
+            }
+
             switch (state)
             {
                 case States.Inactive:
@@ -48,11 +49,27 @@ namespace TrixieCore
             }
         }
 
+        public void SetCooldownDuration(float cooldown)
+        {
+            shieldCooldown = cooldown;
+        }
+
         public void Activate()
         {
+            if (cooldownRemaining > 0)
+            {
+                return;
+            }
+
             sr.enabled = true;
             coll.enabled = true;
             state = States.Active;
+        }
+
+        public void DeactivateWithCooldown()
+        {
+            cooldownRemaining = shieldCooldown;
+            Deactivate();
         }
 
         public void Deactivate()
@@ -81,7 +98,15 @@ namespace TrixieCore
             {
                 if (collision.GetComponent<Projectile>().GetColour() == ShieldColour)
                 {
-                    Deactivate();
+                    DeactivateWithCooldown();
+                }
+            }
+            else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Player))
+            {
+                MeleeCollider melee = collision.GetComponent<MeleeCollider>();
+                if (melee != null && melee.GetColour() == ShieldColour)
+                {
+                    DeactivateWithCooldown();
                 }
             }
         }
