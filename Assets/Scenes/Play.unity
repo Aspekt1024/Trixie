@@ -10071,7 +10071,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 777234510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -86.3, y: 5.5, z: -0.10625471}
+  m_LocalPosition: {x: 87.1, y: 25.3, z: -0.10625471}
   m_LocalScale: {x: 0.78999996, y: 0.78999996, z: 0.78999996}
   m_Children: []
   m_Father: {fileID: 1048344255}
@@ -11265,18 +11265,6 @@ Prefab:
     - target: {fileID: 1012920863674132, guid: 785b2da74cd4b3340a13889f794d29a5, type: 2}
       propertyPath: m_Name
       value: AIBot (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277417068403142, guid: 785b2da74cd4b3340a13889f794d29a5, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.22125
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277417068403142, guid: 785b2da74cd4b3340a13889f794d29a5, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.22125
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277417068403142, guid: 785b2da74cd4b3340a13889f794d29a5, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.22125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 785b2da74cd4b3340a13889f794d29a5, type: 2}
@@ -15080,7 +15068,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1113490582}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -41.89, y: 35.68, z: 0}
+  m_LocalPosition: {x: 168.1, y: 56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1228041800}
@@ -31742,14 +31730,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 3.0786173, y: 4.432244}
+    - - {x: 2.8971353, y: 4.1902623}
       - {x: 0.48616633, y: 2.8739097}
       - {x: 0.7609912, y: -0.18990584}
       - {x: 3.7365253, y: -0.4674535}
-      - {x: 6.2820487, y: 0.42573592}
-      - {x: 7.4777923, y: 1.4594142}
+      - {x: 6.524023, y: -0.11871352}
+      - {x: 7.6592746, y: 1.1569355}
       - {x: 7.4579506, y: 3.0955505}
-      - {x: 6.586856, y: 4.3559136}
+      - {x: 6.586856, y: 4.1139317}
 --- !u!1 &2021758391
 GameObject:
   m_ObjectHideFlags: 0
@@ -33669,11 +33657,6 @@ Prefab:
     - target: {fileID: 1733618387015758, guid: 068829dd4ef388d48a6d1c3ef6cc5b52, type: 2}
       propertyPath: m_Name
       value: Guy 2.0 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 114811720686323818, guid: 068829dd4ef388d48a6d1c3ef6cc5b52,
-        type: 2}
-      propertyPath: WaitTimeAtEdge
-      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 068829dd4ef388d48a6d1c3ef6cc5b52, type: 2}

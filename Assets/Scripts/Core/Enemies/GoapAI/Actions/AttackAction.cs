@@ -67,6 +67,7 @@ public class AttackAction : ReGoapAction<GoapLabels, object> {
     public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
     {
         bool check = base.CheckProceduralCondition(goapAgent, goalState, next) && CanAttack && !preparingAttack && ((GoapTestMem)agent.GetMemory()).CheckCondition(GoapLabels.HasSeenPlayerRecently);
+        check &= ((GoapTestMem)agent.GetMemory()).CheckCondition(GoapLabels.IsStunned) == false;
         return check;
     }
 

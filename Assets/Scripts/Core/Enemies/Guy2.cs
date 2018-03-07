@@ -27,8 +27,13 @@ namespace TrixieCore
 
             if (IsDead()) return;
 
-            hasAggro = Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius;
+            if (isStunned)
+            {
+                patrolComponent.Deactivate();
+            }
 
+            hasAggro = Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius;
+            
             if (Shield.IsActive() || !hasAggro) return;
             Shield.Activate();
             
@@ -45,7 +50,6 @@ namespace TrixieCore
             yield return new WaitForSeconds(0.8f);
 
             SetSpriteColour(Color.white);
-            patrolComponent.Activate();
         }
 
         protected override void DestroyEnemy()
@@ -61,7 +65,6 @@ namespace TrixieCore
                 base.DamageEnemy(direction, energyType, damage);
             }
         }
-
     }
 }
 

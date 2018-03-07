@@ -7,14 +7,19 @@ namespace TrixieCore
 
     public class EnemyShield : MonoBehaviour
     {
-
         public EnergyTypes.Colours ShieldColour;
+        public bool StunsPlayer = false;
+        public float StunDuration = 2f;
+        public bool CanDamagePlayer = false;
+        public int DamageToPlayer = 1;
 
         private Collider2D coll;
         private SpriteRenderer sr;
         
         private float shieldCooldown;
         private float cooldownRemaining;
+
+        private bool hitPlayer;
 
         private enum States
         {
@@ -33,6 +38,12 @@ namespace TrixieCore
             if (cooldownRemaining > 0)
             {
                 cooldownRemaining -= Time.deltaTime;
+            }
+
+            if (hitPlayer && state == States.Active)
+            {
+                Player.Instance.HitWithObject(this);
+                hitPlayer = false;
             }
 
             switch (state)
@@ -107,6 +118,11 @@ namespace TrixieCore
                 if (melee != null && melee.GetColour() == ShieldColour)
                 {
                     DeactivateWithCooldown();
+                }
+
+                if (melee == null)
+                {
+                    hitPlayer = true;
                 }
             }
         }

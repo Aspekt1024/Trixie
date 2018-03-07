@@ -3,7 +3,7 @@
     public enum GoapLabels
     {
         EliminateThreats, Survive, RunAway, Wander, Patrol, Idle, FindTarget,
-        CanSeePlayer, IsDying, CanAttack, TargetFound, HasSeenPlayerRecently,
+        CanSeePlayer, IsDying, CanAttack, TargetFound, HasSeenPlayerRecently, IsStunned,
         IsAtStartingPoint, NotSeenPlayerRecently, CanSensePlayer,
         LastKnownPlayerPosition, HasCorrectProjectileColour,
         WeakProjectileColour, CanHitPlayer,

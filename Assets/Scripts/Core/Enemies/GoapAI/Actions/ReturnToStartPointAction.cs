@@ -43,6 +43,12 @@ namespace TrixieCore.Goap
             return preconditions;
         }
 
+        public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
+        {
+            bool check = base.CheckProceduralCondition(goapAgent, goalState, next) && ((GoapTestMem)agent.GetMemory()).CheckCondition(GoapLabels.IsStunned) == false;
+            return check;
+        }
+
         //public override bool CheckProceduralCondition(IReGoapAgent<GoapLabels, object> goapAgent, ReGoapState<GoapLabels, object> goalState, IReGoapAction<GoapLabels, object> next = null)
         //{
         //    if (GetComponentInParent<VisionComponent>().HasSeenPlayerRecenty())

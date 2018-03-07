@@ -43,6 +43,10 @@ public class MoveFromTargetAction : ReGoapAction<GoapLabels, object> {
         {
             return false;
         }
+        if (memory.CheckCondition(GoapLabels.IsStunned))
+        {
+            return false;
+        }
         return base.CheckProceduralCondition(goapAgent, goalState, next);
     }
 

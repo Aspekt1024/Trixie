@@ -12,6 +12,7 @@ namespace TrixieCore
         public GameObject AI;
         public GameObject Model;
         public GameObject DeathEffect;
+        public GameObject StunEffect;
 
         public float AggroRadius;
         public event Action OnDeathCallback = delegate { };
@@ -26,6 +27,9 @@ namespace TrixieCore
         private Coroutine damagedRoutine;
         private bool directionFlipped;
 
+        protected bool isStunned;
+        private float stunDuration;
+
         protected virtual void Awake()
         {
             healthComponent = GetComponent<HealthComponent>();
@@ -33,11 +37,37 @@ namespace TrixieCore
             body = GetComponent<Rigidbody2D>();
             coll = GetComponent<Collider2D>();
             DeathEffect.SetActive(false);
+            StunEffect.SetActive(false);
         }
 
-        protected virtual void Update() { }
+        protected virtual void Update()
+        {
+            if (IsDead()) return;
 
-        public virtual void Stun(Vector2 direction, float stunTime) { }
+            if (isStunned)
+            {
+                if (stunDuration > 0)
+                {
+                    stunDuration -= Time.deltaTime;
+                }
+                if (stunDuration <= 0)
+                {
+                    isStunned = false;
+                    StunEffect.SetActive(false);
+                    SetSpriteColour(Color.white);
+                }
+            }
+        }
+
+        public virtual void Stun(Vector2 direction, float stunTime)
+        {
+            if (isStunned || IsDead()) return;
+
+            SetSpriteColour(new Color(0.3f, 0.3f, 1f, 1f));
+            StunEffect.SetActive(true);
+            isStunned = true;
+            stunDuration = stunTime;
+        }
 
         public virtual void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)
         {
@@ -70,6 +100,8 @@ namespace TrixieCore
         {
             return healthComponent.IsDead();
         }
+
+        public bool IsStunned { get { return isStunned; } }
 
         public float GetHorizontalVelocity()
         {
@@ -141,7 +173,8 @@ namespace TrixieCore
             AI.SetActive(false);
             Model.SetActive(false);
             DeathEffect.SetActive(true);
-            
+            StunEffect.SetActive(false);
+
             if (damagedRoutine !=  null)
             {
                 StopCoroutine(damagedRoutine);

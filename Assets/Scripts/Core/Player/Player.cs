@@ -25,6 +25,14 @@ public class Player : MonoBehaviour {
     private bool isAgainstWall;
     private bool isOnBouncyGround;
 
+    private float stunDuration;
+
+    private enum States
+    {
+        Normal, Stunned
+    }
+    private States state;
+
     public bool IsGrounded
     {
         get { return isGrounded; }
@@ -73,52 +81,73 @@ public class Player : MonoBehaviour {
         {
             GameManager.RespawnPlayerStart();
         }
+
+        if (state == States.Stunned)
+        {
+            if (stunDuration > 0)
+            {
+                stunDuration -= Time.deltaTime;
+            }
+            if (stunDuration <= 0)
+            {
+                state = States.Normal;
+            }
+        }
     }
 
     public void MeleePressed()
     {
+        if (state != States.Normal) return;
         meleeComponent.MeleePressed();
         shieldComponent.Moved();
     }
 
     public void MeleeReleased()
     {
+        if (state != States.Normal) return;
         meleeComponent.MeleeReleased();
     }
 
     public void RangedAttackPressed()
     {
+        if (state != States.Normal) return;
         rangedComponent.RangedPressed();
         shieldComponent.Moved();
     }
 
     public void RangedAttackReleased ()
     {
+        if (state != States.Normal) return;
         rangedComponent.RangedReleased();
     }
 
     public void MoveLeft()
     {
+        if (state != States.Normal) return;
         moveComponent.MoveLeft();
         shieldComponent.Moved();
     }
     public void MoveRight()
     {
+        if (state != States.Normal) return;
         moveComponent.MoveRight();
         shieldComponent.Moved();
     }
     public void MoveReleased()
     {
+        if (state != States.Normal) return;
         moveComponent.MoveReleased();
     }
     public void Jump()
     {
+        if (state != States.Normal) return;
         jumpComponent.Jump();
         shieldComponent.Moved();
     }
 
     public void ShieldPressed()
     {
+        if (state != States.Normal) return;
         if (shieldComponent.ShieldActivatePressed())
         {
             anim.SetBool("shieldEnabled", true);
@@ -126,13 +155,14 @@ public class Player : MonoBehaviour {
     }
     public void ShieldReleased()
     {
+        if (state != States.Normal) return;
         if (shieldComponent.ShieldDeactivatePressed())
         {
             anim.SetBool("shieldEnabled", false);
         }
     }
 
-    public void JumpReleased() { jumpComponent.JumpReleased(); }
+    public void JumpReleased() { if (state != States.Normal) return; jumpComponent.JumpReleased(); }
     public void CycleShieldColourPressed() { shieldComponent.CycleShieldColour(); }
 
     public void Damage(int damage = 1)
@@ -142,6 +172,7 @@ public class Player : MonoBehaviour {
 
     public void ShootPressed()
     {
+        if (state != States.Normal) return;
         // TODO let the shield component handle this (originally it was going to enable a basic shoot. we're not doing that anymore)
         if (shieldComponent.IsAwaitingActivation())
         {
@@ -151,6 +182,7 @@ public class Player : MonoBehaviour {
 
     public void ShootReleased()
     {
+        if (state != States.Normal) return;
         shieldComponent.ShootReleased();
     }
 
@@ -174,20 +206,12 @@ public class Player : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            TakeDamage();
-        }
-        else if (collision.collider.tag == "BouncyBulb")
+        if (collision.collider.tag == "BouncyBulb")
         {
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             body.velocity = new Vector2(body.velocity.x, 30f);
             collision.collider.GetComponent<Bulb>().Bounce();
             jumpComponent.SetGrounded();
-        }
-        else if (collision.collider.tag == "Enemy")
-        {
-            TakeDamage();
         }
     }
 
@@ -202,7 +226,7 @@ public class Player : MonoBehaviour {
             Camera.main.GetComponent<CameraFollow>().SetCameraFocus(collision.transform);
         }
     }
-
+    
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "GravityField")
@@ -212,6 +236,39 @@ public class Player : MonoBehaviour {
         else if (collision.tag == "CameraFocusField")
         {
             Camera.main.GetComponent<CameraFollow>().SetCameraFollow();
+        }
+    }
+
+    private void Stun(float duration)
+    {
+        state = States.Stunned;
+        shieldComponent.Moved();
+        stunDuration = duration;
+        moveComponent.MoveReleased();
+        jumpComponent.JumpReleased();
+        // TODO stop movement, play animation etc.
+    }
+
+    public void HitWithObject(object obj)
+    {
+        if (obj.GetType().Equals(typeof(EnemyShield)))
+        {
+            HitWithShield((EnemyShield)obj);
+        }
+    }
+
+    private void HitWithShield(EnemyShield shield)
+    {
+        if (shield.StunsPlayer)
+        {
+            if (state != States.Stunned)
+            {
+                Stun(shield.StunDuration);
+            }
+        }
+        if (shield.CanDamagePlayer)
+        {
+            TakeDamage(shield.DamageToPlayer);
         }
     }
 

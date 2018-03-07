@@ -27,6 +27,7 @@ namespace TrixieCore.Goap
             worldState.Set(GoapLabels.HasSeenPlayerRecently, vision.HasSeenPlayerRecenty());
             worldState.Set(GoapLabels.NotSeenPlayerRecently, !vision.HasSeenPlayerRecenty());
             worldState.Set(GoapLabels.CanSensePlayer, Vector2.Distance(enemyScript.transform.position, Player.Instance.transform.position) < enemyScript.AggroRadius);
+            worldState.Set(GoapLabels.IsStunned, enemyScript.IsStunned);
 
             Vector2 lookAtPosition = transform.position;
             if ((bool)worldState.Get(GoapLabels.CanSensePlayer) || (bool)worldState.Get(GoapLabels.CanSeePlayer))

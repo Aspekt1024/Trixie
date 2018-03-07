@@ -10,7 +10,6 @@ namespace TrixieCore
 
         public float ShootCooldown = 1f;
         public Transform Turrets;
-        public GameObject StunEffect;
 
         private float cooldown;
 
@@ -31,13 +30,13 @@ namespace TrixieCore
             cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
             shootComponent = GetComponent<ShootComponent>();
             spriteRenderer = Model.GetComponentsInChildren<SpriteRenderer>();
-            DeathEffect.SetActive(false);
-            StunEffect.SetActive(false);
         }
 
         protected override void Update()
         {
-            if (state == States.Dead || state == States.Stunned) return;
+            base.Update();
+
+            if (state == States.Dead || isStunned) return;
 
             if (Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius)
             {
@@ -94,11 +93,7 @@ namespace TrixieCore
             coll.enabled = false;
             Model.SetActive(false);
             LostAggro();
-
-            if (stunRoutine != null)
-            {
-                StopCoroutine(stunRoutine);
-            }
+            
             StunEffect.SetActive(false);
             Turrets.gameObject.SetActive(false);
             DeathEffect.SetActive(true);
@@ -129,30 +124,6 @@ namespace TrixieCore
 
             body.velocity = Vector2.zero;
             yield return new WaitForSeconds(0.7f);
-            state = States.None;
-        }
-
-        private Coroutine stunRoutine;
-        public override void Stun(Vector2 direction, float stunTime)
-        {
-            if (stunRoutine != null) StopCoroutine(stunRoutine);
-            stunRoutine = StartCoroutine(StunRoutine(stunTime));
-        }
-
-        private IEnumerator StunRoutine(float stunTime)
-        {
-            state = States.Stunned;
-            Color originalColor = spriteRenderer[0].color;
-            StunEffect.SetActive(true);
-            SetRendererColour(new Color(0.3f, 0.3f, 1f, 1f));
-            float timer = 0;
-            while (timer < stunTime)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            StunEffect.SetActive(false);
-            SetRendererColour(originalColor);
             state = States.None;
         }
 

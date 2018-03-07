@@ -57,6 +57,7 @@ namespace TrixieCore
                     break;
                 case EnergyTypes.Colours.Red:
                     enemy.DamageEnemy(direction, meleeComponent.GetMeleeColour(), 1);
+                    enemy.Stun(direction, 1.5f);
                     break;
                 case EnergyTypes.Colours.Green:
                     enemy.Stun(direction, 1);
