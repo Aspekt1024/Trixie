@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrixieCore
+namespace TrixieCore.Units
 {
-    public class VisionComponent : MonoBehaviour
+    public class VisionComponent : UnitAbility
     {
 
         public float StartingAngle = 0f;
@@ -12,13 +12,14 @@ namespace TrixieCore
         public float Radius = 10f;
         public float CheckFrequency = 5f;
         public float VisionMemory = 2f;
-        public Transform VisionCenterPoint;
 
         private bool canSeePlayer;
         private LayerMask visibleLayers;
         private bool hasSeenPlayer;
         private float timeLastSeenPlayer;
         private Vector3 lastKnownPlayerPosition;
+
+        private BaseUnit unit;
 
         private enum States
         {
@@ -28,6 +29,7 @@ namespace TrixieCore
 
         private void Start()
         {
+            unit = GetComponentInParent<BaseUnit>();
             visibleLayers = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Player");
         }
 
@@ -81,7 +83,7 @@ namespace TrixieCore
                 return;
             }
 
-            RaycastHit2D hit = Physics2D.Raycast(VisionCenterPoint.position, distVector, Radius, visibleLayers);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, distVector, Radius, visibleLayers);
             if (hit.collider == null)
             {
                 canSeePlayer = false;
@@ -118,9 +120,13 @@ namespace TrixieCore
 
         private bool IsWithinArc(Vector2 distVector)
         {
-            if (GetComponent<BaseEnemy>().DirectionFlipped)
+            // TODO unit will never be null when we remove BaseEnemy
+            if (unit != null)
             {
-                distVector.x *= -1;
+                if (unit.DirectionFlipped)
+                {
+                    distVector.x *= -1;
+                }
             }
 
             float angle = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;

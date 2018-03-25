@@ -26,9 +26,9 @@ namespace Aspekt.AI
 
         protected virtual void SetConditions() { }
 
-        protected void AddCondition(string label, object value)
+        protected void AddCondition(object label, object value)
         {
-            conditions.Add(label, value);
+            conditions.Add(label.ToString(), value);
         }
 
     }

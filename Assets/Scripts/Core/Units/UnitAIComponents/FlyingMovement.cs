@@ -21,13 +21,9 @@ public class FlyingMovement : MonoBehaviour, IAIMovementBehaviour
     private States state;
 
 
-    public void SetTarget(Transform target)
+    public void Run(Transform target)
     {
         this.target = target;
-    }
-
-    public void Start()
-    {
         state = States.Active;
     }
 
@@ -39,6 +35,11 @@ public class FlyingMovement : MonoBehaviour, IAIMovementBehaviour
     public bool TargetReached()
     {
         return state == States.TargetReached;
+    }
+
+    public void SetTargetReached()
+    {
+        
     }
 
     public void Tick(float deltaTime)
@@ -56,6 +57,11 @@ public class FlyingMovement : MonoBehaviour, IAIMovementBehaviour
             default:
                 break;
         }
+    }
+
+    public void UpdateTarget(Transform target)
+    {
+        this.target = target;
     }
 
     private void Move(float deltaTime)

@@ -7,15 +7,11 @@ public class SmartBot : BaseEnemy {
 
     public Text ActionText;
     public Text GoalText;
-
-    private EnemyPathfinder pathFinder;
-    private VisionComponent vision;
+    public Aspekt.AI.AIAgent agent;
 
     private void Start()
     {
-        pathFinder = GetComponent<EnemyPathfinder>();
-        vision = GetComponent<VisionComponent>();
-        vision.Activate();
+        agent.Activate();
     }
 
     protected override void Update()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -30,6 +31,12 @@ namespace TrixieCore
 
         private bool currentlySeeking;
 
+        private enum States
+        {
+            Idle, Moving
+        }
+        private States state;
+
         private void Start()
         {
             seeker = GetComponent<Seeker>();
@@ -46,6 +53,8 @@ namespace TrixieCore
 
         public void Activate(Vector3 pos)
         {
+            state = States.Moving;
+
             target.position = pos;
             if (currentlySeeking) return;
 
@@ -63,8 +72,14 @@ namespace TrixieCore
             return Path == null;
         }
 
+        public void Stop()
+        {
+            CancelPath();
+        }
+
         public void CancelPath()
         {
+            state = States.Idle;
             Path = null;
             currentlySeeking = false;
             CancelInvoke();
@@ -72,6 +87,12 @@ namespace TrixieCore
 
         private void FixedUpdate()
         {
+            if (state == States.Idle)
+            {
+                body.velocity = Vector2.Lerp(body.velocity, Vector2.zero, Time.fixedDeltaTime);
+                return;
+            }
+
             if (Path == null) return;
 
             if (InSweetSpot())

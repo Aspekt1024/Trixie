@@ -5,12 +5,13 @@ namespace Aspekt.AI
     class MoveState : AIMachineState
     {
         private const float speed = 8f;
+        private Transform target;
 
         private IAIMovementBehaviour movement;
 
         public override void Enter()
         {
-            movement.Start();
+            movement.Run(target);
         }
 
         public override void Tick(float deltaTime)
@@ -30,7 +31,13 @@ namespace Aspekt.AI
 
         public void SetTarget(Transform target)
         {
-            movement.SetTarget(target);
+            this.target = target;
+            movement.UpdateTarget(target);
+        }
+
+        public void SetTargetReached()
+        {
+            movement.SetTargetReached();
         }
     }
 }

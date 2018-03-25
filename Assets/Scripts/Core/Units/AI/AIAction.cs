@@ -8,6 +8,7 @@ namespace Aspekt.AI
     {
         public float Cost = 1f;
 
+        protected AIAgent agent;
         protected AIStateMachine stateMachine;
 
         private Dictionary<string, object> preconditions = new Dictionary<string, object>();
@@ -20,6 +21,11 @@ namespace Aspekt.AI
         {
             SetPreconditions();
             SetEffects();
+        }
+
+        public void SetAgent(AIAgent agent)
+        {
+            this.agent = agent;
         }
 
         public override string ToString()
@@ -70,14 +76,14 @@ namespace Aspekt.AI
             return effects;
         }
 
-        protected virtual void AddPrecondition(string label, object value)
+        protected virtual void AddPrecondition(object label, object value)
         {
-            preconditions.Add(label, value);
+            preconditions.Add(label.ToString(), value);
         }
 
-        protected virtual void AddEffect(string label, object value)
+        protected virtual void AddEffect(object label, object value)
         {
-            effects.Add(label, value);
+            effects.Add(label.ToString(), value);
         }
 
         protected void Failure()

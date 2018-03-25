@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Aspekt.AI.Planning;
+using TrixieCore.Units;
 
 namespace Aspekt.AI
 {
@@ -15,6 +16,8 @@ namespace Aspekt.AI
         private AIGoal[] goals;
         private AIAction[] actions;
 
+        private BaseUnit baseUnit;
+
         private AIMemory memory;
         private AIPlanner planner;
         private AIExecutor executor;
@@ -27,13 +30,19 @@ namespace Aspekt.AI
 
         private void Awake()
         {
-            Owner = GetComponentInParent<TestUnit>().gameObject;
+            baseUnit = GetComponentInParent<BaseUnit>();
+            Owner = baseUnit.gameObject;
             memory = new AIMemory();
             planner = new AIPlanner(this);
             executor = new AIExecutor(this);
 
             goals = GoalsObject.GetComponents<AIGoal>();
             actions = ActionsObject.GetComponents<AIAction>();
+
+            foreach (var action in actions)
+            {
+                action.SetAgent(this);
+            }
 
             executor.OnFinishedPlan += FindNewGoal;
             planner.OnActionPlanFound += PlanFound;
@@ -62,6 +71,11 @@ namespace Aspekt.AI
                 default:
                     break;
             }
+        }
+        
+        public BaseUnit BaseUnit
+        {
+            get { return baseUnit; }
         }
 
         public void Activate()
@@ -108,7 +122,7 @@ namespace Aspekt.AI
             return memory;
         }
         
-        private void FindNewGoal()
+        public void FindNewGoal()
         {
             state = States.FindNewGoal;
         }

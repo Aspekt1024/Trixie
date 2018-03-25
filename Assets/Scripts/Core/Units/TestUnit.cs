@@ -1,18 +1,14 @@
 ﻿using UnityEngine;
 using Aspekt.AI;
+using TrixieCore;
 
-public class TestUnit : MonoBehaviour {
+public class TestUnit : BaseEnemy {
 
     private AIAgent ai;
-
-	// Use this for initialization
+    
 	void Start () {
         ai = GetComponentInChildren<AIAgent>();
         ai.Activate();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        
 	}
 }

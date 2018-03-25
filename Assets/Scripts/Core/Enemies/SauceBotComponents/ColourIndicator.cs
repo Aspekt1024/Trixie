@@ -9,7 +9,7 @@ public class ColourIndicator : MonoBehaviour {
     public Transform GreenIndicator;
     public ParticleSystem IndicatorEffect;
 
-    public AttackAction AttackActionRef;
+    public AttackAction2 AttackActionRef;
 
     private void Start()
     {

@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
+using TrixieCore;
+using TrixieCore.Units;
 using TrixieCore.Goap;
 
 public class SwitchProjectileColourAction : ReGoapAction<GoapLabels, object> {

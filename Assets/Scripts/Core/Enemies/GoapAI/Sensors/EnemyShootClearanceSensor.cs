@@ -3,6 +3,7 @@ using UnityEngine;
 using TrixieCore.Goap;
 using TrixieCore;
 using System.Collections.Generic;
+using TrixieCore.Units;
 
 public class EnemyShootClearanceSensor : ReGoapSensor<GoapLabels, object>
 {
@@ -20,7 +21,7 @@ public class EnemyShootClearanceSensor : ReGoapSensor<GoapLabels, object>
     {
         memory = GetComponentInParent<EnemyGoapAgent>().GetMemory();
         shootComponent = GetComponentInParent<ShootComponent>();
-        shootPoint = shootComponent.ShootPoint.transform;
+        shootPoint = shootComponent.transform;
         hitLayers = 1 << TrixieLayers.GetMask(Layers.Terrain) | 1 << TrixieLayers.GetMask(Layers.Player);
     }
 

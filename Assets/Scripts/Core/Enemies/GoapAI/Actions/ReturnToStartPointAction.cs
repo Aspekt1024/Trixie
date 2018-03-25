@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using ReGoap.Core;
 using ReGoap.Unity;
+using TrixieCore.Units;
 
 namespace TrixieCore.Goap
 {

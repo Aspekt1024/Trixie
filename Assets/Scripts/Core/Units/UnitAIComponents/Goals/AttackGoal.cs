@@ -6,6 +6,6 @@ public class AttackGoal : AIGoal
 {
     protected override void SetConditions()
     {
-        AddCondition(AILabels.TargetReached.ToString(), true);
+        AddCondition(SauceLabels.TargetAttacked, true);
     }
 }

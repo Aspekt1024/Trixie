@@ -8,11 +8,12 @@ namespace Aspekt.AI
     {
         private Dictionary<string, object> state = new Dictionary<string, object>();
 
-        public bool ConditionMet(string label, object value)
+        public bool ConditionMet(object label, object value)
         {
-            if (state.ContainsKey(label))
+            string key = label.ToString();
+            if (state.ContainsKey(key))
             {
-                return state[label] == value;
+                return state[key].Equals(value);
             }
             else if (value.GetType().Equals(typeof(bool)))
             {
@@ -24,15 +25,16 @@ namespace Aspekt.AI
             }
         }
 
-        public void UpdateCondition(string label, object newValue)
+        public void UpdateCondition(object label, object newValue)
         {
-            if (state.ContainsKey(label))
+            string key = label.ToString();
+            if (state.ContainsKey(key))
             {
-                state[label] = newValue;
+                state[key] = newValue;
             }
             else
             {
-                state.Add(label, newValue);
+                state.Add(key, newValue);
             }
         }
 

@@ -6,11 +6,12 @@ namespace Aspekt.AI
 {
     public interface IAIMovementBehaviour
     {
-        void Start();
+        void Run(Transform target);
         void Stop();
         void Tick(float deltaTime);
-        void SetTarget(Transform target);
         bool TargetReached();
+        void UpdateTarget(Transform target);
+        void SetTargetReached();
     }
 }
 

@@ -8,4 +8,23 @@ namespace TestUnitLabels
 
         
     }
+
+    public enum SauceLabels
+    {
+        HasCorrectProjectColour,
+        CanSeeTarget,
+        CanShootTarget,
+        CanShoot,
+        CanShield,
+
+        IsShielded,
+
+        IsInRangeOfTarget,
+
+        LastKnownPlayerPosition,
+        CorrectProjectileColour,
+
+
+        TargetAttacked
+    }
 }

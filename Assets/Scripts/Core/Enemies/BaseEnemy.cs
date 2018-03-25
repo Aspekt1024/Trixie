@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace TrixieCore
 {
-
     public abstract class BaseEnemy : MonoBehaviour
-    {
-
+    {           
         public GameObject AI;
         public GameObject Model;
         public GameObject DeathEffect;
@@ -33,9 +31,6 @@ namespace TrixieCore
         protected virtual void Awake()
         {
             healthComponent = GetComponent<HealthComponent>();
-            anim = GetComponent<Animator>();
-            body = GetComponent<Rigidbody2D>();
-            coll = GetComponent<Collider2D>();
             DeathEffect.SetActive(false);
             StunEffect.SetActive(false);
         }

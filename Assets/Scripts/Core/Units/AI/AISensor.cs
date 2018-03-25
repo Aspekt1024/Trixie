@@ -8,7 +8,7 @@ namespace Aspekt.AI
 
         // TODO states and update frequency (turn on/off etc)
 
-        public void Awake()
+        protected virtual void Awake()
         {
             agent = GetComponentInParent<AIAgent>();
         }

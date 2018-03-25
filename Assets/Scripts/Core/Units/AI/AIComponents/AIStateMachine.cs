@@ -8,12 +8,12 @@ namespace Aspekt.AI
         private AIMachineState currentState;
         private Queue<AIMachineState> stateQueue;
         private AIAgent agent;
-
+        
         public event Action OnComplete = delegate { };
 
         private enum States
         {
-            Stopped, Paused, Active
+            Stopped, Paused, Active, TransitionToNextState, TransitionToIdleState
         }
         private States state;
 
@@ -26,7 +26,19 @@ namespace Aspekt.AI
 
         public void Tick(float deltaTime)
         {
-            if (currentState.GetType().Equals(typeof(IdleState)) && stateQueue.Count > 0)
+            if (state == States.Stopped || state == States.Paused) return;
+
+            if (state == States.TransitionToNextState)
+            {
+                GotoNextState();
+            }
+            else if (state == States.TransitionToIdleState)
+            {
+                if (OnComplete != null) OnComplete();
+                currentState.OnComplete -= StateCompleted;
+                SetIdleState();
+            }
+            else if (currentState.GetType().Equals(typeof(IdleState)) && stateQueue.Count > 0)
             {
                 GotoNextState();
             }
@@ -72,6 +84,7 @@ namespace Aspekt.AI
 
         private void GotoNextState()
         {
+            state = States.Active;
             currentState.OnComplete -= StateCompleted;
             currentState = stateQueue.Dequeue();
             currentState.OnComplete += StateCompleted;
@@ -80,6 +93,7 @@ namespace Aspekt.AI
 
         private void SetIdleState()
         {
+            state = States.Active;
             if (stateQueue.Count > 0)
             {
                 GotoNextState();
@@ -93,15 +107,15 @@ namespace Aspekt.AI
 
         private void StateCompleted()
         {
+            if (state == States.TransitionToIdleState || state == States.TransitionToNextState) return;
+
             if (stateQueue.Count > 0)
             {
-                GotoNextState();
+                state = States.TransitionToNextState;
             }
             else
             {
-                if (OnComplete != null) OnComplete();
-                currentState.OnComplete -= StateCompleted;
-                SetIdleState();
+                state = States.TransitionToIdleState;
             }
         }
     }

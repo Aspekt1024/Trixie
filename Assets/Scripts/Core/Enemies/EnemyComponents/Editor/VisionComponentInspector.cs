@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -24,10 +25,21 @@ namespace TrixieCore
             // Check if the vision has been flipped (i.e. by movement) and calculate the correct angles
             float startingAngle = current.StartingAngle;
 
-            if (current.GetComponent<BaseEnemy>().DirectionFlipped)
+            if (current.GetComponent<BaseEnemy>() == null)
             {
-                startingAngle = Mathf.Sign(startingAngle) * (180f - Mathf.Abs(startingAngle)) - current.Arc;
+                if (current.GetComponentInParent<BaseUnit>().DirectionFlipped)
+                {
+                    startingAngle = Mathf.Sign(startingAngle) * (180f - Mathf.Abs(startingAngle)) - current.Arc;
+                }
             }
+            else
+            {
+                if (current.GetComponent<BaseEnemy>().DirectionFlipped)
+                {
+                    startingAngle = Mathf.Sign(startingAngle) * (180f - Mathf.Abs(startingAngle)) - current.Arc;
+                }
+            }
+
 
             Handles.color = new Color(1f, 0.3f, 0.3f, 0.1f);
             Handles.DrawSolidArc(current.transform.position, Vector3.forward, Quaternion.AngleAxis(startingAngle, Vector3.forward) * Vector3.right, current.Arc, current.Radius);
