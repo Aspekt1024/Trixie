@@ -7,10 +7,8 @@ namespace Aspekt.AI.Editor
 {
     public abstract class BaseEditor : EditorWindow
     {
-
         private Texture2D background;
-
-        // define nodes
+        private List<BaseNode> nodes = new List<BaseNode>();
 
         public virtual void LoadEditor()
         {
@@ -26,6 +24,15 @@ namespace Aspekt.AI.Editor
             DrawNodes();
         }
 
+        public void AddNode(BaseNode node)
+        {
+            nodes.Add(node);
+        }
+
+        public void RemoveNode(BaseNode node)
+        {
+            nodes.Remove(node);
+        }
 
         private void DrawBackground()
         {
@@ -43,7 +50,10 @@ namespace Aspekt.AI.Editor
 
         private void DrawNodes()
         {
-
+            foreach (var node in nodes)
+            {
+                node.Draw(Vector2.zero);
+            }
         }
 
         private void DrawGrid(float gridSpacing, Color gridColour)

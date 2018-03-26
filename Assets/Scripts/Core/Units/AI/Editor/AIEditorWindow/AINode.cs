@@ -4,19 +4,29 @@ using UnityEngine;
 
 namespace Aspekt.AI.Editor
 {
-    public class AINode
+    public class AINode : BaseNode
     {
-
-        // Use this for initialization
-        void Start()
+        protected enum NodeTypes
         {
+            Action, Goal, Unit
+        }
+        protected NodeTypes nodeType;
 
+
+        protected override void SetupNode()
+        {
+            nodeType = NodeTypes.Unit;
+            SetSize(new Vector2(150f, 100f));
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void DrawContent()
         {
+            nodeType = (NodeTypes)AIGUI.EnumPopupLayout("nodeType", nodeType);
+        }
 
+        protected override string GetNodeType()
+        {
+            return nodeType.ToString();
         }
     }
 }

@@ -7,49 +7,49 @@ namespace Aspekt.AI.Editor
 {
     public abstract class BaseNode
     {
-        protected enum NodeTypes
-        {
-            Action, Goal, Unit
-        }
-        protected NodeTypes nodeType;
-
         private string name = "Untitled";
         private int id;
         private List<NodeInterface> interfaces = new List<NodeInterface>();
-        private Rect windowRect;
 
-        //TODO private NodeTransform transform;
+        private NodeWindow nodeWindow;
         private BaseEditor parentEditor;
-
-        private Rect nodeRect;
-
+        
         public string Name { get { return name; } }
         public int ID { get { return id; } }
         public List<NodeInterface> GetInterfaces() { return interfaces; }
 
-        public virtual void SetupNode()
+        public BaseNode()
         {
-
+            nodeWindow = new NodeWindow();
+            SetupNode();
         }
 
-        public void SetWindowRect(Rect rect)
+        protected abstract void SetupNode();
+        protected abstract string GetNodeType();
+
+        public void SetPosition(Vector2 position)
         {
-            windowRect = rect;
-            // TODO set what needs to be
+            nodeWindow.SetPosition(position);
         }
+
+        public void SetSize(Vector2 size)
+        {
+            nodeWindow.Size = size;
+        }
+
+        public Vector2 GetSize() { return nodeWindow.Size; }
 
         public void Draw(Vector2 canvasOffset)
         {
             // TODO nodeRuntimeIndicator (border etc)
-            // TODO nodeRect = transform.GetWindow(canvasOffset);
-
-            // TODO setup skin
+            Rect nodeRect = nodeWindow.GetNodeRect(canvasOffset);
+            
             GUI.skin = (GUISkin)EditorGUIUtility.Load("NodeEditorWindowSkin.guiskin");
             GUI.skin.box.normal.background = GetWindowTexture();
             GUI.Box(nodeRect, name);
 
             GUI.BeginGroup(nodeRect);
-            // TODO setup nodeGUI NodeGUI.SetWindow(nodeRect.size);
+            AIGUI.SetWindow(nodeRect.size);
             DrawInterfaces();
             DrawContent();
             GUI.EndGroup();
@@ -67,7 +67,7 @@ namespace Aspekt.AI.Editor
 
         private Texture2D GetWindowTexture()
         {
-            string textureName = string.Format("{0}Window.png", nodeType.ToString());
+            string textureName = string.Format("AspektAI/{0}WindowSelected.png", GetNodeType());
             return (Texture2D)EditorGUIUtility.Load(textureName);
         }
 
