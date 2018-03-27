@@ -107,6 +107,24 @@ namespace Aspekt.AI
             state = States.Paused;
         }
 
+        /// <summary>
+        /// Editor use only. Do not use in-game
+        /// </summary>
+        public string GetNameSlow()
+        {
+            return gameObject.GetComponentInParent<BaseUnit>().name;
+        }
+
+        public AIPlanner GetPlanner()
+        {
+            return planner;
+        }
+
+        public AIExecutor GetExecutor()
+        {
+            return executor;
+        }
+
         public AIAction[] GetActions()
         {
             return actions;
@@ -125,6 +143,18 @@ namespace Aspekt.AI
         public void FindNewGoal()
         {
             state = States.FindNewGoal;
+        }
+
+        public AIGoal GetCurrentGoal()
+        {
+            if (executor == null) return null;
+            return executor.GetCurrentGoal();
+        }
+
+        public List<AIAction> GetActionPlan()
+        {
+            if (executor == null) return new List<AIAction>();
+            return executor.GetActionPlan();
         }
 
         private void PlanFound()

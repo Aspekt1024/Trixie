@@ -98,6 +98,33 @@ namespace Aspekt.AI
             }
         }
 
+        public AIGoal GetCurrentGoal()
+        {
+            return currentGoal;
+        }
+
+        public AIAction GetCurrentAction()
+        {
+            return currentAction;
+        }
+
+        public List<AIAction> GetActionPlan()
+        {
+            if (actionPlan == null) return new List<AIAction>();
+
+            List<AIAction> plan = new List<AIAction>();
+            foreach (var action in actionPlan)
+            {
+                plan.Add(action);
+            }
+
+            if (currentAction !=  null)
+            {
+                plan.Add(currentAction);
+            }
+            return plan;
+        }
+
         private void BeginNextAction()
         {
             if (actionPlan.Count == 0)

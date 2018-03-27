@@ -4,24 +4,22 @@ using UnityEngine;
 
 namespace Aspekt.AI.Editor
 {
-    public class AINode : BaseNode
+    public class GoalNode : BaseNode
     {
-        protected enum NodeTypes
-        {
-            Action, Goal, Unit
-        }
-        protected NodeTypes nodeType;
-
-
+        public AIGoal Goal { get; set; }
+        
+        protected string nodeType;
+        
         protected override void SetupNode()
         {
-            nodeType = NodeTypes.Unit;
-            SetSize(new Vector2(150f, 100f));
+            isActive = true;
+            nodeType = "Goal";
+            SetSize(new Vector2(200f, 100f));
         }
 
         protected override void DrawContent()
         {
-            nodeType = (NodeTypes)AIGUI.EnumPopupLayout("nodeType", nodeType);
+            title = Goal.ToString();
         }
 
         protected override string GetNodeType()

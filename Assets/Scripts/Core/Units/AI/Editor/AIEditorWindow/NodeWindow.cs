@@ -15,6 +15,11 @@ namespace Aspekt.AI.Editor
             set { windowRect = new Rect(windowRect.position, value); }
         }
 
+        public Vector2 Position
+        {
+            get { return windowRect.position; }
+        }
+
         public Rect GetNodeRect(Vector2 canvasOffset)
         {
             windowRect.position = SnapToGrid(windowRect.position);

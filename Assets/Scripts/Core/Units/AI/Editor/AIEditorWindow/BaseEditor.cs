@@ -10,18 +10,25 @@ namespace Aspekt.AI.Editor
         private Texture2D background;
         private List<BaseNode> nodes = new List<BaseNode>();
 
+
         public virtual void LoadEditor()
         {
             SetTheme();
         }
 
         protected abstract void SetTheme();
-
+        protected abstract void GUIUpdate();
 
         private void OnGUI()
         {
             DrawBackground();
             DrawNodes();
+            GUIUpdate();
+        }
+
+        private void Update()
+        {
+            Repaint();
         }
 
         public void AddNode(BaseNode node)
@@ -34,12 +41,17 @@ namespace Aspekt.AI.Editor
             nodes.Remove(node);
         }
 
+        public List<BaseNode> GetNodes()
+        {
+            return nodes;
+        }
+
         private void DrawBackground()
         {
             if (background == null)
             {
                 background = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-                background.SetPixel(0, 0, Color.gray);
+                background.SetPixel(0, 0, new Color(0.1f, 0.1f, 0.1f, 1f));
                 background.Apply();
             }
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), background, ScaleMode.StretchToFill);

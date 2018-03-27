@@ -7,14 +7,16 @@ namespace Aspekt.AI.Editor
 {
     public abstract class BaseNode
     {
-        private string name = "Untitled";
         private int id;
         private List<NodeInterface> interfaces = new List<NodeInterface>();
 
         private NodeWindow nodeWindow;
         private BaseEditor parentEditor;
-        
-        public string Name { get { return name; } }
+
+        protected bool isActive;
+        protected string title = "Untitled";
+
+        public string Name { get { return title; } }
         public int ID { get { return id; } }
         public List<NodeInterface> GetInterfaces() { return interfaces; }
 
@@ -46,7 +48,10 @@ namespace Aspekt.AI.Editor
             
             GUI.skin = (GUISkin)EditorGUIUtility.Load("NodeEditorWindowSkin.guiskin");
             GUI.skin.box.normal.background = GetWindowTexture();
-            GUI.Box(nodeRect, name);
+            GUI.skin.box.border = new RectOffset(8, 8, 22, 8);
+            GUI.skin.box.normal.textColor = new Color(.9f, .9f, .9f, 1f);
+            GUI.skin.box.fontStyle = FontStyle.Bold;
+            GUI.Box(nodeRect, title);
 
             GUI.BeginGroup(nodeRect);
             AIGUI.SetWindow(nodeRect.size);
@@ -56,6 +61,11 @@ namespace Aspekt.AI.Editor
         }
 
         protected abstract void DrawContent();
+
+        protected Vector2 position
+        {
+            get { return nodeWindow.Position; }
+        }
 
         private void DrawInterfaces()
         {
@@ -67,7 +77,7 @@ namespace Aspekt.AI.Editor
 
         private Texture2D GetWindowTexture()
         {
-            string textureName = string.Format("AspektAI/{0}WindowSelected.png", GetNodeType());
+            string textureName = string.Format("AspektAI/{0}Window{1}.png", GetNodeType(), isActive ? "Selected" : "Normal");
             return (Texture2D)EditorGUIUtility.Load(textureName);
         }
 
