@@ -23,12 +23,38 @@ namespace Aspekt.AI.Editor
         protected override void SetupNode()
         {
             nodeType = "Action";
-            SetSize(new Vector2(200f, 100f));
+            SetSize(new Vector2(200f, 150f));
         }
 
         protected override void DrawContent()
         {
             title = Action.ToString();
+            Dictionary<string, object> effects = Action.GetEffects();
+            foreach (var effect in effects)
+            {
+                AIGUI.LabelLayout(effect.Key);
+            }
+
+            GUI.skin.label.normal.textColor = Color.black;
+
+            Color originalColour = GUI.skin.label.normal.textColor;
+            
+
+            Dictionary<string, object> preconditions = Action.GetPreconditions();
+            foreach (var precondition in preconditions)
+            {
+                if (Action.GetAgent().GetMemory().ConditionMet(precondition.Key, precondition.Value))
+                {
+                    GUI.skin.label.normal.textColor = Color.green;
+                }
+                else
+                {
+                    GUI.skin.label.normal.textColor = Color.red;
+                }
+                AIGUI.LabelLayout(precondition.Key);
+            }
+
+            GUI.skin.label.normal.textColor = originalColour;
         }
 
         protected override string GetNodeType()

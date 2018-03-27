@@ -28,6 +28,11 @@ namespace Aspekt.AI
             this.agent = agent;
         }
 
+        public AIAgent GetAgent()
+        {
+            return agent;
+        }
+
         public override string ToString()
         {
             return GetType().ToString();

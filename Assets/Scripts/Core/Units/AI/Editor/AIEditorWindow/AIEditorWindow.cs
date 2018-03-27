@@ -25,7 +25,6 @@ namespace Aspekt.AI.Editor
 
         protected override void GUIUpdate()
         {
-            Debug.Log("guiupdate");
             GetAllObjects();
         }
 

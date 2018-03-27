@@ -38,7 +38,7 @@ namespace Aspekt.AI.Editor
         {
             isActive = true;
             nodeType = "Unit";
-            SetSize(new Vector2(200f, 100f));
+            SetSize(new Vector2(200f, 50f));
         }
 
         protected override void DrawContent()
@@ -51,6 +51,8 @@ namespace Aspekt.AI.Editor
                 title = Agent.GetNameSlow();
                 agentLoaded = true;
             }
+            
+            AIGUI.LabelLayout(agent.GetState());
 
             AIAction currentAction = agent.GetExecutor().GetCurrentAction();
             if (currentAction == null) return;
@@ -66,6 +68,7 @@ namespace Aspekt.AI.Editor
                     actionNode.SetInactive();
                 }
             }
+
         }
 
         protected override string GetNodeType()
@@ -86,13 +89,17 @@ namespace Aspekt.AI.Editor
             goalNode.Goal = agent.GetCurrentGoal();
             goalNode.SetPosition(position + new Vector2(0, GetSize().y + 10f));
 
+            float cumulativeActionWindowHeight = 0;
+
             List<AIAction> actions = Agent.GetActionPlan();
             for (int i = 0; i < actions.Count; i++)
             {
                 ActionNode actionNode = new ActionNode();
-                actionNode.SetPosition(position + new Vector2(0f, GetSize().y + (goalNode.GetSize().y + 10f) * (i + 1) + 10f));
+                actionNode.SetPosition(position + new Vector2(0f, GetSize().y + goalNode.GetSize().y + 20f + cumulativeActionWindowHeight + 10f * i));
                 actionNode.Action = actions[i];
                 actionNodes.Add(actionNode);
+
+                cumulativeActionWindowHeight += actionNode.GetSize().y;
             }
         }
     }

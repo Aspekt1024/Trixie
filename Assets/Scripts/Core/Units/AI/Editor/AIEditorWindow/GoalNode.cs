@@ -14,7 +14,7 @@ namespace Aspekt.AI.Editor
         {
             isActive = true;
             nodeType = "Goal";
-            SetSize(new Vector2(200f, 100f));
+            SetSize(new Vector2(200f, 80f));
         }
 
         protected override void DrawContent()

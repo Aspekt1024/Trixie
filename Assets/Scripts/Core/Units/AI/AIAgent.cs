@@ -115,30 +115,12 @@ namespace Aspekt.AI
             return gameObject.GetComponentInParent<BaseUnit>().name;
         }
 
-        public AIPlanner GetPlanner()
-        {
-            return planner;
-        }
-
-        public AIExecutor GetExecutor()
-        {
-            return executor;
-        }
-
-        public AIAction[] GetActions()
-        {
-            return actions;
-        }
-
-        public AIGoal[] GetGoals()
-        {
-            return goals;
-        }
-
-        public AIMemory GetMemory()
-        {
-            return memory;
-        }
+        public string GetState() { return state.ToString(); }
+        public AIPlanner GetPlanner() { return planner; }
+        public AIExecutor GetExecutor() { return executor; }
+        public AIAction[] GetActions() { return actions; }
+        public AIGoal[] GetGoals() { return goals; }
+        public AIMemory GetMemory() { return memory; }
         
         public void FindNewGoal()
         {
