@@ -4,10 +4,8 @@ using Aspekt.AI;
 using TestUnitLabels;
 using TrixieCore.Units;
 
-public class MoveToTarget : AIAction
+public class MoveToTargetAction : AIAction
 {
-    public float ReachedDistance = 10f;
-
     private MoveState moveState;
     
     public event Action<EnergyTypes.Colours> OnShootPreparation = delegate { };
@@ -44,8 +42,10 @@ public class MoveToTarget : AIAction
         if (moveState != null)
         {
             moveState.SetTarget(Player.Instance.transform);
+            
+            agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
 
-            if (NearTarget() && agent.GetMemory().ConditionMet(SauceLabels.CanSeeTarget, true))
+            if (CanSeeAndShootTarget())
             {
                 moveState.SetTargetReached();
             }
@@ -63,8 +63,9 @@ public class MoveToTarget : AIAction
         AddEffect(SauceLabels.CanSeeTarget, true);
     }
 
-    private bool NearTarget()
+    private bool CanSeeAndShootTarget()
     {
-        return Vector2.Distance(Player.Instance.transform.position, agent.BaseUnit.transform.position) < ReachedDistance;
+        return agent.GetMemory().ConditionMet(SauceLabels.CanShootTarget, true)
+                && agent.GetMemory().ConditionMet(SauceLabels.CanSeeTarget, true);
     }
 }

@@ -19,7 +19,6 @@ namespace TrixieCore.Units
         public Projectile.ProjectileSettings ProjectileSettings;
 
         protected GameObject target;
-        protected Action shootCallback;
 
         private float timeLastShot;
 

@@ -24,6 +24,8 @@ namespace TrixieCore.Units
         private Animator anim;
         private Rigidbody2D body;
         private Collider2D coll;
+
+        private bool directionFlipped;
         
         public IAIMovementBehaviour GetMovementBehaviour()
         {
@@ -73,9 +75,38 @@ namespace TrixieCore.Units
                 }
             }
         }
+        
+        public void LookAtPosition(Vector2 position)
+        {
+            if (transform.position.x > position.x)
+            {
+                FaceInitialDirection();
+            }
+            else
+            {
+                FaceOppositeDirection();
+            }
+        }
 
-        // TODO update
-        public bool DirectionFlipped { get { return false; } }
+        protected void FaceInitialDirection()
+        {
+            if (directionFlipped)
+            {
+                directionFlipped = false;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
+            }
+        }
+
+        protected void FaceOppositeDirection()
+        {
+            if (!directionFlipped)
+            {
+                directionFlipped = true;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
+            }
+        }
+
+        public bool DirectionFlipped { get { return directionFlipped; } }
     }
 }
 

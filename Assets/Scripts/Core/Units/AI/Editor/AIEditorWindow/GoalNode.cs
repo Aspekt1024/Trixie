@@ -9,7 +9,14 @@ namespace Aspekt.AI.Editor
         public AIGoal Goal { get; set; }
         
         protected string nodeType;
+
+        private AIAgent agent;
         
+        public void SetAgent(AIAgent agent)
+        {
+            this.agent = agent;
+        }
+
         protected override void SetupNode()
         {
             isActive = true;
@@ -20,6 +27,24 @@ namespace Aspekt.AI.Editor
         protected override void DrawContent()
         {
             title = Goal.ToString();
+
+            Color originalColour = GUI.skin.label.normal.textColor;
+            
+            Dictionary<string, object> conditions = Goal.GetConditions();
+            foreach (var condition in conditions)
+            {
+                if (agent.GetMemory().ConditionMet(condition.Key, condition.Value))
+                {
+                    GUI.skin.label.normal.textColor = Color.green;
+                }
+                else
+                {
+                    GUI.skin.label.normal.textColor = Color.red;
+                }
+                AIGUI.LabelLayout(condition.Key);
+            }
+
+            GUI.skin.label.normal.textColor = originalColour;
         }
 
         protected override string GetNodeType()

@@ -34,12 +34,9 @@ namespace Aspekt.AI.Editor
             {
                 AIGUI.LabelLayout(effect.Key);
             }
-
-            GUI.skin.label.normal.textColor = Color.black;
-
+            
             Color originalColour = GUI.skin.label.normal.textColor;
             
-
             Dictionary<string, object> preconditions = Action.GetPreconditions();
             foreach (var precondition in preconditions)
             {

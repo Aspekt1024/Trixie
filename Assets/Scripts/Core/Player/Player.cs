@@ -95,6 +95,8 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public bool IsAlive { get { return healthComponent.IsAlive(); } }
+
     public void MeleePressed()
     {
         if (state != States.Normal) return;

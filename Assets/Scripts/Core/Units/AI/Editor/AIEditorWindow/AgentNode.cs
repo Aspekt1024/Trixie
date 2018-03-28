@@ -38,7 +38,7 @@ namespace Aspekt.AI.Editor
         {
             isActive = true;
             nodeType = "Unit";
-            SetSize(new Vector2(200f, 50f));
+            SetSize(new Vector2(200f, 70f));
         }
 
         protected override void DrawContent()
@@ -53,6 +53,10 @@ namespace Aspekt.AI.Editor
             }
             
             AIGUI.LabelLayout(agent.GetState());
+
+            AIStateMachine stateMachine = agent.GetExecutor().GetStateMachine();
+
+            AIGUI.LabelLayout(stateMachine.GetCurrentState() + " (" + stateMachine.GetState() + ")");
 
             AIAction currentAction = agent.GetExecutor().GetCurrentAction();
             if (currentAction == null) return;
@@ -87,6 +91,7 @@ namespace Aspekt.AI.Editor
             actionNodes = new List<ActionNode>();
 
             goalNode.Goal = agent.GetCurrentGoal();
+            goalNode.SetAgent(agent);
             goalNode.SetPosition(position + new Vector2(0, GetSize().y + 10f));
 
             float cumulativeActionWindowHeight = 0;

@@ -14,7 +14,20 @@ public class RangedAttackColouredAction : AIAction
 
         agent.BaseUnit.GetAbility<ShootComponent>().Shoot(Player.Instance.gameObject);
 
-        Success();
+        OnShootComplete();
+    }
+
+    private void OnShootComplete()
+    {
+        if (Player.Instance.IsAlive)
+        {
+            Failure();
+        }
+        else
+        {
+            Success();
+        }
+
     }
 
     protected override void Update()

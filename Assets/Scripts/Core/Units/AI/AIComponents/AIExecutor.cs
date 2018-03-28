@@ -15,7 +15,7 @@ namespace Aspekt.AI
 
         private enum States
         {
-            Stopped, Running, Paused
+            Stopped, Running, Paused, GotoNextAction
         }
         private States state;
 
@@ -27,15 +27,19 @@ namespace Aspekt.AI
         
         public void Tick(float deltaTime)
         {
-            if (currentAction == null) return;
-
             switch (state)
             {
                 case States.Stopped:
                     break;
                 case States.Running:
-                    currentAction.Tick(deltaTime);
-                    stateMachine.Tick(deltaTime);
+                    if (currentAction != null)
+                    {
+                        currentAction.Tick(deltaTime);
+                        stateMachine.Tick(deltaTime);
+                    }
+                    break;
+                case States.GotoNextAction:
+                    BeginNextAction();
                     break;
                 case States.Paused:
                     break;
@@ -54,7 +58,7 @@ namespace Aspekt.AI
             }
             currentGoal = goal;
             actionPlan = newActionPlan;
-            BeginNextAction();
+            state = States.GotoNextAction;
         }
 
         public void Stop()
@@ -108,16 +112,24 @@ namespace Aspekt.AI
             return currentAction;
         }
 
+        public AIStateMachine GetStateMachine()
+        {
+            return stateMachine;
+        }
+
         public List<AIAction> GetActionPlan()
         {
-            if (actionPlan == null) return new List<AIAction>();
-
             List<AIAction> plan = new List<AIAction>();
-            foreach (var action in actionPlan)
-            {
-                plan.Add(action);
-            }
 
+            if (actionPlan != null)
+            {
+                foreach (var action in actionPlan)
+                {
+                    plan.Add(action);
+                }
+                plan.Reverse();
+            }
+            
             if (currentAction !=  null)
             {
                 plan.Add(currentAction);
@@ -130,13 +142,13 @@ namespace Aspekt.AI
             if (actionPlan.Count == 0)
             {
                 currentAction = null;
-                state = States.Stopped;
+                //state = States.Stopped;
                 if (OnFinishedPlan != null) OnFinishedPlan();
             }
             else
             {
                 state = States.Running;
-
+                stateMachine.Activate();
                 currentAction = actionPlan.Dequeue();
                 currentAction.Enter(stateMachine, ActionSuccess, ActionFailure);
             }
@@ -170,7 +182,7 @@ namespace Aspekt.AI
             }
             else
             {
-                BeginNextAction();
+                state = States.GotoNextAction;
             }
         }
 

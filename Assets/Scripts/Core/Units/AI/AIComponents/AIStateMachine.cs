@@ -49,6 +49,8 @@ namespace Aspekt.AI
         }
 
         public bool IsIdle { get { return currentState == null || currentState.GetType().Equals(typeof(IdleState)); } }
+        public string GetState() { return state.ToString(); }
+        public string GetCurrentState() { return currentState.ToString(); }
 
         public void Enqueue(AIMachineState newState)
         {

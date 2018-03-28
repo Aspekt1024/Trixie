@@ -25,10 +25,10 @@ namespace Aspekt.AI.Editor
 
         protected override void GUIUpdate()
         {
-            GetAllObjects();
+            ShowAgentAndActionPlan();
         }
 
-        private void GetAllObjects()
+        private void ShowAgentAndActionPlan()
         {
             // TODO setup event for when aiagents are added or removed from the editor
             AIAgent[] agents = FindObjectsOfType<AIAgent>();
