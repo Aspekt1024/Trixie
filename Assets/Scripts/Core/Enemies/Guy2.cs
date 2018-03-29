@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrixieCore
+namespace TrixieCore.Units
 {
     public class Guy2 : BaseEnemy
     {
@@ -17,7 +17,6 @@ namespace TrixieCore
             patrolComponent = GetComponent<BasicPatrolComponent>();
 
             Shield.ShieldColour = EnergyTypes.Colours.Red;
-            Shield.SetCooldownDuration(ShieldCooldown);
             Shield.Deactivate();
         }
 
@@ -34,7 +33,7 @@ namespace TrixieCore
 
             hasAggro = Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius;
             
-            if (Shield.IsActive() || !hasAggro) return;
+            if (Shield.IsActive || !hasAggro) return;
             Shield.Activate();
             
         }
@@ -60,7 +59,7 @@ namespace TrixieCore
 
         public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)
         {
-            if (!Shield.IsActive())
+            if (!Shield.IsActive)
             {
                 base.DamageEnemy(direction, energyType, damage);
             }

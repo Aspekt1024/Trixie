@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace TrixieCore
 {
-
     public class Beam : MonoBehaviour
     {
         public ShieldPositioner ShieldObject;
@@ -113,7 +112,7 @@ namespace TrixieCore
                 }
                 else if (collision.tag == "Shield")
                 {
-                    collision.GetComponent<EnemyShield>().HitShield(settings.colour, settings.damage);
+                    collision.GetComponent<Units.EnemyShield>().HitShield(settings.colour, settings.damage);
                     enemy = GetComponentInParent<BaseEnemy>();
                 }
             }

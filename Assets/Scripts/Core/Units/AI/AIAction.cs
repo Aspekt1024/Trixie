@@ -99,6 +99,7 @@ namespace Aspekt.AI
 
         protected void Success()
         {
+            AILogger.CreateMessage("Action complete: " + ToString(), agent);
             Exit();
             SuccessCallback.Invoke();
         }

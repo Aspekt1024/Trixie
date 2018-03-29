@@ -9,7 +9,7 @@ public class TestSensor : AISensor {
         Transform target = GameObject.Find("Cube").transform;
         if (Vector3.Distance(target.position, agent.transform.position) > 4f)
         {
-            agent.GetMemory().UpdateCondition(AILabels.TargetReached.ToString(), false);
+            agent.GetMemory().Set(AILabels.TargetReached.ToString(), false);
         }
     }
 }

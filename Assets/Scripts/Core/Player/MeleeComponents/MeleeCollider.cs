@@ -6,7 +6,6 @@ namespace TrixieCore
 {
     public class MeleeCollider : MonoBehaviour
     {
-
         private MeleeComponent meleeComponent;
         private PolygonCollider2D meleeCollider;
 
@@ -42,7 +41,7 @@ namespace TrixieCore
                 }
                 else if (collision.tag == "Shield")
                 {
-                    collision.GetComponent<EnemyShield>().HitShield(meleeComponent.GetMeleeColour());
+                    collision.GetComponent<Units.EnemyShield>().HitShield(meleeComponent.GetMeleeColour());
                 }
             }
         }

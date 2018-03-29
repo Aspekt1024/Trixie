@@ -25,7 +25,7 @@ namespace Aspekt.AI
             }
         }
 
-        public void UpdateCondition(object label, object newValue)
+        public void Set(object label, object newValue)
         {
             string key = label.ToString();
             if (state.ContainsKey(key))

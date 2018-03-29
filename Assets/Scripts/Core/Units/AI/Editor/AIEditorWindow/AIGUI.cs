@@ -49,6 +49,11 @@ namespace Aspekt.AI.Editor
             Instance.winSize = windowSize;
         }
 
+        public static float GetContentHeight()
+        {
+            return Instance.item * RowHeight + hPadding * 2;
+        }
+
         public static void Space(float space = 1f)
         {
             Instance.item += space;

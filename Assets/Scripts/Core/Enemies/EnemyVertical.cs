@@ -11,8 +11,7 @@ public class EnemyVertical : BaseEnemy {
     public float MovementSpeed;
     public GameObject Flame;
     public GameObject Spinner;
-
-    private Rigidbody2D body;
+    
     private Collider2D enemyCollider;
 
     private enum States

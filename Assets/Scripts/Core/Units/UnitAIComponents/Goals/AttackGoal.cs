@@ -2,10 +2,22 @@
 using TestUnitLabels;
 using UnityEngine;
 
-public class AttackGoal : AIGoal
+namespace TrixieCore.Units
 {
-    protected override void SetConditions()
+    public class AttackGoal : AIGoal
     {
-        AddCondition(SauceLabels.TargetAttacked, true);
+        public override void ExitGoal(AIAgent agent)
+        {
+            if (Player.Instance.IsAlive)
+            {
+                agent.GetMemory().Set(SauceLabels.AttackGoalComplete, false);
+            }
+        }
+
+        protected override void SetConditions()
+        {
+            //AddCondition(SauceLabels.IsAggrivated, true);
+            AddCondition(SauceLabels.AttackGoalComplete, true);
+        }
     }
 }

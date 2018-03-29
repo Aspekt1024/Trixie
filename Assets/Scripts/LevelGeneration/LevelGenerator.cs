@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using TrixieCore;
+
 public class LevelGenerator : MonoBehaviour {
 
     [System.Serializable]

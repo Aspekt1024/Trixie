@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrixieCore
+namespace TrixieCore.Units
 {
 
     public class BasicPatrolComponent : MonoBehaviour

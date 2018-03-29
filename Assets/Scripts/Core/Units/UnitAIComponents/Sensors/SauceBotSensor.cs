@@ -7,11 +7,13 @@ using TrixieCore.Units;
 
 public class SauceBotSensor : AISensor {
 
+    private EnemyShield shield;
     private VisionComponent vision;
     private LayerMask hitLayers;
 
     private void Start()
     {
+        shield = agent.BaseUnit.GetAbility<EnemyShield>();
         vision = agent.BaseUnit.GetAbility<VisionComponent>();
         vision.Activate();
         hitLayers = 1 << TrixieLayers.GetMask(Layers.Terrain) | 1 << TrixieLayers.GetMask(Layers.Player);
@@ -19,19 +21,29 @@ public class SauceBotSensor : AISensor {
 
     private void Update()
     {
-        agent.GetMemory().UpdateCondition(SauceLabels.HasCorrectProjectColour, true);
-        agent.GetMemory().UpdateCondition(SauceLabels.CanSeeTarget, vision.CanSeePlayer());
+        AIMemory memory = agent.GetMemory();
 
-        if (agent.GetMemory().ConditionMet(SauceLabels.CanSeeTarget, true))
+        float distanceFromTarget = Vector2.Distance(agent.BaseUnit.transform.position, Player.Instance.transform.position);
+        memory.Set(SauceLabels.IsAggrivated, distanceFromTarget <= agent.BaseUnit.AggroRadius);
+
+        memory.Set(SauceLabels.HasCorrectProjectColour, true);
+        memory.Set(SauceLabels.CanSeeTarget, vision.CanSeePlayer());
+
+        memory.Set(SauceLabels.CanShield, shield.IsAvailable);
+        memory.Set(SauceLabels.IsShielded, shield.IsActive);
+        
+        if (memory.ConditionMet(SauceLabels.CanSeeTarget, true))
         {
-            agent.GetMemory().UpdateCondition(SauceLabels.CanShootTarget, CanHitTarget());
+            memory.Set(SauceLabels.CanShootTarget, CanHitTarget());
         }
         else
         {
-            agent.GetMemory().UpdateCondition(SauceLabels.CanShootTarget, false);
+            memory.Set(SauceLabels.CanShootTarget, false);
         }
+        
     }
 
+    // TODO set as separate class
     private bool CanHitTarget()
     {
         ShootComponent shootComponent = agent.BaseUnit.GetAbility<ShootComponent>();

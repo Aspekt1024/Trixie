@@ -1,77 +1,84 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.UI;
 
-public class ItemUnlock : MonoBehaviour {
-
-    public enum UnlockType
+namespace TrixieCore.Items
+{
+    public class ItemUnlock : MonoBehaviour
     {
-        ShieldBlue, ShieldGreen, ShieldRed, ShieldShoot, ShieldMelee,
-        Boosters,
-    }
-    public UnlockType Type;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
+        public enum UnlockType
         {
-            TriggerUnlock();
-            gameObject.SetActive(false);
+            ShieldBlue, ShieldGreen, ShieldRed, ShieldShoot, ShieldMelee,
+            Boosters,
         }
-    }
+        public UnlockType Type;
 
-    private void TriggerUnlock()
-    {
-        switch (Type)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            case UnlockType.ShieldBlue:
-                Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
-                break;
-            case UnlockType.ShieldGreen:
-                Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
-                break;
-            case UnlockType.ShieldRed:
-                Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
-                break;
-            case UnlockType.ShieldShoot:
-                Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
-                break;
-            case UnlockType.ShieldMelee:
-                Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
-                break;
-            case UnlockType.Boosters:
-                break;
-            default:
-                break;
+            if (collision.tag == "Player")
+            {
+                TriggerUnlock();
+                gameObject.SetActive(false);
+            }
         }
 
-        ShowItemText();
-    }
-
-    private void ShowItemText()
-    {
-        switch (Type)
+        private void TriggerUnlock()
         {
-            case UnlockType.ShieldBlue:
-                GameUIManager.ItemCollected("Blue Shield");
-                break;
-            case UnlockType.ShieldGreen:
-                GameUIManager.ItemCollected("Green Shield");
-                break;
-            case UnlockType.ShieldRed:
-                GameUIManager.ItemCollected("Red Shield");
-                break;
-            case UnlockType.ShieldShoot:
-                GameUIManager.ItemCollected("Shield Shoot");
-                break;
-            case UnlockType.ShieldMelee:
-                GameUIManager.ItemCollected("Shield Melee");
-                break;
-            case UnlockType.Boosters:
-                GameUIManager.ItemCollected("Booster Boots");
-                break;
-            default:
-                break;
+            switch (Type)
+            {
+                case UnlockType.ShieldBlue:
+                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    break;
+                case UnlockType.ShieldGreen:
+                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    break;
+                case UnlockType.ShieldRed:
+                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    break;
+                case UnlockType.ShieldShoot:
+                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    break;
+                case UnlockType.ShieldMelee:
+                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    break;
+                case UnlockType.Boosters:
+                    break;
+                default:
+                    break;
+            }
+
+            ShowItemText();
+        }
+
+        private void ShowItemText()
+        {
+            switch (Type)
+            {
+                case UnlockType.ShieldBlue:
+                    GameUIManager.ItemCollected("Blue Shield");
+                    break;
+                case UnlockType.ShieldGreen:
+                    GameUIManager.ItemCollected("Green Shield");
+                    break;
+                case UnlockType.ShieldRed:
+                    GameUIManager.ItemCollected("Red Shield");
+                    break;
+                case UnlockType.ShieldShoot:
+                    GameUIManager.ItemCollected("Shield Shoot");
+                    break;
+                case UnlockType.ShieldMelee:
+                    GameUIManager.ItemCollected("Shield Melee");
+                    break;
+                case UnlockType.Boosters:
+                    GameUIManager.ItemCollected("Booster Boots");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
+
+

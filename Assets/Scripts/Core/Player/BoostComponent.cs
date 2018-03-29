@@ -2,96 +2,99 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoostComponent : MonoBehaviour {
-    
-    public enum BoostRechargeTypes
+namespace TrixieCore
+{
+    public class BoostComponent : MonoBehaviour
     {
-        OverTime, OnPickup, OnBullets, OnPad, InField
-    }
-    public BoostRechargeTypes RechargeType;
-
-    public GameObject Jetpacks;
-    public float MaxBoostTime = 2f;
-    public float BoostVelocity = 18f;
-
-    public float RechargeRate; // over time only
-
-    [HideInInspector] public bool CanRecharge;
-
-    private float boostAvailable;
-    
-    private enum States
-    {
-        None, Active
-    }
-    private States state;
-
-    private void Start ()
-    {
-        boostAvailable = MaxBoostTime;
-        Jetpacks.SetActive(false);
-    }
-
-    private void Update()
-    {
-        if (RechargeType == BoostRechargeTypes.OverTime && state == States.None && CanRecharge)
+        public enum BoostRechargeTypes
         {
-            AddBoostCharge(Time.deltaTime * RechargeRate);
+            OverTime, OnPickup, OnBullets, OnPad, InField
         }
-        GameUIManager.UpdateBoostPercentage(boostAvailable / MaxBoostTime);
-    }
+        public BoostRechargeTypes RechargeType;
 
-    public void SetRechargeType(BoostRechargeTypes newType)
-    {
-        RechargeType = newType;
-    }
+        public GameObject Jetpacks;
+        public float MaxBoostTime = 2f;
+        public float BoostVelocity = 18f;
 
-    public void AddBoostCharge(float timeToAdd)
-    {
-        boostAvailable += timeToAdd;
-        if (boostAvailable > MaxBoostTime)
+        public float RechargeRate; // over time only
+
+        [HideInInspector] public bool CanRecharge;
+
+        private float boostAvailable;
+
+        private enum States
+        {
+            None, Active
+        }
+        private States state;
+
+        private void Start()
         {
             boostAvailable = MaxBoostTime;
+            Jetpacks.SetActive(false);
         }
-    }
 
-    public bool ActivateBoosters()
-    {
-        if (boostAvailable > 0f || InChargeField())
+        private void Update()
         {
-            Jetpacks.SetActive(true);
-            state = States.Active;
-            return true;
+            if (RechargeType == BoostRechargeTypes.OverTime && state == States.None && CanRecharge)
+            {
+                AddBoostCharge(Time.deltaTime * RechargeRate);
+            }
+            UI.GameUIManager.UpdateBoostPercentage(boostAvailable / MaxBoostTime);
         }
-        return false;
-    }
 
-    public void DeactivateBoosters()
-    {
-        Jetpacks.SetActive(false);
-        state = States.None;
-    }
-
-    public bool UseBoost(float boostTimeToUse)
-    {
-        if (RechargeType == BoostRechargeTypes.InField) return true;
-
-        if (boostAvailable < boostTimeToUse)
+        public void SetRechargeType(BoostRechargeTypes newType)
         {
-            state = States.None;
+            RechargeType = newType;
+        }
+
+        public void AddBoostCharge(float timeToAdd)
+        {
+            boostAvailable += timeToAdd;
+            if (boostAvailable > MaxBoostTime)
+            {
+                boostAvailable = MaxBoostTime;
+            }
+        }
+
+        public bool ActivateBoosters()
+        {
+            if (boostAvailable > 0f || InChargeField())
+            {
+                Jetpacks.SetActive(true);
+                state = States.Active;
+                return true;
+            }
             return false;
         }
 
-        boostAvailable -= boostTimeToUse;
-        return true;
-    }
-
-    private bool InChargeField()
-    {
-        if (RechargeType == BoostRechargeTypes.InField)
+        public void DeactivateBoosters()
         {
+            Jetpacks.SetActive(false);
+            state = States.None;
+        }
+
+        public bool UseBoost(float boostTimeToUse)
+        {
+            if (RechargeType == BoostRechargeTypes.InField) return true;
+
+            if (boostAvailable < boostTimeToUse)
+            {
+                state = States.None;
+                return false;
+            }
+
+            boostAvailable -= boostTimeToUse;
             return true;
         }
-        return false;
+
+        private bool InChargeField()
+        {
+            if (RechargeType == BoostRechargeTypes.InField)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

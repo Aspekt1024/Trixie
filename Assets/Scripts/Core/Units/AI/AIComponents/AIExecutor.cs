@@ -142,7 +142,6 @@ namespace Aspekt.AI
             if (actionPlan.Count == 0)
             {
                 currentAction = null;
-                //state = States.Stopped;
                 if (OnFinishedPlan != null) OnFinishedPlan();
             }
             else
@@ -161,7 +160,7 @@ namespace Aspekt.AI
             {
                 foreach (var effect in currentAction.GetEffects())
                 {
-                    agent.GetMemory().UpdateCondition(effect.Key, effect.Value);
+                    agent.GetMemory().Set(effect.Key, effect.Value);
                 }
             }
 
@@ -178,6 +177,7 @@ namespace Aspekt.AI
             if (goalAchieved)
             {
                 Stop();
+                currentGoal.ExitGoal(agent);
                 if (OnFinishedPlan != null) OnFinishedPlan();
             }
             else

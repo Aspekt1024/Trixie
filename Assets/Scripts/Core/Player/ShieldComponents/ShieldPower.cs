@@ -2,49 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShieldPower {
-
-    private float maxCharge = 3;
-    private float charge = 0;
-    private BaseShieldAbility shieldParent;
-
-    public ShieldPower(BaseShieldAbility parent, float maxCharge = 3, float initialCharge = 0)
+namespace TrixieCore
+{
+    public class ShieldPower
     {
-        this.maxCharge = maxCharge;
-        charge = initialCharge;
-        shieldParent = parent;
-        UpdateShieldUI();
-    }
+        private float maxCharge = 3;
+        private float charge = 0;
+        private BaseShieldAbility shieldParent;
 
-    public bool ShieldFullyCharged()
-    {
-        return charge == maxCharge;
-    }
+        public ShieldPower(BaseShieldAbility parent, float maxCharge = 3, float initialCharge = 0)
+        {
+            this.maxCharge = maxCharge;
+            charge = initialCharge;
+            shieldParent = parent;
+            UpdateShieldUI();
+        }
 
-    public void SetMaxCharge(float newMaxCharge)
-    {
-        maxCharge = newMaxCharge;
-    }
+        public bool ShieldFullyCharged()
+        {
+            return charge == maxCharge;
+        }
 
-    public float GetPower()
-    {
-        return charge;
-    }
+        public void SetMaxCharge(float newMaxCharge)
+        {
+            maxCharge = newMaxCharge;
+        }
 
-    public void AddPower(float powerToAdd = 1f)
-    {
-        charge = Mathf.Clamp(charge + powerToAdd, 0, maxCharge);
-        UpdateShieldUI();
-    }
+        public float GetPower()
+        {
+            return charge;
+        }
 
-    public void ReducePower(float powerToRemove)
-    {
-        AddPower(-powerToRemove);
-    }
+        public void AddPower(float powerToAdd = 1f)
+        {
+            charge = Mathf.Clamp(charge + powerToAdd, 0, maxCharge);
+            UpdateShieldUI();
+        }
 
-    private void UpdateShieldUI()
-    {
-        GameUIManager.SetShieldPower(shieldParent.Colour, charge / maxCharge);
-    }
+        public void ReducePower(float powerToRemove)
+        {
+            AddPower(-powerToRemove);
+        }
 
+        private void UpdateShieldUI()
+        {
+            UI.GameUIManager.SetShieldPower(shieldParent.Colour, charge / maxCharge);
+        }
+    }
 }
+

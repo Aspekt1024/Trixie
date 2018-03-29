@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 
+using System.Diagnostics;
+
 namespace Aspekt.AI.Planning
 {
     public class AIPlanner
@@ -20,6 +22,9 @@ namespace Aspekt.AI.Planning
 
         public void CalculateNewGoal()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             AILogger.CreateMessage("Calculating new goal.", agent);
 
             List<AIGoal> goals = new List<AIGoal>(agent.GetGoals());
@@ -35,18 +40,15 @@ namespace Aspekt.AI.Planning
                 if (aStar.FindActionPlan(agent, this))
                 {
                     actions = aStar.GetActionPlan();
-                }
-                else
-                {
-                    AILogger.CreateMessage("failed to find action plan.", agent);
+                    AILogger.CreateMessage("Action plan found in " + sw.ElapsedMilliseconds + "ms.", agent);
+                    sw.Stop();
+                    OnActionPlanFound();
+                    return;
                 }
             }
 
-            if (actions.Count > 0 && OnActionPlanFound != null)
-            {
-                AILogger.CreateMessage("Action plan found.", agent);
-                OnActionPlanFound();
-            }
+            sw.Stop();
+            AILogger.CreateMessage("failed to find action plan.", agent);
         }
 
         public Queue<AIAction> GetActionPlan()

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrixieCore
+namespace TrixieCore.Units
 {
 
-    public class EnemyShield : MonoBehaviour
+    public class EnemyShield : UnitAbility
     {
         public EnergyTypes.Colours ShieldColour;
+        public float ShieldCooldown = 1f;
         public bool StunsPlayer = false;
         public float StunDuration = 2f;
         public bool CanDamagePlayer = false;
@@ -16,7 +17,6 @@ namespace TrixieCore
         private Collider2D coll;
         private SpriteRenderer sr;
         
-        private float shieldCooldown;
         private float cooldownRemaining;
 
         private bool hitPlayer;
@@ -60,11 +60,6 @@ namespace TrixieCore
             }
         }
 
-        public void SetCooldownDuration(float cooldown)
-        {
-            shieldCooldown = cooldown;
-        }
-
         public void Activate()
         {
             if (cooldownRemaining > 0)
@@ -79,7 +74,7 @@ namespace TrixieCore
 
         public void DeactivateWithCooldown()
         {
-            cooldownRemaining = shieldCooldown;
+            cooldownRemaining = ShieldCooldown;
             Deactivate();
         }
 
@@ -90,10 +85,8 @@ namespace TrixieCore
             state = States.MoveToInactive;
         }
 
-        public bool IsActive()
-        {
-            return state == States.Active || state == States.MoveToInactive;
-        }
+        public bool IsActive { get { return state == States.Active || state == States.MoveToInactive; } }
+        public bool IsAvailable { get { return cooldownRemaining <= 0f; } }
 
         public void HitShield(EnergyTypes.Colours energyColour, int damage = 1)
         {

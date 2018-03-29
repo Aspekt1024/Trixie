@@ -13,6 +13,11 @@ namespace Aspekt.AI
         {
             SetConditions();
         }
+
+        /// <summary>
+        /// Called once the goal is complete. Use for (re)setting states before finding a new goal.
+        /// </summary>
+        public virtual void ExitGoal(AIAgent agent) { }
         
         public Dictionary<string, object> GetConditions()
         {

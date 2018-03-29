@@ -7,7 +7,7 @@ namespace Aspekt.AI.Editor
 {
     public class AIEditorWindow : BaseEditor
     {
-        private List<AgentNode> agents = new List<AgentNode>();
+        private AIAgent agent;
 
         [MenuItem("Window/Aspekt AI")]
         private static void ShowEditor()
@@ -30,45 +30,30 @@ namespace Aspekt.AI.Editor
 
         private void ShowAgentAndActionPlan()
         {
-            // TODO setup event for when aiagents are added or removed from the editor
             AIAgent[] agents = FindObjectsOfType<AIAgent>();
-            List<AgentNode> nodesToRemove = CloneNodes();
-            foreach (var agent in agents)
-            {
-                AgentNode agentNode = GetAgentNode(agent);
-                if (agentNode ==  null)
-                {
-                    CreateNode(agent);
-                }
-                else
-                {
-                    UpdateNode(agentNode);
-                    nodesToRemove.Remove(agentNode);
-                }
-            }
+            if (agents == null || agents.Length == 0) return;
+            agent = agents[0];
+            
+            AgentNode agentNode = CreateNode(agent);
+            agentNode.Draw(Vector2.zero);
 
-            foreach (AgentNode node in nodesToRemove)
-            {
-                GetNodes().Remove(node);
-            }
-
+            CreateAgentMemoryNode(agentNode).Draw(Vector2.zero);
         }
 
-        private void CreateNode(AIAgent agent)
+        private AgentNode CreateNode(AIAgent agent)
         {
             AgentNode newNode = new AgentNode();
             newNode.Agent = agent;
-            newNode.SetPosition(new Vector2(10, 10 + GetNodes().Count * 120));
-            AddNode(newNode);
-            
-            //foreach (var action in actionPlan)
-            //{
-            //    ActionNode newActionNode = new ActionNode();
-            //    newActionNode.Action = action;
-            //    newActionNode.SetPosition(new Vector2(10, 10 + GetNodes().Count * 120));
-            //    AddNode(newActionNode);
-            //}
+            newNode.SetPosition(new Vector2(10, 10));
+            return newNode;
+        }
 
+        private MemoryNode CreateAgentMemoryNode(AgentNode agentNode)
+        {
+            MemoryNode memoryNode = new MemoryNode();
+            memoryNode.Agent = agent;
+            memoryNode.SetPosition(new Vector2(20 + agentNode.GetSize().x, 10f));
+            return memoryNode;
         }
 
         private void UpdateNode(AgentNode agentNode)
