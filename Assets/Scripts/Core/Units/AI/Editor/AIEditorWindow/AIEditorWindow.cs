@@ -32,6 +32,10 @@ namespace Aspekt.AI.Editor
         {
             AIAgent[] agents = FindObjectsOfType<AIAgent>();
             if (agents == null || agents.Length == 0) return;
+            
+            // TODO check if agent is the current one
+            // If so, update
+            // If not, clear the events properly to avoid memory leaks
             agent = agents[0];
             
             AgentNode agentNode = CreateNode(agent);

@@ -31,6 +31,7 @@ namespace TrixieCore.Units
         {
             coll = GetComponent<Collider2D>();
             sr = GetComponent<SpriteRenderer>();
+            Deactivate();
         }
 
         private void Update()

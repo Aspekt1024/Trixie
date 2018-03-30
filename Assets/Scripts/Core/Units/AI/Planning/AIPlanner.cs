@@ -12,43 +12,41 @@ namespace Aspekt.AI.Planning
         private AIGoal currentGoal;
         private Queue<AIAction> actions = new Queue<AIAction>();
         private AIAStar aStar = new AIAStar();
-
+        
         public event Action OnActionPlanFound = delegate { };
+
+        private bool calculatingPlan;
 
         public AIPlanner (AIAgent agent)
         {
             this.agent = agent;
         }
 
-        public void CalculateNewGoal()
+        public void CalculateNewPlan()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            AILogger.CreateMessage("Calculating new goal.", agent);
-
+            if (calculatingPlan || agent.GetGoals().Length == 0) return;
+            calculatingPlan = true;
+            
+            AILogger.CreateMessage("Calculating new plan.", agent);
+            
             List<AIGoal> goals = new List<AIGoal>(agent.GetGoals());
             goals.Sort((x, y) => x.Priority.CompareTo(y.Priority));
-            
-            if (goals.Count == 0) return;
             
             for (int i = 0; i < goals.Count; i++)
             {
                 currentGoal = goals[i];
                 if (!GoalAchieveableByActions(currentGoal)) continue;
 
-                if (aStar.FindActionPlan(agent, this))
+                bool actionPlanFound = aStar.FindActionPlan(agent, this);
+                if (actionPlanFound)
                 {
-                    actions = aStar.GetActionPlan();
-                    AILogger.CreateMessage("Action plan found in " + sw.ElapsedMilliseconds + "ms.", agent);
-                    sw.Stop();
-                    OnActionPlanFound();
+                    ActionPlanFound();
                     return;
                 }
             }
 
-            sw.Stop();
-            AILogger.CreateMessage("failed to find action plan.", agent);
+            calculatingPlan = false;
+            AILogger.CreateMessage("Failed to find action plan.", agent);
         }
 
         public Queue<AIAction> GetActionPlan()
@@ -69,15 +67,12 @@ namespace Aspekt.AI.Planning
             Dictionary<string, bool> conditionsMet = new Dictionary<string, bool>();
             foreach (var condition in goal.GetConditions())
             {
-                conditionsMet.Add(condition.Key, false);
-            }
-
-            foreach (var stateValue in agent.GetMemory().GetState())
-            {
-                if (conditionsMet.ContainsKey(stateValue.Key) && conditionsMet[stateValue.Key].Equals(goal.GetConditions()[stateValue.Key]))
+                bool conditionMet = false;
+                if (agent.GetMemory().GetState().ContainsKey(condition.Key))
                 {
-                    conditionsMet[stateValue.Key] = true;
+                    conditionMet = agent.GetMemory().GetState()[condition.Key].Equals(condition.Value);
                 }
+                conditionsMet.Add(condition.Key, conditionMet);
             }
 
             foreach (var action in agent.GetActions())
@@ -94,6 +89,14 @@ namespace Aspekt.AI.Planning
             }
 
             return !conditionsMet.ContainsValue(false);
+        }
+
+        private void ActionPlanFound()
+        {
+            AILogger.CreateMessage("Action plan found.", agent);
+            actions = aStar.GetActionPlan();
+            OnActionPlanFound();
+            calculatingPlan = false;
         }
     }
 }

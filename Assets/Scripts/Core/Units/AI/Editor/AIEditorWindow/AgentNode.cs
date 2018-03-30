@@ -43,6 +43,7 @@ namespace Aspekt.AI.Editor
 
         protected override void DrawContent()
         {
+            // TODO check this, seems to be a memory leak calling NewActionPlan multiple times per frame
             if (!agentLoaded)
             {
                 if (Agent == null || agent.GetPlanner() == null) return;

@@ -23,7 +23,7 @@ namespace Aspekt.AI.Editor
         {
             isActive = true;
             title = "Unit Memory";
-            SetSize(new Vector2(200f, 600f));
+            SetSize(new Vector2(300f, 400f));
         }
 
         protected override void DrawContent()

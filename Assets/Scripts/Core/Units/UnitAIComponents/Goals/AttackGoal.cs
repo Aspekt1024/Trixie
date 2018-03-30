@@ -16,7 +16,7 @@ namespace TrixieCore.Units
 
         protected override void SetConditions()
         {
-            //AddCondition(SauceLabels.IsAggrivated, true);
+            AddCondition(SauceLabels.IsAggrivated, true);
             AddCondition(SauceLabels.AttackGoalComplete, true);
         }
     }

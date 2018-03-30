@@ -66,7 +66,7 @@ namespace Aspekt.AI
                 case States.Stopped:
                     break;
                 case States.FindNewGoal:
-                    planner.CalculateNewGoal();
+                    planner.CalculateNewPlan();
                     break;
                 default:
                     break;
