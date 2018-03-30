@@ -33,6 +33,14 @@ namespace Aspekt.AI.Editor
         {
             return actionNodes;
         }
+        
+        public void ClearForDeconstruction()
+        {
+            if (agentLoaded)
+            {
+                agent.GetPlanner().OnActionPlanFound -= NewActionPlan;
+            }
+        }
 
         protected override void SetupNode()
         {
@@ -79,11 +87,6 @@ namespace Aspekt.AI.Editor
         protected override string GetNodeType()
         {
             return nodeType.ToString();
-        }
-
-        ~AgentNode()
-        {
-            Agent.GetPlanner().OnActionPlanFound -= NewActionPlan;
         }
 
         private void NewActionPlan()

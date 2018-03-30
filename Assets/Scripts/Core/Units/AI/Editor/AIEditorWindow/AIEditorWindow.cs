@@ -7,7 +7,7 @@ namespace Aspekt.AI.Editor
 {
     public class AIEditorWindow : BaseEditor
     {
-        private AIAgent agent;
+        private AgentNode agentNode;
 
         [MenuItem("Window/Aspekt AI")]
         private static void ShowEditor()
@@ -36,11 +36,23 @@ namespace Aspekt.AI.Editor
             // TODO check if agent is the current one
             // If so, update
             // If not, clear the events properly to avoid memory leaks
-            agent = agents[0];
-            
-            AgentNode agentNode = CreateNode(agent);
+
+            if (agentNode == null || agentNode.Agent != agents[0])
+            {
+                if (agentNode != null)
+                {
+                    agentNode.ClearForDeconstruction();
+                }
+                agentNode = CreateNode(agents[0]);
+            }
+            else
+            {
+                UpdateNode(agentNode);
+            }
+
             agentNode.Draw(Vector2.zero);
 
+            // TODO don't recreate every frame
             CreateAgentMemoryNode(agentNode).Draw(Vector2.zero);
         }
 
@@ -55,14 +67,14 @@ namespace Aspekt.AI.Editor
         private MemoryNode CreateAgentMemoryNode(AgentNode agentNode)
         {
             MemoryNode memoryNode = new MemoryNode();
-            memoryNode.Agent = agent;
+            memoryNode.Agent = agentNode.Agent;
             memoryNode.SetPosition(new Vector2(20 + agentNode.GetSize().x, 10f));
             return memoryNode;
         }
 
         private void UpdateNode(AgentNode agentNode)
         {
-            if (!agentNode.HasCurrentGoal) return;
+            if (!agentNode.HasCurrentGoal || agentNode.GetGoalNode() == null) return;
             agentNode.GetGoalNode().Draw(Vector2.zero);
             List<ActionNode> actionNodes = agentNode.GetActionNodes();
 

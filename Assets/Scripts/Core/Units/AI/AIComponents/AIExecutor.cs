@@ -69,6 +69,7 @@ namespace Aspekt.AI
             }
             else
             {
+                currentGoal.ExitGoal(agent);
                 state = States.Stopped;
                 stateMachine.Stop();
                 actionPlan = null;
@@ -177,7 +178,6 @@ namespace Aspekt.AI
             if (goalAchieved)
             {
                 Stop();
-                currentGoal.ExitGoal(agent);
                 if (OnFinishedPlan != null) OnFinishedPlan();
             }
             else

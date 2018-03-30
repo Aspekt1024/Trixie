@@ -12,6 +12,8 @@ namespace Aspekt.AI.Planning
         private AIGoal currentGoal;
         private Queue<AIAction> actions = new Queue<AIAction>();
         private AIAStar aStar = new AIAStar();
+
+        private List<AIGoal> goals = new List<AIGoal>();
         
         public event Action OnActionPlanFound = delegate { };
 
@@ -29,7 +31,7 @@ namespace Aspekt.AI.Planning
             
             AILogger.CreateMessage("Calculating new plan.", agent);
             
-            List<AIGoal> goals = new List<AIGoal>(agent.GetGoals());
+            goals = new List<AIGoal>(agent.GetGoals());
             goals.Sort((x, y) => x.Priority.CompareTo(y.Priority));
             
             for (int i = 0; i < goals.Count; i++)
