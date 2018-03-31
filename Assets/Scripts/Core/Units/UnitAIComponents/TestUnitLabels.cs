@@ -19,12 +19,14 @@ namespace TestUnitLabels
 
         IsShielded,
 
-        IsAggrivated,
+        IsAggravated,
         IsInRangeOfTarget,
 
         LastKnownPlayerPosition,
         CorrectProjectileColour,
 
+        SeenTargetRecently,
+        LastKnownTargetLocation,
 
         AttackGoalComplete
     }

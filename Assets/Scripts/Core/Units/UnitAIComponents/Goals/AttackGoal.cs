@@ -12,11 +12,15 @@ namespace TrixieCore.Units
             {
                 agent.GetMemory().Set(SauceLabels.AttackGoalComplete, false);
             }
+            else
+            {
+                AILogger.CreateMessage("the player is dead", agent);
+            }
         }
 
         protected override void SetConditions()
         {
-            AddCondition(SauceLabels.IsAggrivated, true);
+            AddCondition(SauceLabels.IsAggravated, true);
             AddCondition(SauceLabels.AttackGoalComplete, true);
         }
     }

@@ -21,6 +21,8 @@ namespace Aspekt.AI
         private AIMemory memory;
         private AIPlanner planner;
         private AIExecutor executor;
+
+        private Transform moveTf;
         
         private enum States
         {
@@ -35,6 +37,9 @@ namespace Aspekt.AI
             memory = new AIMemory();
             planner = new AIPlanner(this);
             executor = new AIExecutor(this);
+
+            moveTf = new GameObject("MovementTarget").transform;
+            moveTf.SetParent(transform);
 
             goals = GoalsObject.GetComponents<AIGoal>();
             actions = ActionsObject.GetComponents<AIAction>();
@@ -121,6 +126,7 @@ namespace Aspekt.AI
         public AIAction[] GetActions() { return actions; }
         public AIGoal[] GetGoals() { return goals; }
         public AIMemory GetMemory() { return memory; }
+        public Transform GetMoveTransform() { return moveTf; }
         
         public void FindNewGoal()
         {

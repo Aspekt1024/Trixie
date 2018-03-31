@@ -45,7 +45,7 @@ namespace Aspekt.AI
             this.FailureCallback = FailureCallback;
         }
 
-        protected virtual void Exit()
+        public virtual void Exit()
         {
         }
 

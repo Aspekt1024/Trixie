@@ -68,6 +68,7 @@ namespace Aspekt.AI
         public void Stop()
         {
             state = States.Stopped;
+            // TODO clear states
         }
 
         public void Pause()

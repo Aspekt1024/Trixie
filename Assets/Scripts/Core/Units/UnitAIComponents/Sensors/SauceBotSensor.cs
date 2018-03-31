@@ -10,9 +10,15 @@ public class SauceBotSensor : AISensor {
     private EnemyShield shield;
     private VisionComponent vision;
     private LayerMask hitLayers;
+    private AIMemory memory;
+
+    private const float AGGRO_DURATION = 3f;
+    private float aggroTimer;
 
     private void Start()
     {
+        memory = agent.GetMemory();
+
         shield = agent.BaseUnit.GetAbility<EnemyShield>();
         vision = agent.BaseUnit.GetAbility<VisionComponent>();
         vision.Activate();
@@ -21,10 +27,7 @@ public class SauceBotSensor : AISensor {
 
     private void Update()
     {
-        AIMemory memory = agent.GetMemory();
-
-        float distanceFromTarget = Vector2.Distance(agent.BaseUnit.transform.position, Player.Instance.transform.position);
-        memory.Set(SauceLabels.IsAggrivated, distanceFromTarget <= agent.BaseUnit.AggroRadius);
+        memory.Set(SauceLabels.IsAggravated, CheckAggro(Time.deltaTime));
 
         memory.Set(SauceLabels.HasCorrectProjectColour, true);
         memory.Set(SauceLabels.CanSeeTarget, vision.CanSeePlayer());
@@ -41,6 +44,35 @@ public class SauceBotSensor : AISensor {
             memory.Set(SauceLabels.CanShootTarget, false);
         }
         
+    }
+
+    private bool CheckAggro(float deltaTime)
+    {
+        float distanceFromTarget = Vector2.Distance(agent.BaseUnit.transform.position, Player.Instance.transform.position);
+        bool aggroTriggered = memory.ConditionMet(SauceLabels.CanSeeTarget, true) && distanceFromTarget <= agent.BaseUnit.AggroRadius;
+
+        if (aggroTriggered)
+        {
+            aggroTimer = AGGRO_DURATION;
+            return true;
+        }
+        else if (memory.ConditionMet(SauceLabels.IsAggravated, true))
+        {
+            aggroTimer -= deltaTime;
+            if (aggroTimer > 0)
+            {
+                return true;
+            }
+            else
+            {
+                agent.FindNewGoal();
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     // TODO set as separate class

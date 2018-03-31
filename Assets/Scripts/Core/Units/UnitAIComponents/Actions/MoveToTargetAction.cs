@@ -8,8 +8,6 @@ namespace TrixieCore.Units
     {
         private MoveState moveState;
 
-        public event Action<EnergyTypes.Colours> OnShootPreparation = delegate { };
-
         public override void Enter(AIStateMachine stateMachine, Action SuccessCallback, Action FailureCallback)
         {
             base.Enter(stateMachine, SuccessCallback, FailureCallback);
@@ -32,7 +30,7 @@ namespace TrixieCore.Units
             }
         }
 
-        protected override void Exit()
+        public override void Exit()
         {
             stateMachine.OnComplete -= MovementComplete;
         }

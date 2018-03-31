@@ -31,7 +31,7 @@ namespace TrixieCore.Units
             Success();
         }
 
-        protected override void Exit()
+        public override void Exit()
         {
             stateMachine.OnComplete -= Success;
         }
