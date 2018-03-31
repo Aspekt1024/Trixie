@@ -37,7 +37,7 @@ namespace TrixieCore.Units
             stateMachine.OnComplete -= MovementComplete;
         }
 
-        protected override void Update()
+        protected override void Run()
         {
             if (moveState != null)
             {

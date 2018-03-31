@@ -49,7 +49,7 @@ namespace Aspekt.AI
         {
         }
 
-        protected abstract void Update();
+        protected abstract void Run();
         protected abstract void SetPreconditions();
         protected abstract void SetEffects();
 
@@ -57,7 +57,7 @@ namespace Aspekt.AI
         {
             if (CheckProceduralPrecondition())
             {
-                Update();
+                Run();
             }
             else
             {

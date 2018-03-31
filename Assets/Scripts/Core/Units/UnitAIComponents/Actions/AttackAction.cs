@@ -36,7 +36,7 @@ namespace TrixieCore.Units
             stateMachine.OnComplete -= Success;
         }
 
-        protected override void Update()
+        protected override void Run()
         {
         }
 

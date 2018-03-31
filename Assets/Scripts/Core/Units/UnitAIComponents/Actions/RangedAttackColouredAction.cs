@@ -13,11 +13,11 @@ namespace TrixieCore.Units
         {
             base.Enter(stateMachine, SuccessCallback, FailureCallback);
             agent.BaseUnit.GetAbility<ShootComponent>().Shoot(Player.Instance.gameObject);
-            Success();
         }
 
-        protected override void Update()
+        protected override void Run()
         {
+            Success();
         }
 
         public override bool CheckProceduralPrecondition()

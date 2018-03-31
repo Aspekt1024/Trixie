@@ -156,7 +156,6 @@ namespace Aspekt.AI
 
         private void ActionSuccess()
         {
-            // TODO assess this behaviour
             if (currentAction != null)
             {
                 foreach (var effect in currentAction.GetEffects())

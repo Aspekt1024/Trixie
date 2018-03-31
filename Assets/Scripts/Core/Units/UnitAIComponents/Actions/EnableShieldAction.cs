@@ -21,7 +21,7 @@ namespace TrixieCore.Units
             AddPrecondition(SauceLabels.CanShield, true);
         }
 
-        protected override void Update()
+        protected override void Run()
         {
         }
 
