@@ -12,9 +12,11 @@ namespace Aspekt.AI
         public GameObject Owner;
         public GameObject GoalsObject;
         public GameObject ActionsObject;
+        public GameObject SensorsObject;
 
         private AIGoal[] goals;
         private AIAction[] actions;
+        private AISensor[] sensors;
 
         private BaseUnit baseUnit;
 
@@ -43,10 +45,16 @@ namespace Aspekt.AI
 
             goals = GoalsObject.GetComponents<AIGoal>();
             actions = ActionsObject.GetComponents<AIAction>();
+            sensors = SensorsObject.GetComponents<AISensor>();
 
             foreach (var action in actions)
             {
                 action.SetAgent(this);
+            }
+
+            foreach (var sensor in sensors)
+            {
+                sensor.gameObject.SetActive(false);
             }
 
             executor.OnFinishedPlan += FindNewGoal;
@@ -87,6 +95,11 @@ namespace Aspekt.AI
         {
             if (state == States.Active) return;
             state = States.FindNewGoal;
+
+            foreach (var sensor in sensors)
+            {
+                sensor.gameObject.SetActive(true);
+            }
         }
 
         public void Unpause()
@@ -101,6 +114,12 @@ namespace Aspekt.AI
         public void Stop()
         {
             if (state == States.Stopped) return;
+
+            foreach (var sensor in sensors)
+            {
+                sensor.gameObject.SetActive(false);
+            }
+
             executor.Stop();
             state = States.Stopped;
         }

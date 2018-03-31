@@ -7,12 +7,13 @@ using TrixieCore.Units;
 
 public class SauceBotSensor : AISensor {
 
+    public float AggroDuration = 3f;
+
     private EnemyShield shield;
     private VisionComponent vision;
     private LayerMask hitLayers;
     private AIMemory memory;
 
-    private const float AGGRO_DURATION = 3f;
     private float aggroTimer;
 
     private void Start()
@@ -53,7 +54,7 @@ public class SauceBotSensor : AISensor {
 
         if (aggroTriggered)
         {
-            aggroTimer = AGGRO_DURATION;
+            aggroTimer = AggroDuration;
             return true;
         }
         else if (memory.ConditionMet(SauceLabels.IsAggravated, true))

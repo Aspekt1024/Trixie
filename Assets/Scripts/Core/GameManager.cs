@@ -12,6 +12,7 @@ namespace TrixieCore
         public Camera MainCamera;
         public MenuControl MenuControl;
         public RespawnHandler RespawnHandler;
+        public PathfinderHandler PathfinderHandler;
 
         public Player Player;
 

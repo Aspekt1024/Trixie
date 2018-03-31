@@ -20,10 +20,10 @@ namespace TrixieCore.Units
         protected Transform Model;
         protected UnitEffectsHandler effects = new UnitEffectsHandler();
         protected UnitAbilityHandler abilities = new UnitAbilityHandler();
+        protected Collider2D coll;
 
         private Animator anim;
         private Rigidbody2D body;
-        private Collider2D coll;
 
         private bool directionFlipped;
         
@@ -35,6 +35,11 @@ namespace TrixieCore.Units
         public T GetAbility<T>() where T : UnitAbility
         {
             return (T)abilities.GetAbility<T>();
+        }
+
+        public T GetEffect<T>() where T : UnitEffect
+        {
+            return (T)effects.GetEffect<T>();
         }
 
         public Rigidbody2D GetBody()
@@ -104,6 +109,14 @@ namespace TrixieCore.Units
                 directionFlipped = true;
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1f);
             }
+        }
+
+        protected virtual void Destroy()
+        {
+            effects.StopAll();
+            coll.enabled = false;
+            body.velocity = Vector2.zero;
+            Model.gameObject.SetActive(false);
         }
 
         public bool DirectionFlipped { get { return directionFlipped; } }

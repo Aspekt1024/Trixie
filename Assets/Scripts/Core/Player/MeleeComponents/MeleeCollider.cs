@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -37,29 +38,25 @@ namespace TrixieCore
             {
                 if (collision.tag == "Enemy")
                 {
-                    HitEnemy(collision.GetComponent<BaseEnemy>());
-                }
-                else if (collision.tag == "Shield")
-                {
-                    collision.GetComponent<Units.EnemyShield>().HitShield(meleeComponent.GetMeleeColour());
+                    HitEnemy(collision);
                 }
             }
         }
 
-        private void HitEnemy(BaseEnemy enemy)
+        private void HitEnemy(Collider2D unit)
         {
-            Vector2 direction = enemy.transform.position - transform.position;
+            Vector2 direction = unit.transform.position - transform.position;
             switch (meleeComponent.GetMeleeColour())
             {
                 case EnergyTypes.Colours.Blue:
-                    enemy.DamageEnemy(direction, meleeComponent.GetMeleeColour(), 1);
+                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeComponent.GetMeleeColour());
                     break;
                 case EnergyTypes.Colours.Red:
-                    enemy.DamageEnemy(direction, meleeComponent.GetMeleeColour(), 1);
-                    enemy.Stun(direction, 1.5f);
+                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IStunnable>().Stun(1.5f, meleeComponent.GetMeleeColour());
                     break;
                 case EnergyTypes.Colours.Green:
-                    enemy.Stun(direction, 1);
+                    unit.GetComponent<IStunnable>().Stun(1.5f, meleeComponent.GetMeleeColour());
                     break;
                 default:
                     break;

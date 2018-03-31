@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace TrixieCore.Units
 {
-    public abstract class UnitEffect : MonoBehaviour
+    public interface IDamageable
     {
-        public abstract void Stop();
+        void TakeDamage(int damage, Vector2 direction, EnergyTypes.Colours damageType);
     }
-
 }

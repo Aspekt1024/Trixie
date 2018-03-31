@@ -10,8 +10,6 @@ namespace TrixieCore.Units
         public int NumProjectiles = 1;
         public float RadialSpread = 0;
         public float DelayBetweenProjectiles = 0;
-        public float Cooldown = 1;
-        public float IndicationDelay = 0.5f;
 
         public GameObject ProjectilePrefab; // TODO get objects that have projectile component
         public float ProjectileSpeed = 20f;
@@ -28,6 +26,11 @@ namespace TrixieCore.Units
             return Shoot();
         }
 
+        public float GetTimeLastShot()
+        {
+            return timeLastShot;
+        }
+
         public Projectile[] Shoot()
         {
             timeLastShot = Time.time;
@@ -35,12 +38,7 @@ namespace TrixieCore.Units
             projectile[0] = ActivateProjecile();
             return projectile;
         }
-
-        public bool IsOnCooldown()
-        {
-            return Time.time < timeLastShot + Cooldown;
-        }
-
+        
         private Projectile ActivateProjecile()
         {
             Projectile projectilePrefabScript = ProjectilePrefab.GetComponent<Projectile>();
@@ -53,7 +51,7 @@ namespace TrixieCore.Units
 
             return projectileScript;
         }
-
+        
         private float CalculateThrowingAngle(Vector3 startPos, Vector3 targetPos, bool upperPath, float s)
         {
             if (!ProjectileSettings.HasGravity)

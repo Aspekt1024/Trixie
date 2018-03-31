@@ -51,11 +51,13 @@ namespace TrixieCore.Units
 
         public override void Exit()
         {
+            base.Exit();
             stateMachine.OnComplete -= Success;
         }
 
-        protected override void Run()
+        protected override void Run(float deltaTime)
         {
+            agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
         }
         
         protected override void SetPreconditions()

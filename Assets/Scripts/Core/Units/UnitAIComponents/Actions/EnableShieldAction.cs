@@ -21,7 +21,7 @@ namespace TrixieCore.Units
             AddPrecondition(SauceLabels.CanShield, true);
         }
 
-        protected override void Run()
+        protected override void Run(float deltaTime)
         {
         }
 

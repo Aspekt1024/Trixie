@@ -32,10 +32,11 @@ namespace TrixieCore.Units
 
         public override void Exit()
         {
+            base.Exit();
             stateMachine.OnComplete -= MovementComplete;
         }
 
-        protected override void Run()
+        protected override void Run(float deltaTime)
         {
             if (moveState != null)
             {

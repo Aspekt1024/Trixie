@@ -76,6 +76,7 @@ namespace TrixieCore.Units
         {
             seeker = GetComponent<Seeker>();
             target = new GameObject("MovementTf-" + name).transform;
+            target.SetParent(PathfinderHandler.GetPathfinderWaypointsTransform());
         }
 
         private void FixedUpdate()

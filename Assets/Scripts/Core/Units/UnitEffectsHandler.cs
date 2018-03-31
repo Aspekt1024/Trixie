@@ -8,21 +8,29 @@ namespace TrixieCore.Units
     {
         List<UnitEffect> effects = new List<UnitEffect>();
 
-        public void ActivateEffect<T>() where T : UnitEffect
+        public T GetEffect<T>() where T : UnitEffect
         {
             foreach (var effect in effects)
             {
                 if (effect.GetType().Equals(typeof(T)))
                 {
-                    effect.Activate();
-                    break;
+                    return (T)effect;
                 }
             }
+            return null;
         }
 
         public void Initialise(Transform effectsTf)
         {
             GetEffects(effectsTf);
+        }
+
+        public void StopAll()
+        {
+            foreach (var effect in effects)
+            {
+                effect.Stop();
+            }
         }
         
         private void GetEffects(Transform effectsTf)

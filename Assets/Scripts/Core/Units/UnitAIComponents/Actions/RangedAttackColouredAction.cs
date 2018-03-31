@@ -7,22 +7,36 @@ namespace TrixieCore.Units
 {
     public class RangedAttackColouredAction : AIAction
     {
-        public event Action<EnergyTypes.Colours> OnShootPreparation = delegate { };
+        public float IndicationTime = 0.3f;
+        public float ShootCooldown = 1f;
+        
+        private float delayTimer;
+        private ShootComponent shootComponent;
 
         public override void Enter(AIStateMachine stateMachine, Action SuccessCallback, Action FailureCallback)
         {
             base.Enter(stateMachine, SuccessCallback, FailureCallback);
-            agent.BaseUnit.GetAbility<ShootComponent>().Shoot(Player.Instance.gameObject);
+
+            shootComponent = agent.BaseUnit.GetAbility<ShootComponent>();
+            agent.BaseUnit.GetEffect<ColourIndicator>().Show(shootComponent.ProjectileSettings.ProjectileColour);
+            delayTimer = 0f;
         }
 
-        protected override void Run()
+        protected override void Run(float deltaTime)
         {
-            Success();
+            agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
+
+            delayTimer += deltaTime;
+            if (delayTimer >= IndicationTime)
+            {
+                shootComponent.Shoot(Player.Instance.gameObject);
+                Success();
+            }
         }
 
         public override bool CheckProceduralPrecondition()
         {
-            bool result = !agent.BaseUnit.GetAbility<ShootComponent>().IsOnCooldown();
+            bool result = Time.time > agent.BaseUnit.GetAbility<ShootComponent>().GetTimeLastShot() + ShootCooldown;
             return result;
         }
 

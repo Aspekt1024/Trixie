@@ -17,6 +17,8 @@ namespace Aspekt.AI
         private Action SuccessCallback;
         private Action FailureCallback;
 
+        private bool isEntered;
+
         private void Awake()
         {
             SetPreconditions();
@@ -43,21 +45,25 @@ namespace Aspekt.AI
             this.stateMachine = stateMachine;
             this.SuccessCallback = SuccessCallback;
             this.FailureCallback = FailureCallback;
+            isEntered = true;
         }
 
         public virtual void Exit()
         {
+            isEntered = false;
         }
 
-        protected abstract void Run();
+        protected abstract void Run(float deltaTime);
         protected abstract void SetPreconditions();
         protected abstract void SetEffects();
 
         public void Tick(float deltaTime)
         {
+            if (!isEntered) return;
+
             if (CheckProceduralPrecondition())
             {
-                Run();
+                Run(deltaTime);
             }
             else
             {

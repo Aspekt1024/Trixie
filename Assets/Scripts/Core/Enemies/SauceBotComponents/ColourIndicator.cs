@@ -4,32 +4,20 @@ using UnityEngine;
 
 namespace TrixieCore.Units
 {
-    public class ColourIndicator : MonoBehaviour
+    public class ColourIndicator : UnitEffect
     {
         public Transform BlueIndicator;
         public Transform RedIndicator;
         public Transform GreenIndicator;
         public ParticleSystem IndicatorEffect;
-
-        public AttackAction AttackActionRef;
-
+        
         private void Start()
         {
-            IndicatorEffect.Stop();
-        }
-
-        public void OnEnable()
-        {
-            AttackActionRef.OnShootPreparation += Show;
-        }
-
-        public void OnDisable()
-        {
-            AttackActionRef.OnShootPreparation -= Show;
         }
 
         public void Show(EnergyTypes.Colours colour)
         {
+            IndicatorEffect.Stop();
             switch (colour)
             {
                 case EnergyTypes.Colours.Blue:
@@ -45,6 +33,11 @@ namespace TrixieCore.Units
                     break;
             }
             IndicatorEffect.Play();
+        }
+
+        public override void Stop()
+        {
+            IndicatorEffect.Stop();
         }
     }
 }

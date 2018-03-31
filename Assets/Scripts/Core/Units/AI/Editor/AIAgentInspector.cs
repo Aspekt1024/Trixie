@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-
 using System.Linq;
-
 using System.Reflection;
-
 using Aspekt.AI;
 
 [CustomEditor(typeof(AIAgent))]
@@ -20,6 +15,8 @@ public class AIAgentInspector : Editor {
     public override void OnInspectorGUI()
     {
         agent = (AIAgent)target;
+
+        SetSensorsObject();
 
         if (EditorGUILayout.Foldout(true, "Agent Profile"))
         {
@@ -174,5 +171,13 @@ public class AIAgentInspector : Editor {
             }
         }
         return objectExists;
+    }
+
+    private void SetSensorsObject()
+    {
+        if (agent.SensorsObject == null)
+        {
+            agent.SensorsObject = ObtainChildObject("Sensors");
+        }
     }
 }
