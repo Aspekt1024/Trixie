@@ -73,7 +73,12 @@ namespace Aspekt.AI
                 state = States.Stopped;
                 stateMachine.Stop();
                 actionPlan = null;
-                currentAction = null;
+
+                if (currentAction != null)
+                {
+                    currentAction.Exit();
+                    currentAction = null;
+                }
             }
         }
 
@@ -142,7 +147,7 @@ namespace Aspekt.AI
         {
             if (actionPlan.Count == 0)
             {
-                currentAction = null;
+                Stop();
                 if (OnFinishedPlan != null) OnFinishedPlan();
             }
             else
@@ -187,7 +192,10 @@ namespace Aspekt.AI
 
         private void ActionFailure()
         {
-            AILogger.CreateMessage("Action failed: " + currentAction.ToString(), agent);
+            if (currentAction != null)
+            {
+                AILogger.CreateMessage("Action failed: " + currentAction.ToString(), agent);
+            }
             Stop();
             if (OnFinishedPlan != null) OnFinishedPlan();
         }
