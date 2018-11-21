@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -120,7 +121,7 @@ namespace TrixieCore
             {
                 if (collision.gameObject.tag == "Enemy")
                 {
-                    collision.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, GetColour());
+                    collision.GetComponent<BaseEnemy>().TakeDamage(1, collision.transform.position - transform.position, GetColour());
                     ShowImpact();
                 }
                 else
@@ -154,7 +155,7 @@ namespace TrixieCore
 
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
-                collision.gameObject.GetComponent<BaseEnemy>().DamageEnemy(collision.transform.position - transform.position, GetColour());
+                collision.gameObject.GetComponent<BaseEnemy>().TakeDamage(1, collision.transform.position - transform.position, GetColour());
                 ShowImpact();
             }
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Player))

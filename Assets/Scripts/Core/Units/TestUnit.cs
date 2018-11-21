@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Aspekt.AI;
 using TrixieCore;
+using TrixieCore.Units;
 
 public class TestUnit : BaseEnemy {
 

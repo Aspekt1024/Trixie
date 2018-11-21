@@ -24,7 +24,7 @@ namespace TrixieCore.Units
         {
             base.Update();
 
-            if (IsDead()) return;
+            if (IsDestroyed()) return;
 
             if (isStunned)
             {
@@ -57,11 +57,11 @@ namespace TrixieCore.Units
             patrolComponent.DeactivateImmediate();
         }
 
-        public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)
+        public override void TakeDamage(int damage, Vector2 direction, EnergyTypes.Colours energyType)
         {
             if (!Shield.IsActive)
             {
-                base.DamageEnemy(direction, energyType, damage);
+                base.TakeDamage(damage, direction, energyType);
             }
         }
     }

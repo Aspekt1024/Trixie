@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
+using TrixieCore.Units;
 
 public class ShieldProjectileCollisionHandler : MonoBehaviour {
     

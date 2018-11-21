@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -185,14 +186,20 @@ namespace TrixieCore
                 }
                 else if (results[i].gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
                 {
-                    BaseEnemy enemy = results[i].GetComponent<BaseEnemy>();
+                    BaseUnit enemy = results[i].GetComponent<BaseUnit>();
                     if (EffectOnEnemies == EnemyEffects.Damage)
                     {
-                        enemy.DamageEnemy(results[i].transform.position - transform.position, EnergyTypes.Colours.Blue, DamageToEnemies);
+                        if (enemy is IDamageable)
+                        {
+                            ((IDamageable)enemy).TakeDamage(DamageToEnemies, results[i].transform.position - transform.position, EnergyTypes.Colours.Blue);
+                        }
                     }
                     else if (EffectOnEnemies == EnemyEffects.Stun)
                     {
-                        enemy.Stun(results[i].transform.position - transform.position, EnemyStunTime);
+                        if (enemy is IStunnable)
+                        {
+                            ((IStunnable)enemy).Stun(results[i].transform.position - transform.position, EnemyStunTime, EnergyTypes.Colours.Blue);
+                        }
                     }
                 }
             }

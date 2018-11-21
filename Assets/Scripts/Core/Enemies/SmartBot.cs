@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TrixieCore;
+using TrixieCore.Units;
 
 public class SmartBot : BaseEnemy {
 

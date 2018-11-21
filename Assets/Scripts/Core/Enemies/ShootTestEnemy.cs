@@ -71,7 +71,7 @@ namespace TrixieCore
             }
         }
 
-        public override void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyColour, int damage = 1)
+        public override void TakeDamage(int damage, Vector2 direction, EnergyTypes.Colours energyColour)
         {
             healthComponent.TakeDamage(damage);
             if (healthComponent.IsDead())

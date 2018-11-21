@@ -8,7 +8,7 @@ namespace TrixieCore
     public class RedShieldAbility : BaseShieldAbility
     {
         public bool ShootRequiresFullCharge = true;
-        public Beam.BeamSettings beamSettings;
+        public Beam.BeamStats beamSettings;
         public enum ChargeTypes
         {
             Chargeup, Cooldown, Deplete

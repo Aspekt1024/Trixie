@@ -10,8 +10,8 @@ namespace TrixieCore.Units
         private AIAgent agent;
         private StunHandler stun;
         private HealthComponent health;
-
-        public void Stun(float duration, EnergyTypes.Colours energyType)
+        
+        public void Stun(Vector2 direction, float duration, EnergyTypes.Colours energyType)
         {
             if (GetAbility<EnemyShield>().IsActive || health.IsDead()) return;
 
@@ -36,6 +36,11 @@ namespace TrixieCore.Units
             {
                 Destroy();
             }
+        }
+
+        public bool IsDestroyed()
+        {
+            return health.IsDead();
         }
 
         private void Start()

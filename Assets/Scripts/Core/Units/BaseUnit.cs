@@ -5,7 +5,7 @@ using Aspekt.AI;
 
 namespace TrixieCore.Units
 {
-    public abstract class BaseUnit : MonoBehaviour
+    public abstract class BaseUnit: MonoBehaviour
     {
         public enum UnitAlignments
         {

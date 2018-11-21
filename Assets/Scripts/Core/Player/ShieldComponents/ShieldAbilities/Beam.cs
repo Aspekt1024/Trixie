@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -9,15 +10,15 @@ namespace TrixieCore
         public ShieldPositioner ShieldObject;
 
         private LineRenderer lineRenderer;
-        private BeamSettings settings;
+        private BeamStats beamStats;
         private Collider2D beamCollider;
 
-        private List<HitEnemy> enemiesInBeam;
+        private List<HitTarget> enemiesInBeam;
 
         private bool isActive;
 
         [System.Serializable]
-        public struct BeamSettings
+        public struct BeamStats
         {
             public EnergyTypes.Colours colour;
             public float maxBeamDistance;
@@ -29,7 +30,7 @@ namespace TrixieCore
         private void Awake()
         {
             lineRenderer = GetComponent<LineRenderer>();
-            enemiesInBeam = new List<HitEnemy>();
+            enemiesInBeam = new List<HitTarget>();
             beamCollider = GetComponent<Collider2D>();
         }
 
@@ -37,21 +38,21 @@ namespace TrixieCore
         {
             if (!isActive) return;
 
-            List<HitEnemy> enemiesToRemove = new List<HitEnemy>();
+            List<HitTarget> enemiesToRemove = new List<HitTarget>();
 
-            foreach (HitEnemy hit in enemiesInBeam)
+            foreach (HitTarget hit in enemiesInBeam)
             {
-                if (hit.obj.IsDead())
+                if (hit.obj.IsDestroyed())
                 {
                     enemiesToRemove.Add(hit);
                 }
-                else if (hit.lastTickTime + settings.tickInterval < Time.time)
+                else if (hit.lastTickTime + beamStats.tickInterval < Time.time)
                 {
                     DamageTarget(hit);
                 }
             }
 
-            foreach (HitEnemy hit in enemiesToRemove)
+            foreach (HitTarget hit in enemiesToRemove)
             {
                 enemiesInBeam.Remove(hit);
             }
@@ -66,8 +67,8 @@ namespace TrixieCore
             transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Atan2(ShieldObject.shieldDirection.y, ShieldObject.shieldDirection.x) * Mathf.Rad2Deg);
 
             LayerMask layers = 1 << TrixieLayers.GetMask(Layers.Enemy) | 1 << TrixieLayers.GetMask(Layers.Terrain);
-            RaycastHit2D result = Physics2D.CircleCast(ShieldObject.transform.position, 0.5f, transform.right, settings.maxBeamDistance, layers);
-            float dist = settings.maxBeamDistance;
+            RaycastHit2D result = Physics2D.CircleCast(ShieldObject.transform.position, 0.5f, transform.right, beamStats.maxBeamDistance, layers);
+            float dist = beamStats.maxBeamDistance;
             if (result.collider != null)
             {
                 dist = Vector2.Distance(transform.position, result.point);
@@ -79,9 +80,9 @@ namespace TrixieCore
             beamCollider.offset = Vector2.right * dist / 2;
         }
 
-        public void SetBeamSettings(BeamSettings newSettings)
+        public void SetBeamSettings(BeamStats newSettings)
         {
-            settings = newSettings;
+            beamStats = newSettings;
         }
 
         public void Activate()
@@ -94,32 +95,32 @@ namespace TrixieCore
         public void Deactivate()
         {
             isActive = false;
-            enemiesInBeam = new List<HitEnemy>();
+            enemiesInBeam = new List<HitTarget>();
             gameObject.SetActive(false);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            BaseEnemy enemy = null;
+            IDamageable enemy = null;
 
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
                 if (collision.tag == "Enemy")
                 {
-                    enemy = collision.GetComponent<BaseEnemy>();
-                    enemy.DamageEnemy(collision.transform.position - transform.position, settings.colour, settings.damage);
+                    enemy = collision.GetComponent<IDamageable>();
+                    enemy.TakeDamage(beamStats.damage, collision.transform.position - transform.position, beamStats.colour);
 
                 }
                 else if (collision.tag == "Shield")
                 {
-                    collision.GetComponent<Units.EnemyShield>().HitShield(settings.colour, settings.damage);
+                    collision.GetComponent<Units.EnemyShield>().HitShield(beamStats.colour, beamStats.damage);
                     enemy = GetComponentInParent<BaseEnemy>();
                 }
             }
 
-            if (enemy)
+            if (enemy != null)
             {
-                HitEnemy hit = new HitEnemy()
+                HitTarget hit = new HitTarget()
                 {
                     obj = enemy,
                     lastTickTime = Time.time
@@ -135,13 +136,13 @@ namespace TrixieCore
             BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
             if (enemy)
             {
-                HitEnemy enemyToRemove = new HitEnemy()
+                HitTarget enemyToRemove = new HitTarget()
                 {
                     obj = null
                 };
-                foreach (HitEnemy hit in enemiesInBeam)
+                foreach (HitTarget hit in enemiesInBeam)
                 {
-                    if (hit.obj == enemy)
+                    if ((MonoBehaviour)hit.obj == enemy)
                     { 
                         enemyToRemove = hit;
                         break;
@@ -155,15 +156,16 @@ namespace TrixieCore
             }
         }
 
-        private void DamageTarget(HitEnemy hit)
+        private void DamageTarget(HitTarget hit)
         {
-            hit.obj.DamageEnemy(hit.obj.transform.position - transform.position, settings.colour, settings.damage);
+            var monoObj = (MonoBehaviour)hit.obj;
+            hit.obj.TakeDamage(beamStats.damage, monoObj.transform.position - transform.position, beamStats.colour);
             hit.lastTickTime = Time.time;
         }
 
-        private struct HitEnemy
+        private struct HitTarget
         {
-            public BaseEnemy obj;
+            public IDamageable obj;
             public float lastTickTime;
 
         }

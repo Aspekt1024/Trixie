@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace TrixieCore
+namespace TrixieCore.Units
 {
-    public abstract class BaseEnemy : MonoBehaviour
+    public abstract class BaseEnemy : MonoBehaviour, IDamageable
     {           
         public GameObject AI;
         public GameObject Model;
@@ -37,7 +36,7 @@ namespace TrixieCore
 
         protected virtual void Update()
         {
-            if (IsDead()) return;
+            if (IsDestroyed()) return;
 
             if (isStunned)
             {
@@ -56,7 +55,7 @@ namespace TrixieCore
 
         public virtual void Stun(Vector2 direction, float stunTime)
         {
-            if (isStunned || IsDead()) return;
+            if (isStunned || IsDestroyed()) return;
 
             SetSpriteColour(new Color(0.3f, 0.3f, 1f, 1f));
             StunEffect.SetActive(true);
@@ -64,7 +63,7 @@ namespace TrixieCore
             stunDuration = stunTime;
         }
 
-        public virtual void DamageEnemy(Vector2 direction, EnergyTypes.Colours energyType, int damage = 1)
+        public virtual void TakeDamage(int damage, Vector2 direction, EnergyTypes.Colours energyType)
         {
             healthComponent.TakeDamage(damage);
             if (healthComponent.IsDead())
@@ -91,7 +90,7 @@ namespace TrixieCore
             GameManager.Instance.MainCamera.GetComponent<CameraFollow>().StopFollowingObject(transform);
         }
 
-        public bool IsDead()
+        public bool IsDestroyed()
         {
             return healthComponent.IsDead();
         }

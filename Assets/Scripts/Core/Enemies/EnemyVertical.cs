@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
+using TrixieCore.Units;
+
+
 
 /// <summary>
 /// Prototype class to test enemy

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TrixieCore.Units;
 
 namespace TrixieCore
 {
@@ -147,7 +148,7 @@ namespace TrixieCore
             Vector2 originalVelocity = projectile.velocity;
             float timer = 0f;
             float duration = .4f;
-            while (projectile.gameObject.activeSelf && !target.GetComponent<BaseEnemy>().IsDead())
+            while (projectile.gameObject.activeSelf && !target.GetComponent<BaseEnemy>().IsDestroyed())
             {
                 projectile.velocity = originalVelocity.magnitude * Vector2.Lerp(originalVelocity, (Vector2)target.position - projectile.position, timer / duration).normalized;
                 timer += Time.deltaTime;

@@ -53,10 +53,10 @@ namespace TrixieCore
                     break;
                 case EnergyTypes.Colours.Red:
                     unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeComponent.GetMeleeColour());
-                    unit.GetComponent<IStunnable>().Stun(1.5f, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeComponent.GetMeleeColour());
                     break;
                 case EnergyTypes.Colours.Green:
-                    unit.GetComponent<IStunnable>().Stun(1.5f, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeComponent.GetMeleeColour());
                     break;
                 default:
                     break;

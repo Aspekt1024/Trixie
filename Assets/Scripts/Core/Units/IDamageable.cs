@@ -7,5 +7,6 @@ namespace TrixieCore.Units
     public interface IDamageable
     {
         void TakeDamage(int damage, Vector2 direction, EnergyTypes.Colours damageType);
+        bool IsDestroyed();
     }
 }
