@@ -20,7 +20,7 @@ namespace Aspekt.IO.Edit
         private int bindingIndex;
 
         private int getKeycodeIndex = -1;
-
+        
         public override void OnInspectorGUI()
         {
             controller = (PlayerController)target;
@@ -100,7 +100,11 @@ namespace Aspekt.IO.Edit
                 if (currentIndex < 0) currentIndex = 0;
 
                 var bindingIndex = EditorGUILayout.Popup(currentIndex, availableBindings);
-                binding.ControllerBinding = (BindableButtons)Enum.Parse(typeof(BindableButtons), availableBindings[bindingIndex]);
+                if (bindingIndex != currentIndex)
+                {
+                    binding.ControllerBinding = (BindableButtons)Enum.Parse(typeof(BindableButtons), availableBindings[bindingIndex]);
+                    EditorUtility.SetDirty(controller);
+                }
 
                 controller.KeyBindings[i] = binding;
 

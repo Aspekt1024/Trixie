@@ -107,7 +107,7 @@ namespace TrixieCore
             }
             state = States.None;
             Telegraph.SetActive(false);
-            shield.ChargeIndicator.StopCharge();
+            //shield.ChargeIndicator.StopCharge();
             ReleaseProjectiles();
         }
 

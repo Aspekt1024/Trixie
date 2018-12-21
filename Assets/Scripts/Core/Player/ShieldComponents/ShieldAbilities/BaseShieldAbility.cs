@@ -80,11 +80,15 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    protected virtual void Start()
+    private void Awake()
     {
         shield = GetComponent<ShieldComponent>();
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+    }
+
+    protected virtual void Start()
+    {
         power = new ShieldPower(this, MaxCharge, InitialCharge);
     }
 }
