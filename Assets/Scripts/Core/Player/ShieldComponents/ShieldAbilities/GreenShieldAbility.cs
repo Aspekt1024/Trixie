@@ -18,11 +18,10 @@ public class GreenShieldAbility : BaseShieldAbility
     private int numProjectilesStored;
     private float timer;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         Colour = EnergyTypes.Colours.Green;
-        shield.ProjectileCollider.enabled = false;
     }
 
     public override void UpdateCharge(float deltaTime)

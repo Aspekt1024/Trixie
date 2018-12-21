@@ -1,4 +1,5 @@
 ﻿using Aspekt.AI;
+using Aspekt.PlayerController;
 using TestUnitLabels;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace TrixieCore.Units
     {
         public override void ExitGoal(AIAgent agent)
         {
-            if (Player.Instance.IsAlive)
+            if (Player.Instance.CheckState(StateLabels.IsAlive))
             {
                 agent.GetMemory().Set(SauceLabels.AttackGoalComplete, false);
             }

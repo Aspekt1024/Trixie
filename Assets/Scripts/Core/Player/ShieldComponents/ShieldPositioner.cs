@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Aspekt.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,19 +19,19 @@ namespace TrixieCore
         public void Setup(Transform centerPointReference)
         {
             centerPoint = centerPointReference;
-            playerAnim = Player.Instance.GetComponent<Animator>();
+            playerAnim = Trixie.Instance.GetComponent<Animator>();
         }
 
         public void SetShieldPosition()
         {
-            Vector2 aimDirection = GameManager.GetAimDirection();
+            Vector2 aimDirection = Trixie.Instance.GetComponent<PlayerController>().GetDynamicDirection(Trixie.Instance.transform.position);
             if (aimDirection == Vector2.zero) return;
 
             Vector2 distVector = (aimDirection - (Vector2)centerPoint.position).normalized * DistFromCenter;
             transform.position = centerPoint.position + (Vector3)distVector;
             float angle = Mathf.Rad2Deg * Mathf.Atan2(distVector.y, distVector.x);
 
-            if (Player.Instance.IsLookingRight())
+            if (Trixie.Instance.IsFacingRight())
             {
                 playerAnim.SetFloat("lookAngle", angle / 360f);
             }
@@ -54,11 +55,11 @@ namespace TrixieCore
 
         public void SetShieldPositionFixed()
         {
-            Vector2 direction = GameManager.GetAimDirection() - (Vector2)centerPoint.position;
+            Vector2 direction = Trixie.Instance.GetComponent<PlayerController>().GetDynamicDirection(Trixie.Instance.transform.position) - (Vector2)centerPoint.position; ;
             if (direction.y > Mathf.Abs(direction.x))
             {
                 shieldDirection = Vector3.up;
-                if (Player.Instance.IsLookingRight())
+                if (Trixie.Instance.IsFacingRight())
                 {
                     playerAnim.SetFloat("lookAngle", 90f / 360f);
                     transform.localPosition = new Vector2(-OffsetY, DistFromCenter);
@@ -76,7 +77,7 @@ namespace TrixieCore
             else if (direction.y < -Mathf.Abs(direction.x))
             {
                 shieldDirection = Vector3.down;
-                if (Player.Instance.IsLookingRight())
+                if (Trixie.Instance.IsFacingRight())
                 {
                     playerAnim.SetFloat("lookAngle", -90f / 360f);
                     transform.localPosition = new Vector2(-OffsetY, -DistFromCenter);
@@ -93,7 +94,7 @@ namespace TrixieCore
             }
             else
             {
-                if (Player.Instance.IsLookingRight())
+                if (Trixie.Instance.IsFacingRight())
                 {
                     shieldDirection = Vector3.right;
                     playerAnim.SetFloat("lookAngle", 0 / 360f);

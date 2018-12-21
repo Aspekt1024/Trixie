@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Aspekt.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -108,7 +109,7 @@ namespace TrixieCore
 
         private IEnumerator Melee()
         {
-            Vector2 direction = GameManager.GetMoveDirection();
+            Vector2 direction = Trixie.Instance.GetComponent<PlayerController>().GetMoveDirection();
             string animationName = "Melee";
             if (direction.y > Mathf.Abs(direction.x))
             {
@@ -127,7 +128,7 @@ namespace TrixieCore
                 meleeColliderHorizontal.EnableCollider();
             }
 
-            animationName += Player.Instance.GetComponent<ShieldComponent>().GetColour().ToString();
+            animationName += Trixie.Instance.GetComponent<ShieldComponent>().GetColour().ToString();
 
             anim.Play(animationName, 0, 0f);
             isActive = true;

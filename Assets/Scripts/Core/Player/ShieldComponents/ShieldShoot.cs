@@ -36,7 +36,6 @@ public class ShieldShoot : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        shield.ProjectileCollider.enabled = false;
     }
 
     public void UpdateCharge(float deltaTime)
@@ -136,7 +135,6 @@ public class ShieldShoot : MonoBehaviour
             // TODO if this wasn't a prototype... fix this.
             trajectory = GetComponentInChildren<ShieldTrajectory>();
         }
-        shield.ProjectileCollider.enabled = false;
         trajectory.Disable();
         shield.ChargeIndicator.StopCharge();
     }
@@ -145,7 +143,6 @@ public class ShieldShoot : MonoBehaviour
     {
         state = States.Shooting;
 
-        shield.ProjectileCollider.enabled = true;
         shield.ShieldCollider.isTrigger = true;
         body.isKinematic = false;
         body.velocity = ShootSpeed * body.transform.right;
@@ -154,7 +151,6 @@ public class ShieldShoot : MonoBehaviour
     
     private IEnumerator ReturnShieldRoutine()
     {
-        shield.ProjectileCollider.enabled = false;
         body.isKinematic = true;
 
         while (Vector2.Distance(transform.position, shield.CenterPoint.position) > 1f)

@@ -29,19 +29,19 @@ namespace TrixieCore.Items
             switch (Type)
             {
                 case UnlockType.ShieldBlue:
-                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    Trixie.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                     break;
                 case UnlockType.ShieldGreen:
-                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    Trixie.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                     break;
                 case UnlockType.ShieldRed:
-                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    Trixie.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                     break;
                 case UnlockType.ShieldShoot:
-                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    Trixie.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                     break;
                 case UnlockType.ShieldMelee:
-                    Player.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
+                    Trixie.Instance.GetComponent<ShieldComponent>().ObtainedUnlock(Type);
                     break;
                 case UnlockType.Boosters:
                     break;

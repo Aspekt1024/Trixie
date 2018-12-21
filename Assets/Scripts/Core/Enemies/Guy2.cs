@@ -31,7 +31,7 @@ namespace TrixieCore.Units
                 patrolComponent.Deactivate();
             }
 
-            hasAggro = Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius;
+            hasAggro = Vector2.Distance(Trixie.Instance.transform.position, transform.position) < AggroRadius;
             
             if (Shield.IsActive || !hasAggro) return;
             Shield.Activate();

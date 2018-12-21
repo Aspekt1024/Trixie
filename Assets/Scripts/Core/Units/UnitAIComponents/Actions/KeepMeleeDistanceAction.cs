@@ -13,12 +13,12 @@ namespace TrixieCore.Units
         private Transform target;
         private Vector2 direction;
         private float distanceToMove;
-
+        
         public override void Enter(AIStateMachine stateMachine, Action SuccessCallback, Action FailureCallback)
         {
             base.Enter(stateMachine, SuccessCallback, FailureCallback);
 
-            direction = Player.Instance.transform.position - agent.BaseUnit.transform.position;
+            direction = Trixie.Instance.transform.position - agent.BaseUnit.transform.position;
             distanceToMove = DistanceToKeep - direction.magnitude;
 
             if (distanceToMove < 0)
@@ -39,7 +39,7 @@ namespace TrixieCore.Units
         
         public override bool CheckProceduralPrecondition()
         {
-            direction = Player.Instance.transform.position - agent.BaseUnit.transform.position;
+            direction = Trixie.Instance.transform.position - agent.BaseUnit.transform.position;
             distanceToMove = DistanceToKeep - direction.magnitude;
             return distanceToMove > 0 && agent.GetMemory().ConditionMet(SauceLabels.CanShoot, false);
         }
@@ -57,7 +57,7 @@ namespace TrixieCore.Units
 
         protected override void Run(float deltaTime)
         {
-            agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
+            agent.BaseUnit.LookAtPosition(Trixie.Instance.transform.position);
         }
         
         protected override void SetPreconditions()

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore.UI;
+using Aspekt.PlayerController;
 
 namespace TrixieCore
 {
     [RequireComponent(typeof(BaseShieldAbility))]
-    public class ShieldComponent : MonoBehaviour
+    public class ShieldComponent : PlayerAbility
     {
 
         public float DisableTime = 3f;
         public bool FullRotationControl = false;
         public GameObject ShieldObject;
         public Collider2D ShieldCollider;
-        public Collider2D ProjectileCollider;
         public Transform CenterPoint;
         public ShieldChargeIndicator ChargeIndicator;
 
@@ -49,7 +49,7 @@ namespace TrixieCore
             body = ShieldObject.GetComponent<Rigidbody2D>();
             ShieldObject.SetActive(false);
 
-            playerAnim = Player.Instance.GetComponent<Animator>();
+            playerAnim = Trixie.Instance.GetComponent<Animator>();
 
             SetShieldColour(EnergyTypes.Colours.Blue);
             positioner.Setup(CenterPoint);
@@ -86,9 +86,9 @@ namespace TrixieCore
         private void GetAbilities()
         {
             abilities = new BaseShieldAbility[3];
-            abilities[0] = ShieldObject.GetComponent<BlueShieldAbility>();
-            abilities[1] = ShieldObject.GetComponent<RedShieldAbility>();
-            abilities[2] = ShieldObject.GetComponent<GreenShieldAbility>();
+            abilities[0] = GetComponent<BlueShieldAbility>();
+            abilities[1] = GetComponent<RedShieldAbility>();
+            abilities[2] = GetComponent<GreenShieldAbility>();
         }
 
         public BaseShieldAbility GetAbility(EnergyTypes.Colours colour)

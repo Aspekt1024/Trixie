@@ -13,7 +13,7 @@ namespace TrixieCore.Units
             base.Enter(stateMachine, SuccessCallback, FailureCallback);
             moveState = stateMachine.AddState<MoveState>();
             moveState.SetMovementBehaviour(agent.BaseUnit.GetMovementBehaviour());
-            moveState.SetTarget(Player.Instance.transform);
+            moveState.SetTarget(Trixie.Instance.transform);
 
             stateMachine.OnComplete += MovementComplete;
         }
@@ -40,9 +40,9 @@ namespace TrixieCore.Units
         {
             if (moveState != null)
             {
-                moveState.SetTarget(Player.Instance.transform);
+                moveState.SetTarget(Trixie.Instance.transform);
 
-                agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
+                agent.BaseUnit.LookAtPosition(Trixie.Instance.transform.position);
 
                 if (CanSeeAndShootTarget())
                 {

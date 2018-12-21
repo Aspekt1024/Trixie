@@ -54,7 +54,7 @@ public class LevelGenerator : MonoBehaviour {
         if (currentPixelColor == Color.blue && !playerPlaced)
         {
             playerPlaced = true;
-            Player.Instance.transform.position = startPos + new Vector2(x + 0.5f, y + 1) * LevelGrid.GetGridSpacing();
+            Trixie.Instance.transform.position = startPos + new Vector2(x + 0.5f, y + 1) * LevelGrid.GetGridSpacing();
         }
         else if (currentPixelColor == Color.black)
         {

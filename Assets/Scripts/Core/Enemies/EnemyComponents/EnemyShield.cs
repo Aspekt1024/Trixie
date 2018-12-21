@@ -43,7 +43,7 @@ namespace TrixieCore.Units
 
             if (hitPlayer && state == States.Active)
             {
-                Player.Instance.HitWithObject(this);
+                Trixie.Instance.HitWithObject(this);
                 hitPlayer = false;
             }
 

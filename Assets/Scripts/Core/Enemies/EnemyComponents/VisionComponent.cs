@@ -75,7 +75,7 @@ namespace TrixieCore.Units
 
         private void CheckForPlayer()
         {
-            Vector2 distVector = (Player.Instance.transform.position - transform.position);
+            Vector2 distVector = (Trixie.Instance.transform.position - transform.position);
             if (!IsWithinDistance(distVector) || !IsWithinArc(distVector))
             {
                 SetPlayerUnseen();
@@ -99,7 +99,7 @@ namespace TrixieCore.Units
                     timeLastSeenPlayer = Time.time;
                     hasSeenPlayer = true;
                     canSeePlayer = true;
-                    lastKnownPlayerPosition = Player.Instance.transform.position;
+                    lastKnownPlayerPosition = Trixie.Instance.transform.position;
                 }
             }
         }

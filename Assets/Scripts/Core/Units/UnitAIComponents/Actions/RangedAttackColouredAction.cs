@@ -24,12 +24,12 @@ namespace TrixieCore.Units
 
         protected override void Run(float deltaTime)
         {
-            agent.BaseUnit.LookAtPosition(Player.Instance.transform.position);
+            agent.BaseUnit.LookAtPosition(Trixie.Instance.transform.position);
 
             delayTimer += deltaTime;
             if (delayTimer >= IndicationTime)
             {
-                shootComponent.Shoot(Player.Instance.gameObject);
+                shootComponent.Shoot(Trixie.Instance.gameObject);
                 Success();
             }
         }

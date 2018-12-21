@@ -39,7 +39,7 @@ namespace TrixieCore
 
             if (state == States.Dead || isStunned) return;
 
-            if (Vector2.Distance(Player.Instance.transform.position, transform.position) < AggroRadius)
+            if (Vector2.Distance(Trixie.Instance.transform.position, transform.position) < AggroRadius)
             {
                 // TODO only if raycasted *or* has seen recently. proper aggro. not this through the walls crap
                 HasAggro();
@@ -51,7 +51,7 @@ namespace TrixieCore
 
             if (Turrets != null)
             {
-                Vector2 distVector = Player.Instance.transform.position - Turrets.transform.position;
+                Vector2 distVector = Trixie.Instance.transform.position - Turrets.transform.position;
                 float targetRotation = Mathf.Atan2(distVector.y, distVector.x) * Mathf.Rad2Deg;
                 Turrets.eulerAngles = new Vector3(0f, 0f, targetRotation);
             }
@@ -67,7 +67,7 @@ namespace TrixieCore
             {
                 cooldown = Random.Range(ShootCooldown, ShootCooldown * 2f);
                 cdTimer = 0f;
-                shootComponent.Shoot(Player.Instance.gameObject);
+                shootComponent.Shoot(Trixie.Instance.gameObject);
             }
         }
 

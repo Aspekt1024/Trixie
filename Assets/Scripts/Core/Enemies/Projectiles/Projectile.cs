@@ -5,7 +5,7 @@ using TrixieCore.Units;
 
 namespace TrixieCore
 {
-    public class Projectile : MonoBehaviour
+    public class Projectile : MonoBehaviour, IDamager
     {
 
         public delegate void DestroyEvent(Projectile projectile, bool destroyedBySameShieldColour);
@@ -86,7 +86,7 @@ namespace TrixieCore
             if (hitPlayer && gameObject.activeSelf && !hitShield)
             {
                 hitPlayer = false;
-                Player.Instance.Damage();
+                Trixie.Instance.Damage(this);
                 ShowImpact();
             }
         }
@@ -94,6 +94,11 @@ namespace TrixieCore
         public ProjectileSettings GetSettings()
         {
             return settings;
+        }
+
+        public int GetDamage()
+        {
+            return 1;
         }
 
         protected virtual void OnEnable()
@@ -186,7 +191,7 @@ namespace TrixieCore
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Shield))
             {
                 hitShield = true;
-                ShieldComponent shield = Player.Instance.GetComponent<ShieldComponent>();
+                ShieldComponent shield = Trixie.Instance.GetComponent<ShieldComponent>();
                 if (shield.GetColour() == GetColour())
                 {
                     destroyedBySameShieldColour = true;
@@ -334,7 +339,7 @@ namespace TrixieCore
             originalSpeed = speed;
             body.velocity = transform.right * speed;
             
-            AudioMaster.PlayAudio(AudioMaster.AudioClips.EnemyShoot, transform.position - Player.Instance.transform.position);
+            AudioMaster.PlayAudio(AudioMaster.AudioClips.EnemyShoot, transform.position - Trixie.Instance.transform.position);
         }
 
         public void SetSinePath(float amplitude, float wavelength, float phase, float speed)

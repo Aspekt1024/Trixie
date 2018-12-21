@@ -8,7 +8,7 @@ namespace TrixieCore
     {
         public enum FollowTypes
         {
-            PlayerOnly, PlayerAndAggro
+            None, PlayerOnly, PlayerAndAggro
         }
         public FollowTypes FollowType = FollowTypes.PlayerAndAggro;
         public float FollowSpeed = 5f;
@@ -32,13 +32,17 @@ namespace TrixieCore
 
         private void Start()
         {
-            playerTf = Player.Instance.transform;
+            if (Trixie.Instance == null) return;
+
+            playerTf = Trixie.Instance.transform;
             playerBody = playerTf.GetComponent<Rigidbody2D>();
             objectsToFollow = new HashSet<Transform>();
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
+            if (FollowType == FollowTypes.None) return;
+
             if (focusOverrideMode)
             {
                 GotoFocusPoint();
@@ -139,12 +143,12 @@ namespace TrixieCore
             // Favour the player
             if (playerDistFromCenter.x > triggerDistance.x)
             {
-                targetPos.x = Mathf.Lerp(targetPos.x, Player.Instance.transform.position.x, (playerDistFromCenter.x - triggerDistance.x) / (maxDistFromCenter.x - triggerDistance.x));
+                targetPos.x = Mathf.Lerp(targetPos.x, Trixie.Instance.transform.position.x, (playerDistFromCenter.x - triggerDistance.x) / (maxDistFromCenter.x - triggerDistance.x));
             }
 
             if (playerDistFromCenter.y > triggerDistance.y)
             {
-                targetPos.y = Mathf.Lerp(targetPos.y, Player.Instance.transform.position.y, (playerDistFromCenter.y - triggerDistance.y) / (maxDistFromCenter.y - triggerDistance.y));
+                targetPos.y = Mathf.Lerp(targetPos.y, Trixie.Instance.transform.position.y, (playerDistFromCenter.y - triggerDistance.y) / (maxDistFromCenter.y - triggerDistance.y));
             }
 
             Vector2 newPos = Vector2.Lerp(transform.position, targetPos, cameraSpeed * Time.deltaTime);

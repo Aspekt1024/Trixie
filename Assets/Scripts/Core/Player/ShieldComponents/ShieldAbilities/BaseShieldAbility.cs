@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
+using Aspekt.PlayerController;
 
 public abstract class BaseShieldAbility : MonoBehaviour {
 
@@ -79,9 +80,9 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
-        shield = Player.Instance.GetComponent<ShieldComponent>();
+        shield = GetComponent<ShieldComponent>();
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         power = new ShieldPower(this, MaxCharge, InitialCharge);

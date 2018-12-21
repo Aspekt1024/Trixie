@@ -10,6 +10,8 @@ namespace TrixieCore
         private float charge = 0;
         private BaseShieldAbility shieldParent;
 
+        private bool requireUIUpdate;
+
         public ShieldPower(BaseShieldAbility parent, float maxCharge = 3, float initialCharge = 0)
         {
             this.maxCharge = maxCharge;

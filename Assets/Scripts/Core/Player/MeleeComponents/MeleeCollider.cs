@@ -12,7 +12,7 @@ namespace TrixieCore
 
         private void Start()
         {
-            meleeComponent = Player.Instance.GetComponent<MeleeComponent>();
+            meleeComponent = Trixie.Instance.GetComponent<MeleeComponent>();
             meleeCollider = GetComponent<PolygonCollider2D>();
             meleeCollider.enabled = false;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore;
+using Aspekt.PlayerController;
 
 public class BallisticsComponent : MonoBehaviour
 {

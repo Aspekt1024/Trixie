@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Aspekt.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +22,10 @@ namespace TrixieCore
 
         private float timer;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             Colour = EnergyTypes.Colours.Red;
-            shield.ProjectileCollider.enabled = false;
             
             Beam.SetBeamSettings(beamSettings);
 
@@ -96,7 +96,6 @@ namespace TrixieCore
                 timer = 0f;
             }
             state = States.None;
-            shield.ProjectileCollider.enabled = false;
             shield.ChargeIndicator.StopCharge();
             Beam.Deactivate();
         }
@@ -147,7 +146,6 @@ namespace TrixieCore
         {
             state = States.Activating;
 
-            shield.ProjectileCollider.enabled = true;
             shield.ShieldCollider.isTrigger = true;
             body.isKinematic = false;
             // body.velocity = ShootSpeed * GetMoveDirection().normalized;
@@ -156,7 +154,6 @@ namespace TrixieCore
 
         private IEnumerator ReturnShieldRoutine()
         {
-            shield.ProjectileCollider.enabled = false;
             body.isKinematic = true;
 
             while (Vector2.Distance(transform.position, shield.CenterPoint.position) > 1f)
@@ -199,7 +196,7 @@ namespace TrixieCore
 
         private Vector2 GetMoveDirection()
         {
-            Vector2 dir = GameManager.GetMoveDirection();
+            Vector2 dir = Trixie.Instance.GetComponent<PlayerController>().GetMoveDirection();
             if (dir.y > Mathf.Abs(dir.x))
             {
                 return Vector2.up;
@@ -208,7 +205,7 @@ namespace TrixieCore
             {
                 return Vector2.down;
             }
-            else if (Player.Instance.IsLookingRight())
+            else if (Trixie.Instance.IsFacingRight())
             {
                 return Vector2.right;
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore.Units;
+using Aspekt.IO;
 
 namespace TrixieCore
 {
@@ -184,7 +185,7 @@ namespace TrixieCore
 
         private Vector2 GetMoveDirection()
         {
-            Vector2 dir = GameManager.GetMoveDirection();
+            Vector2 dir = Trixie.Instance.GetComponent<PlayerController>().GetMoveDirection();
             if (dir.y > Mathf.Abs(dir.x))
             {
                 return Vector2.up;
@@ -193,7 +194,7 @@ namespace TrixieCore
             {
                 return Vector2.down;
             }
-            else if (Player.Instance.IsLookingRight())
+            else if (Trixie.Instance.IsFacingRight())
             {
                 return Vector2.right;
             }

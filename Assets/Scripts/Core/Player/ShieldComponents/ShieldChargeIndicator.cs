@@ -60,7 +60,7 @@ namespace TrixieCore.UI
 
         private void SetPosition()
         {
-            transform.position = Player.Instance.transform.position + Vector3.down * 2.2f;
+            transform.position = Trixie.Instance.transform.position + Vector3.down * 2.2f;
         }
 
         private IEnumerator PulseCharged(bool disableAfterPulse)

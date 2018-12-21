@@ -44,11 +44,10 @@ namespace TrixieCore
 
         private HashSet<Projectile> projectiles = new HashSet<Projectile>();
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             Colour = EnergyTypes.Colours.Blue;
-            shield.ProjectileCollider.enabled = false;
             Telegraph.SetActive(false);
         }
 

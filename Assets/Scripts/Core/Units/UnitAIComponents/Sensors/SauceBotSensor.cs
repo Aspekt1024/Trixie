@@ -49,7 +49,7 @@ public class SauceBotSensor : AISensor {
 
     private bool CheckAggro(float deltaTime)
     {
-        float distanceFromTarget = Vector2.Distance(agent.BaseUnit.transform.position, Player.Instance.transform.position);
+        float distanceFromTarget = Vector2.Distance(agent.BaseUnit.transform.position, Trixie.Instance.transform.position);
         bool aggroTriggered = memory.ConditionMet(SauceLabels.CanSeeTarget, true) && distanceFromTarget <= agent.BaseUnit.AggroRadius;
 
         if (aggroTriggered)
@@ -83,7 +83,7 @@ public class SauceBotSensor : AISensor {
 
         float angle = Maths.CalculateThrowingAngle(
             shootComponent.transform.position,
-            Player.Instance.transform.position,
+            Trixie.Instance.transform.position,
             false,
             shootComponent.ProjectileSpeed,
             shootComponent.ProjectileSettings.GravityScale
