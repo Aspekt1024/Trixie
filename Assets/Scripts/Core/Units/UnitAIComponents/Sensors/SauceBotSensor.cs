@@ -30,7 +30,6 @@ public class SauceBotSensor : AISensor {
     {
         memory.Set(SauceLabels.IsAggravated, CheckAggro(Time.deltaTime));
 
-        memory.Set(SauceLabels.HasCorrectProjectColour, true);
         memory.Set(SauceLabels.CanSeeTarget, vision.CanSeePlayer());
 
         memory.Set(SauceLabels.CanShield, shield.IsAvailable);

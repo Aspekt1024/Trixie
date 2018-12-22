@@ -2,6 +2,7 @@
 using UnityEngine;
 using Aspekt.AI;
 using TestUnitLabels;
+using System.Collections.Generic;
 
 namespace TrixieCore.Units
 {
@@ -29,10 +30,23 @@ namespace TrixieCore.Units
             delayTimer += deltaTime;
             if (delayTimer >= IndicationTime)
             {
-                shootComponent.Shoot(Trixie.Instance.gameObject);
+                var newProjectiles = shootComponent.Shoot(Trixie.Instance.gameObject);
+                foreach (Projectile projectile in newProjectiles)
+                {
+                    projectile.OnDestroyed += ProjectileDestroyed;
+                }
                 Success();
             }
         }
+
+        private void ProjectileDestroyed(Projectile projectile, bool destroyedBySameColouredShield)
+        {
+            if (destroyedBySameColouredShield)
+            {
+                agent.GetMemory().Set(SauceLabels.HasCorrectProjectileColour, false);
+            }
+            projectile.OnDestroyed -= ProjectileDestroyed;
+        } 
 
         public override bool CheckProceduralPrecondition()
         {
@@ -44,7 +58,7 @@ namespace TrixieCore.Units
         {
             AddPrecondition(SauceLabels.CanShootTarget, true);
             AddPrecondition(SauceLabels.CanSeeTarget, true);
-            AddPrecondition(SauceLabels.HasCorrectProjectColour, true);
+            AddPrecondition(SauceLabels.HasCorrectProjectileColour, true);
         }
 
         protected override void SetEffects()

@@ -1,5 +1,4 @@
 ﻿using Aspekt.PlayerController;
-using System;
 
 namespace TrixieCore.Controller
 {

@@ -127,6 +127,7 @@ namespace TrixieCore
                 case States.Firing:
                     break;
                 case States.Disabled:
+                    Debug.Log(shieldDisabledTimer);
                     shieldDisabledTimer -= Time.deltaTime;
                     if (shieldDisabledTimer <= 0f)
                     {

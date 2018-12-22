@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - GravityField
   - CameraFocusField
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -48,14 +49,14 @@ TagManager:
   - name: Background
     uniqueID: 4196605335
     locked: 0
+  - name: BackgroundClosest
+    uniqueID: 3281318077
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Terrain
-    uniqueID: 339542137
-    locked: 0
-  - name: Environment
-    uniqueID: 2264555571
+  - name: Level
+    uniqueID: 1447369631
     locked: 0
   - name: NPCs
     uniqueID: 1312719889

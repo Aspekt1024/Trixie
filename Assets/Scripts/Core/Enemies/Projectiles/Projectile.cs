@@ -7,15 +7,11 @@ namespace TrixieCore
 {
     public class Projectile : MonoBehaviour, IDamager
     {
+        public event System.Action<Projectile, bool> OnDestroyed = delegate {};
 
-        public delegate void DestroyEvent(Projectile projectile, bool destroyedBySameShieldColour);
-        public DestroyEvent OnDestroyed;
         public void Destroyed(Projectile projectile, bool destroyedBySameShieldColour)
         {
-            if (OnDestroyed != null)
-            {
-                OnDestroyed(projectile, destroyedBySameShieldColour);
-            }
+            OnDestroyed?.Invoke(projectile, destroyedBySameShieldColour);
         }
 
         [System.Serializable]

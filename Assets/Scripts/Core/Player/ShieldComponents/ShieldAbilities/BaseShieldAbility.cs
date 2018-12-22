@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TrixieCore;
-using Aspekt.PlayerController;
 
 public abstract class BaseShieldAbility : MonoBehaviour {
 
@@ -62,7 +59,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         else
         {
             isShielding = true;
-            gameObject.SetActive(true);
+            shield.ShieldObject.SetActive(true);
             body.isKinematic = true;
             anim.Play("Activate" + Colour.ToString(), 0, 0f);
         }
@@ -77,14 +74,14 @@ public abstract class BaseShieldAbility : MonoBehaviour {
         isShielding = false;
         body.isKinematic = true;
         body.velocity = Vector2.zero;
-        gameObject.SetActive(false);
+        shield.ShieldObject.SetActive(false);
     }
 
     private void Awake()
     {
         shield = GetComponent<ShieldComponent>();
-        body = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        body = shield.ShieldObject.GetComponent<Rigidbody2D>();
+        anim = shield.ShieldObject.GetComponent<Animator>();
     }
 
     protected virtual void Start()
