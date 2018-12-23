@@ -3,6 +3,7 @@ using UnityEngine;
 using TrixieCore.Units;
 using Aspekt.IO;
 using Aspekt.PlayerController;
+using TrixieCore.UI;
 
 namespace TrixieCore
 {
@@ -14,16 +15,13 @@ namespace TrixieCore
         public GameObject ProjectilePrefab;
 
         private ShieldAbility shield;
-        private ChargeIndicator indicator;
 
         private bool isChargingUp;
         private float chargingTime;
 
         private void Start()
         {
-            shield = GetComponent<ShieldAbility>();
-            indicator = GetComponentInChildren<ChargeIndicator>();
-            indicator.SetChargeState(ChargeIndicator.States.None);
+            shield = Trixie.Instance.GetAbility<ShieldAbility>();
         }
 
         private void Update()
@@ -33,7 +31,7 @@ namespace TrixieCore
                 chargingTime += Time.deltaTime;
                 if (chargingTime > PowerupTime)
                 {
-                    indicator.SetChargeState(ChargeIndicator.States.StageOne);
+                    // TODO charge state
                 }
             }
         }
@@ -42,7 +40,6 @@ namespace TrixieCore
         {
             isChargingUp = true;
             chargingTime = 0f;
-            indicator.SetChargeState(ChargeIndicator.States.Charging);
             switch (shield.GetColour())
             {
                 case EnergyTypes.Colours.Blue:
@@ -79,7 +76,6 @@ namespace TrixieCore
                 }
             }
             isChargingUp = false;
-            indicator.SetChargeState(ChargeIndicator.States.None);
         }
 
         private void AttackBlue()
@@ -147,7 +143,7 @@ namespace TrixieCore
             Vector2 originalVelocity = projectile.velocity;
             float timer = 0f;
             float duration = .4f;
-            while (projectile.gameObject.activeSelf && !target.GetComponent<BaseEnemy>().IsDestroyed())
+            while (projectile.gameObject.activeSelf && !target.GetComponent<BaseUnit>().IsDestroyed())
             {
                 projectile.velocity = originalVelocity.magnitude * Vector2.Lerp(originalVelocity, (Vector2)target.position - projectile.position, timer / duration).normalized;
                 timer += Time.deltaTime;

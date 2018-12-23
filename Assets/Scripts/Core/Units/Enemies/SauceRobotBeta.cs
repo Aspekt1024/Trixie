@@ -38,7 +38,7 @@ namespace TrixieCore.Units
             }
         }
 
-        public bool IsDestroyed()
+        public override bool IsDestroyed()
         {
             return health.IsDead();
         }

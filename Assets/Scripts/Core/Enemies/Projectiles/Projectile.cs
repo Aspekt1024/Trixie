@@ -122,7 +122,7 @@ namespace TrixieCore
             {
                 if (collision.gameObject.tag == "Enemy")
                 {
-                    collision.GetComponent<BaseEnemy>().TakeDamage(1, collision.transform.position - transform.position, GetColour());
+                    collision.GetComponent<IDamageable>().TakeDamage(1, collision.transform.position - transform.position, GetColour());
                     ShowImpact();
                 }
                 else

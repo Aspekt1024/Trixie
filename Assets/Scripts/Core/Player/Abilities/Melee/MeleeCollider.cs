@@ -1,18 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TrixieCore.Units;
 
 namespace TrixieCore
 {
     public class MeleeCollider : MonoBehaviour
     {
-        private MeleeAbility meleeComponent;
+        private MeleeAbility meleeAbility;
         private PolygonCollider2D meleeCollider;
 
         private void Start()
         {
-            meleeComponent = Trixie.Instance.GetComponent<MeleeAbility>();
+            meleeAbility = Trixie.Instance.GetAbility<MeleeAbility>();
             meleeCollider = GetComponent<PolygonCollider2D>();
             meleeCollider.enabled = false;
         }
@@ -29,7 +27,7 @@ namespace TrixieCore
 
         public EnergyTypes.Colours GetColour()
         {
-            return meleeComponent.GetMeleeColour();
+            return meleeAbility.GetMeleeColour();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -46,17 +44,17 @@ namespace TrixieCore
         private void HitEnemy(Collider2D unit)
         {
             Vector2 direction = unit.transform.position - transform.position;
-            switch (meleeComponent.GetMeleeColour())
+            switch (meleeAbility.GetMeleeColour())
             {
                 case EnergyTypes.Colours.Blue:
-                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeAbility.GetMeleeColour());
                     break;
                 case EnergyTypes.Colours.Red:
-                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeComponent.GetMeleeColour());
-                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IDamageable>().TakeDamage(1, direction, meleeAbility.GetMeleeColour());
+                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeAbility.GetMeleeColour());
                     break;
                 case EnergyTypes.Colours.Green:
-                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeComponent.GetMeleeColour());
+                    unit.GetComponent<IStunnable>().Stun(direction, 1.5f, meleeAbility.GetMeleeColour());
                     break;
                 default:
                     break;

@@ -24,6 +24,8 @@ namespace TrixieCore.Units
 
         private Animator anim;
         private Rigidbody2D body;
+        
+        public virtual bool IsDestroyed() { return false; }
 
         private bool directionFlipped;
         

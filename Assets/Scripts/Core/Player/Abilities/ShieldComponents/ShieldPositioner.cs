@@ -33,11 +33,11 @@ namespace TrixieCore
 
             if (Trixie.Instance.IsFacingRight())
             {
-                playerAnim.SetFloat("lookAngle", angle / 360f);
+                playerAnim.SetFloat("LookAngle", angle / 360f);
             }
             else
             {
-                playerAnim.SetFloat("lookAngle", Mathf.Sign(angle) * (0.5f - Mathf.Abs(angle) / 360f));
+                playerAnim.SetFloat("LookAngle", Mathf.Sign(angle) * (0.5f - Mathf.Abs(angle) / 360f));
             }
 
             if (Mathf.Abs(angle) > 90f)
@@ -61,14 +61,14 @@ namespace TrixieCore
                 shieldDirection = Vector3.up;
                 if (Trixie.Instance.IsFacingRight())
                 {
-                    playerAnim.SetFloat("lookAngle", 90f / 360f);
+                    playerAnim.SetFloat("LookAngle", 90f / 360f);
                     transform.localPosition = new Vector2(-OffsetY, DistFromCenter);
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, 90f + ShieldAngle);
                 }
                 else
                 {
-                    playerAnim.SetFloat("lookAngle", 90f / 360f);
+                    playerAnim.SetFloat("LookAngle", 90f / 360f);
                     transform.localPosition = new Vector2(OffsetY, DistFromCenter);
                     transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, -90f - ShieldAngle);
@@ -79,14 +79,14 @@ namespace TrixieCore
                 shieldDirection = Vector3.down;
                 if (Trixie.Instance.IsFacingRight())
                 {
-                    playerAnim.SetFloat("lookAngle", -90f / 360f);
+                    playerAnim.SetFloat("LookAngle", -90f / 360f);
                     transform.localPosition = new Vector2(-OffsetY, -DistFromCenter);
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, 90f - ShieldAngle);
                 }
                 else
                 {
-                    playerAnim.SetFloat("lookAngle", -90f / 360f);
+                    playerAnim.SetFloat("LookAngle", -90f / 360f);
                     transform.localPosition = new Vector2(OffsetY, -DistFromCenter);
                     transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, -90f + ShieldAngle);
@@ -97,7 +97,7 @@ namespace TrixieCore
                 if (Trixie.Instance.IsFacingRight())
                 {
                     shieldDirection = Vector3.right;
-                    playerAnim.SetFloat("lookAngle", 0 / 360f);
+                    playerAnim.SetFloat("LookAngle", 0 / 360f);
                     transform.localPosition = new Vector2(DistFromCenter, OffsetY);
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, ShieldAngle);
@@ -105,7 +105,7 @@ namespace TrixieCore
                 else
                 {
                     shieldDirection = Vector3.left;
-                    playerAnim.SetFloat("lookAngle", 0 / 360f);
+                    playerAnim.SetFloat("LookAngle", 0 / 360f);
                     transform.localPosition = new Vector2(-DistFromCenter, OffsetY);
                     transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1f);
                     transform.localEulerAngles = new Vector3(0f, 0f, -ShieldAngle);
