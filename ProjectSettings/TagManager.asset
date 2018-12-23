@@ -76,3 +76,6 @@ TagManager:
   - name: UI
     uniqueID: 7791101
     locked: 0
+  - name: InvalidLayer
+    uniqueID: 1073336417
+    locked: 0

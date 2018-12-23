@@ -12,7 +12,18 @@ namespace TrixieCore
 
     public enum SortingLayers
     {
-        Background
+        Background,
+        BackgroundClosest,
+        Default,
+        Level,
+        NPCs,
+        Enemy,
+        Player,
+        Shield,
+        Projectile,
+        LevelForeground,
+        Foreground,
+        UI,
     }
 
     public class TrixieLayers : MonoBehaviour
