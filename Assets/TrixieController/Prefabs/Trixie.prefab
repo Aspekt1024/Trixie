@@ -58,6 +58,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 437741180}
+  - component: {fileID: 437741181}
   m_Layer: 9
   m_Name: Ranged
   m_TagString: Untagged
@@ -79,6 +80,22 @@ Transform:
   m_Father: {fileID: 4260460466277164}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437741181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437741179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f72d7ef2b4e4b4ba38b8d275c32c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PowerupTime: 0.6
+  RangedCooldown: 0.1
+  ProjectilePrefab: {fileID: 1603930829032656, guid: 37dd1943d28e00b49a35f90a11748a21,
+    type: 3}
 --- !u!1 &443012295
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +492,7 @@ GameObject:
   - component: {fileID: 1395025896}
   - component: {fileID: 1395025895}
   m_Layer: 10
-  m_Name: ChargeIndicator
+  m_Name: ShieldChargeIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5980,7 +5997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1795a7dab63a20340badf175f50165a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoostPower: 12
+  BoostPower: 20
   RechargeRate: 5
   MaxBoost: 5
   BoostUsageRate: 5
@@ -20726,13 +20743,16 @@ MonoBehaviour:
     ControllerBinding: 1
   - HandlerTypeString: TrixieCore.Controller.ShieldButton
     KeyboardBinding: 114
-    ControllerBinding: 5
+    ControllerBinding: 4
   - HandlerTypeString: TrixieCore.Controller.CycleShieldButton
     KeyboardBinding: 0
-    ControllerBinding: 3
+    ControllerBinding: 5
   - HandlerTypeString: TrixieCore.Controller.MeleeAttackButton
     KeyboardBinding: 0
     ControllerBinding: 2
+  - HandlerTypeString: TrixieCore.Controller.RangedAttackButton
+    KeyboardBinding: 0
+    ControllerBinding: 3
 --- !u!114 &114781155607864948
 MonoBehaviour:
   m_ObjectHideFlags: 0

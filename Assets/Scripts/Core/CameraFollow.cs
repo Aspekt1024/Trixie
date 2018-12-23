@@ -17,7 +17,7 @@ namespace TrixieCore
 
         private float xMin = -10000f;
         private float xMax = 10000f;
-        private float yMin = 0f;
+        private float yMin = -10000f;
         private float yMax = 10000f;
 
         private float xOffset = 0f;
