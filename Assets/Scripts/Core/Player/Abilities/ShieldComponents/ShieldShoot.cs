@@ -15,7 +15,7 @@ public class ShieldShoot : MonoBehaviour
     public float ChargeupTime = 1f;
     public float CooldownTime = 1f;
     
-    private ShieldComponent shield;
+    private ShieldAbility shield;
     private ShieldTrajectory trajectory;
     private Rigidbody2D body;
     private Animator anim;
@@ -30,7 +30,7 @@ public class ShieldShoot : MonoBehaviour
 
     private void Start()
     {
-        shield = GetComponentInParent<ShieldComponent>();
+        shield = GetComponentInParent<ShieldAbility>();
         trajectory = GetComponentInChildren<ShieldTrajectory>();
 
         body = GetComponent<Rigidbody2D>();

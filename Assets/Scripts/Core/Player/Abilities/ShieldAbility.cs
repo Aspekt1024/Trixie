@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TrixieCore.UI;
 using Aspekt.PlayerController;
 
 namespace TrixieCore
 {
     [RequireComponent(typeof(BaseShieldAbility))]
-    public class ShieldComponent : PlayerAbility
+    public class ShieldAbility : PlayerAbility
     {
 
         public float DisableTime = 3f;
@@ -127,7 +125,6 @@ namespace TrixieCore
                 case States.Firing:
                     break;
                 case States.Disabled:
-                    Debug.Log(shieldDisabledTimer);
                     shieldDisabledTimer -= Time.deltaTime;
                     if (shieldDisabledTimer <= 0f)
                     {

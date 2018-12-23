@@ -7,7 +7,6 @@ namespace Aspekt.AI.Editor
 {
     public abstract class BaseNode
     {
-        private int id;
         private List<NodeInterface> interfaces = new List<NodeInterface>();
 
         private NodeWindow nodeWindow;
@@ -17,7 +16,7 @@ namespace Aspekt.AI.Editor
         protected string title = "Untitled";
 
         public string Name { get { return title; } }
-        public int ID { get { return id; } }
+        public int ID { get; }
         public List<NodeInterface> GetInterfaces() { return interfaces; }
 
         public BaseNode()

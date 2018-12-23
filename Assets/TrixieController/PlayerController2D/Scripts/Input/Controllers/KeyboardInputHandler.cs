@@ -25,6 +25,8 @@ namespace Aspekt.IO
 
             foreach (var binding in bindings)
             {
+                if (binding.KeyboardBinding == KeyCode.None) continue;
+
                 getKeyDownBindings.Add(binding.KeyboardBinding, binding.ButtonHandler);
                 getKeyUpBindings.Add(binding.KeyboardBinding, binding.ButtonHandler);
             }

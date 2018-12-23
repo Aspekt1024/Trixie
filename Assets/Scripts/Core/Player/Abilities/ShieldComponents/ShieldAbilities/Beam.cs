@@ -132,7 +132,6 @@ namespace TrixieCore
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            return;
             BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
             if (enemy)
             {

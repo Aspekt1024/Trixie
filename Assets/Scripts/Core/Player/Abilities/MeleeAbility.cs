@@ -1,23 +1,22 @@
 ﻿using Aspekt.IO;
+using Aspekt.PlayerController;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TrixieCore
 {
-    [RequireComponent(typeof(ShieldComponent))]
-    public class MeleeComponent : MonoBehaviour
+    public class MeleeAbility : PlayerAbility
     {
-
         public float PowerupTime = 0.6f;
         public float MeleeCooldown = 0.1f;
         public float MeleeDuration = 0.1f;
+        public GameObject MeleeModel;
         public MeleeCollider meleeColliderHorizontal;
         public MeleeCollider meleeColliderVertical;
 
         private bool isActive;
         private Coroutine meleeRoutine;
-        private ShieldComponent shieldComponent;
+        private ShieldAbility shieldComponent;
 
         private float heldTime;
 
@@ -31,8 +30,8 @@ namespace TrixieCore
 
         private void Start()
         {
-            shieldComponent = GetComponent<ShieldComponent>();
-            anim = GetComponent<Animator>();
+            shieldComponent = Trixie.Instance.GetAbility<ShieldAbility>();
+            anim = Trixie.Instance.GetComponent<Animator>();
         }
 
         private void Update()
@@ -128,7 +127,7 @@ namespace TrixieCore
                 meleeColliderHorizontal.EnableCollider();
             }
 
-            animationName += Trixie.Instance.GetComponent<ShieldComponent>().GetColour().ToString();
+            animationName += Trixie.Instance.GetAbility<ShieldAbility>().GetColour().ToString();
 
             anim.Play(animationName, 0, 0f);
             isActive = true;

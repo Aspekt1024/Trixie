@@ -6,6 +6,7 @@ using Aspekt.PlayerController;
 using static Aspekt.IO.ControllerInputHandler;
 using System.Reflection;
 using System;
+using System.Collections.Generic;
 
 namespace Aspekt.IO.Edit
 {
@@ -72,6 +73,7 @@ namespace Aspekt.IO.Edit
 
         private void ShowExistingBindings()
         {
+            int indexToRemove = -1;
             for (int i = 0; i < controller.KeyBindings.Count; i++)
             {
                 var binding = controller.KeyBindings[i];
@@ -108,7 +110,16 @@ namespace Aspekt.IO.Edit
 
                 controller.KeyBindings[i] = binding;
 
+                if (GUILayout.Button("X"))
+                {
+                    indexToRemove = i;
+                }
+
                 EditorGUILayout.EndHorizontal();
+            }
+            if (indexToRemove >= 0)
+            {
+                controller.KeyBindings.RemoveAt(indexToRemove);
             }
         }
 

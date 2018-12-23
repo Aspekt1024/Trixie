@@ -4,11 +4,11 @@ namespace TrixieCore.Controller
 {
     public class CycleShieldButton : PlayerControllerButtonHandler
     {
-        private ShieldComponent shield;
+        private ShieldAbility shield;
 
         public CycleShieldButton(Player player, Aspekt.IO.PlayerController controller) : base(player, controller)
         {
-            shield = player.GetAbility<ShieldComponent>();
+            shield = player.GetAbility<ShieldAbility>();
         }
 
         public override void Pressed()

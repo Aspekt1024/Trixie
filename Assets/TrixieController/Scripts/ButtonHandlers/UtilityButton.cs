@@ -2,11 +2,11 @@
 
 namespace TrixieCore.Controller
 {
-    public class ShieldButton : PlayerControllerButtonHandler
+    public class UtilityButton : PlayerControllerButtonHandler
     {
         private ShieldAbility shield;
-        
-        public ShieldButton(Player player, Aspekt.IO.PlayerController controller) : base(player, controller)
+
+        public UtilityButton(Player player, Aspekt.IO.PlayerController controller) : base(player, controller)
         {
             shield = player.GetAbility<ShieldAbility>();
         }

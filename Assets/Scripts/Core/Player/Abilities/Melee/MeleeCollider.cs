@@ -7,12 +7,12 @@ namespace TrixieCore
 {
     public class MeleeCollider : MonoBehaviour
     {
-        private MeleeComponent meleeComponent;
+        private MeleeAbility meleeComponent;
         private PolygonCollider2D meleeCollider;
 
         private void Start()
         {
-            meleeComponent = Trixie.Instance.GetComponent<MeleeComponent>();
+            meleeComponent = Trixie.Instance.GetComponent<MeleeAbility>();
             meleeCollider = GetComponent<PolygonCollider2D>();
             meleeCollider.enabled = false;
         }

@@ -187,7 +187,7 @@ namespace TrixieCore
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Shield))
             {
                 hitShield = true;
-                ShieldComponent shield = Trixie.Instance.GetAbility<ShieldComponent>();
+                ShieldAbility shield = Trixie.Instance.GetAbility<ShieldAbility>();
                 if (shield.GetColour() == GetColour())
                 {
                     destroyedBySameShieldColour = true;

@@ -1,21 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TrixieCore.Units;
 using Aspekt.IO;
+using Aspekt.PlayerController;
 
 namespace TrixieCore
 {
-
-    public class RangedComponent : MonoBehaviour
+    public class RangedAbility : PlayerAbility
     {
-
         public float PowerupTime = 0.6f;
         public float RangedCooldown = 0.1f;
 
         public GameObject ProjectilePrefab;
 
-        private ShieldComponent shieldComponent;
+        private ShieldAbility shield;
         private ChargeIndicator indicator;
 
         private bool isChargingUp;
@@ -23,7 +21,7 @@ namespace TrixieCore
 
         private void Start()
         {
-            shieldComponent = GetComponent<ShieldComponent>();
+            shield = GetComponent<ShieldAbility>();
             indicator = GetComponentInChildren<ChargeIndicator>();
             indicator.SetChargeState(ChargeIndicator.States.None);
         }
@@ -45,7 +43,7 @@ namespace TrixieCore
             isChargingUp = true;
             chargingTime = 0f;
             indicator.SetChargeState(ChargeIndicator.States.Charging);
-            switch (shieldComponent.GetColour())
+            switch (shield.GetColour())
             {
                 case EnergyTypes.Colours.Blue:
                     AttackBlue();
@@ -65,7 +63,7 @@ namespace TrixieCore
         {
             if (chargingTime > PowerupTime)
             {
-                switch (shieldComponent.GetColour())
+                switch (shield.GetColour())
                 {
                     case EnergyTypes.Colours.Blue:
                         PowerAttackBlue();

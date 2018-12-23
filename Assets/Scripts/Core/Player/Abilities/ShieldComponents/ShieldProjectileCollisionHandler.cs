@@ -6,13 +6,13 @@ using TrixieCore.Units;
 
 public class ShieldProjectileCollisionHandler : MonoBehaviour {
     
-    public ShieldComponent ShieldComponent;
+    public ShieldAbility Shield;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Terrain))
         {
-            ShieldComponent.ReturnShield();
+            Shield.ReturnShield();
         }
         else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
         {
@@ -20,12 +20,12 @@ public class ShieldProjectileCollisionHandler : MonoBehaviour {
             if (baseEnemy)
             {
                 //baseEnemy.DamageEnemy(Vector2.zero, EnergyTypes.Colours.Red, (int)((RedShieldAbility)ShieldComponent.GetAbility(EnergyTypes.Colours.Red)).Damage);
-                ShieldComponent.ReturnShield();
+                Shield.ReturnShield();
             }
         }
         else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Projectile))
         {
-            ShieldComponent.DisableShield();
+            Shield.DisableShield();
         }
     }
 }

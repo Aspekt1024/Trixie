@@ -19,7 +19,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
     protected States state;
     protected bool isShielding;
 
-    protected ShieldComponent shield;
+    protected ShieldAbility shield;
     protected Rigidbody2D body;
     protected Animator anim;
     protected ShieldPower power;
@@ -79,7 +79,7 @@ public abstract class BaseShieldAbility : MonoBehaviour {
 
     private void Awake()
     {
-        shield = GetComponent<ShieldComponent>();
+        shield = GetComponent<ShieldAbility>();
         body = shield.ShieldObject.GetComponent<Rigidbody2D>();
         anim = shield.ShieldObject.GetComponent<Animator>();
     }
