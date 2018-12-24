@@ -94,8 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PowerupTime: 0.6
   RangedCooldown: 0.1
-  ProjectilePrefab: {fileID: 1603930829032656, guid: 37dd1943d28e00b49a35f90a11748a21,
-    type: 3}
+  ProjectilePrefab: {fileID: 0}
 --- !u!1 &443012295
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643097340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.11, y: -0.51, z: 0}
+  m_LocalPosition: {x: 10.11, y: -0.5100002, z: -41.999996}
   m_LocalScale: {x: 18.967188, y: 1.7375, z: 1}
   m_Children: []
   m_Father: {fileID: 2104951770}
@@ -392,7 +391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146116115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -21.323143}
   m_LocalScale: {x: 1.2335, y: 1.2335, z: 1.2335}
   m_Children:
   - {fileID: 443012296}
@@ -530,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceacc76f661e0b04ab993e3bbcf25e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Meter: {fileID: 1145860157}
+  Meter: {fileID: 0}
   Offset: 0.05
 --- !u!223 &1395025897
 Canvas:
@@ -729,7 +728,8 @@ MonoBehaviour:
   Spread: 10
   HasCooldown: 1
   CooldownTime: 1.5
-  ProjectilePrefab: {fileID: 0}
+  ProjectilePrefab: {fileID: 1603930829032656, guid: 37dd1943d28e00b49a35f90a11748a21,
+    type: 3}
   ProjectileSpeed: 22
   AbsorbsGreenWhenActive: 1
   CanReflectOtherColours: 1
@@ -916,7 +916,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2104951769}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -21.323143}
   m_LocalScale: {x: 2, y: 2, z: 0.9692338}
   m_Children:
   - {fileID: 643097341}
@@ -5952,7 +5952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa18e243a8d514c4a9033e1d0f7d414f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 18
+  MoveSpeed: 15
   Acceleration: 8
 --- !u!1 &1180259278700264
 GameObject:
@@ -5997,10 +5997,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1795a7dab63a20340badf175f50165a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoostPower: 20
-  RechargeRate: 5
-  MaxBoost: 5
-  BoostUsageRate: 5
+  BoostPower: 7
+  RechargeRate: 4
+  MaxBoost: 10
+  BoostUsageRate: 3
 --- !u!1 &1180668031092092
 GameObject:
   m_ObjectHideFlags: 0
@@ -10874,7 +10874,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354896722915232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 8}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1.0317428}
   m_Children:
   - {fileID: 1233871385}
@@ -15707,7 +15707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6077bd75c2b8f1a49b050445eb402f62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpVelocity: 20
+  JumpVelocity: 15
   AirTime: 0.4
 --- !u!1 &1628579219806770
 GameObject:
@@ -20545,9 +20545,7 @@ MonoBehaviour:
   CooldownTimer: 0
   ShootSpeed: 25
   Mode: 0
-  BulletPrefabs:
-  - {fileID: 114012168936942778, guid: 44ac9854cdcb1bf449d1b4df80d49111, type: 3}
-  - {fileID: 114012168936942778, guid: 57540d0289be4c64f95eb60ff1fb2a91, type: 3}
+  BulletPrefabs: []
 --- !u!1 &1758381852467398
 GameObject:
   m_ObjectHideFlags: 0
@@ -20741,17 +20739,8 @@ MonoBehaviour:
   - HandlerTypeString: Aspekt.PlayerController.SpecialButton
     KeyboardBinding: 324
     ControllerBinding: 1
-  - HandlerTypeString: TrixieCore.Controller.ShieldButton
-    KeyboardBinding: 114
-    ControllerBinding: 4
-  - HandlerTypeString: TrixieCore.Controller.CycleShieldButton
-    KeyboardBinding: 0
-    ControllerBinding: 5
   - HandlerTypeString: TrixieCore.Controller.MeleeAttackButton
-    KeyboardBinding: 0
-    ControllerBinding: 2
-  - HandlerTypeString: TrixieCore.Controller.RangedAttackButton
-    KeyboardBinding: 0
+    KeyboardBinding: 101
     ControllerBinding: 3
 --- !u!114 &114781155607864948
 MonoBehaviour:
@@ -20895,5 +20884,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeScale: 0.2
-  BlinkDuration: 0.2
-  MaxDistance: 6
+  BlinkDuration: 0.4
+  MaxDistance: 17

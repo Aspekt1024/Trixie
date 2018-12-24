@@ -13,6 +13,12 @@ namespace TrixieCore
         protected override void Awake()
         {
             base.Awake();
+
+            if (Particles == null)
+            {
+                FindParticlesGameobject();
+            }
+
             trailRenderer = GetComponent<TrailRenderer>();
             Particles.SetActive(false);
         }
@@ -56,6 +62,18 @@ namespace TrixieCore
             GetComponent<SpriteRenderer>().color = color;
             trailRenderer.startColor = color;
             trailRenderer.endColor = new Color(color.r, color.g, color.b, 0f);
+        }
+
+        private void FindParticlesGameobject()
+        {
+            Transform[] children = GetComponentsInChildren<Transform>();
+            foreach (var child in children)
+            {
+                if (child.name == "Effects")
+                {
+                    Particles = child.gameObject;
+                }
+            }
         }
     }
 }
