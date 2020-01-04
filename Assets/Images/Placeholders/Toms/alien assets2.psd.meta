@@ -1,25 +1,51 @@
 fileFormatVersion: 2
 guid: 3be0dac6dff8da94ba43b2426e0c9642
-timeCreated: 1511580439
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: alien_dirt
-    21300002: alien_wall
-    21300004: alien assets2_2
-    21300006: alien_floor
-    21300008: alien roof
-    21300010: alien_broken_wall
-    21300012: alien_dirt_edge_1
-    21300014: alien adirt_edge_2
-    21300016: alien_platform
-    21300018: alien_pillar
-    21300020: alien pillar_short
-    21300022: alien_pillar_broken
-    21300024: alien pillar_broken_top
-    21300026: alien_pillar_broken_bottom
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: alien_dirt
+  - first:
+      213: 21300002
+    second: alien_wall
+  - first:
+      213: 21300004
+    second: alien assets2_2
+  - first:
+      213: 21300006
+    second: alien_floor
+  - first:
+      213: 21300008
+    second: alien roof
+  - first:
+      213: 21300010
+    second: alien_broken_wall
+  - first:
+      213: 21300012
+    second: alien_dirt_edge_1
+  - first:
+      213: 21300014
+    second: alien adirt_edge_2
+  - first:
+      213: 21300016
+    second: alien_platform
+  - first:
+      213: 21300018
+    second: alien_pillar
+  - first:
+      213: 21300020
+    second: alien pillar_short
+  - first:
+      213: 21300022
+    second: alien_pillar_broken
+  - first:
+      213: 21300024
+    second: alien pillar_broken_top
+  - first:
+      213: 21300026
+    second: alien_pillar_broken_bottom
   externalObjects: {}
-  serializedVersion: 4
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -37,6 +63,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -47,7 +75,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -59,18 +87,21 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -79,7 +110,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -88,7 +122,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -97,7 +134,10 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: WebGL
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -106,6 +146,8 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -127,6 +169,13 @@ TextureImporter:
         - {x: 556.5, y: -372.668}
         - {x: 556.5, y: 373}
       tessellationDetail: 0
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_wall
       rect:
@@ -145,6 +194,13 @@ TextureImporter:
         - {x: 565, y: -431.12796}
         - {x: 565, y: 431.5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien assets2_2
       rect:
@@ -163,6 +219,13 @@ TextureImporter:
         - {x: 480, y: -255}
         - {x: 480, y: 255}
       tessellationDetail: 0
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_floor
       rect:
@@ -181,6 +244,13 @@ TextureImporter:
         - {x: 729.5, y: -94.330055}
         - {x: 729.5, y: 69.12427}
       tessellationDetail: 0
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien roof
       rect:
@@ -199,6 +269,13 @@ TextureImporter:
         - {x: 499.77124, y: -65.575195}
         - {x: 503.71997, y: 95.5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_broken_wall
       rect:
@@ -219,6 +296,13 @@ TextureImporter:
         - {x: 145, y: -448.85358}
         - {x: 145, y: 449}
       tessellationDetail: 0
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_dirt_edge_1
       rect:
@@ -239,6 +323,13 @@ TextureImporter:
         - {x: -3.508311, y: 297.12003}
         - {x: -15.497262, y: 293.69424}
       tessellationDetail: 0
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien adirt_edge_2
       rect:
@@ -261,6 +352,13 @@ TextureImporter:
         - {x: 24.651918, y: -359.77835}
         - {x: 24.651918, y: 380.19043}
       tessellationDetail: 0
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_platform
       rect:
@@ -284,6 +382,13 @@ TextureImporter:
         - {x: 180.70718, y: -14.356542}
         - {x: 180.70718, y: 37.030178}
       tessellationDetail: 0
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_pillar
       rect:
@@ -303,6 +408,13 @@ TextureImporter:
         - {x: 79.10497, y: -343.3135}
         - {x: 79.10497, y: 389.80368}
       tessellationDetail: 0
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien pillar_short
       rect:
@@ -323,6 +435,13 @@ TextureImporter:
         - {x: 85, y: 128.18347}
         - {x: 63.801064, y: 131.60925}
       tessellationDetail: 0
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_pillar_broken
       rect:
@@ -353,6 +472,13 @@ TextureImporter:
         - {x: 82.23754, y: 117.762695}
         - {x: 68.53589, y: 129.75293}
       tessellationDetail: 0
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien pillar_broken_top
       rect:
@@ -375,6 +501,13 @@ TextureImporter:
         - {x: 83.093895, y: -1.5625527}
         - {x: 83.093895, y: 42.5}
       tessellationDetail: 0
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: alien_pillar_broken_bottom
       rect:
@@ -397,9 +530,26 @@ TextureImporter:
         - {x: 84.51934, y: 36.543827}
         - {x: 12.585638, y: 68.5}
       tessellationDetail: 0
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 1
+  pSDShowRemoveMatteOption: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
