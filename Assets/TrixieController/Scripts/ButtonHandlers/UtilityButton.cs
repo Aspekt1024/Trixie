@@ -13,12 +13,12 @@ namespace TrixieCore.Controller
 
         public override void Pressed()
         {
-            shield.ShieldActivatePressed();
+            shield.UtilityPressed();
         }
 
         public override void Released()
         {
-            shield.ShieldDeactivatePressed();
+            shield.UtilityReleased();
         }
     }
 }

@@ -19,6 +19,8 @@ namespace TrixieCore
         private ShieldPositioner positioner;
         private BaseShieldAbility[] abilities;
 
+        private MoveComponent movement; // TODO need another hook for when the player moves - this is built into the PlayerController2D package
+
         private Rigidbody2D body;
         private Animator anim;
         private Animator playerAnim;
@@ -51,58 +53,17 @@ namespace TrixieCore
 
             SetShieldColour(EnergyTypes.Colours.Blue);
             positioner.Setup(CenterPoint);
-        }
 
-        private void Activate()
-        {
-            state = States.Shielding;
-            if (FullRotationControl)
-            {
-                positioner.SetShieldPosition();
-            }
-            else
-            {
-                positioner.SetShieldPositionFixed();
-            }
-
-            abilities[currentAbilityIndex].BeginShielding();
-
-            if (shootButtonHeld)
-            {
-                abilities[currentAbilityIndex].ActivatePressed();
-            }
-        }
-
-        public void Moved()
-        {
-            if (abilities[currentAbilityIndex].CancelOnMove)
-            {
-                abilities[currentAbilityIndex].DisableAbility();
-            }
-        }
-
-        private void GetAbilities()
-        {
-            abilities = new BaseShieldAbility[3];
-            abilities[0] = GetComponent<BlueShieldAbility>();
-            abilities[1] = GetComponent<RedShieldAbility>();
-            abilities[2] = GetComponent<GreenShieldAbility>();
-        }
-
-        public BaseShieldAbility GetAbility(EnergyTypes.Colours colour)
-        {
-            foreach (var ability in abilities)
-            {
-                if (ability.Colour == colour)
-                {
-                    return ability;
-                }
-            }
-            return null;
+            movement = GameManager.Instance.Player.GetAbility<MoveComponent>();
         }
 
         private void Update()
         {
+            if (movement.IsMoving)
+            {
+                Moved();
+            }
+            
             if (abilities != null && abilities.Length > currentAbilityIndex)
             {
                 abilities[currentAbilityIndex].UpdateCharge(Time.deltaTime);
@@ -133,6 +94,55 @@ namespace TrixieCore
                     }
                     break;
             }
+        }
+        
+        private void Activate()
+        {
+            state = States.Shielding;
+            if (FullRotationControl)
+            {
+                positioner.SetShieldPosition();
+            }
+            else
+            {
+                positioner.SetShieldPositionFixed();
+            }
+
+            abilities[currentAbilityIndex].BeginShielding();
+
+            if (shootButtonHeld)
+            {
+                abilities[currentAbilityIndex].ActivatePressed();
+            }
+        }
+
+        public void Moved()
+        {
+            Debug.Log("moved");
+            if (abilities[currentAbilityIndex].CancelOnMove)
+            {
+                abilities[currentAbilityIndex].DisableAbility();
+            }
+        }
+
+        private void GetAbilities()
+        {
+            abilities = new BaseShieldAbility[3];
+            abilities[0] = GetComponent<BlueShieldAbility>();
+            abilities[1] = GetComponent<RedShieldAbility>();
+            abilities[2] = GetComponent<GreenShieldAbility>();
+        }
+
+        public BaseShieldAbility GetAbility(EnergyTypes.Colours colour)
+        {
+            foreach (var ability in abilities)
+            {
+                if (ability.Colour == colour)
+                {
+                    return ability;
+                }
+            }
+            return null;
         }
 
         public Vector2 GetShieldDirection()
@@ -249,6 +259,16 @@ namespace TrixieCore
                     state = States.Firing;
                 }
             }
+        }
+
+        public void UtilityPressed()
+        {
+            abilities[currentAbilityIndex].ActivatePressed();
+        }
+
+        public void UtilityReleased()
+        {
+            abilities[currentAbilityIndex].ActivateReleased();
         }
 
         public bool ShieldIsDisabled() { return state == States.Disabled; }

@@ -19,6 +19,8 @@ namespace Aspekt.PlayerController
         private float forceMoveTimer;
         private bool propelFromWall;
 
+        public bool IsMoving => Mathf.Abs(targetSpeed) > 0f;
+        
         private void Start()
         {
             player = GetComponentInParent<Player>();
@@ -81,8 +83,8 @@ namespace Aspekt.PlayerController
             else
             {
                 // Normal move logic
-                body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, targetSpeed, timeSinceSpeedChange / timeToChange), body.velocity.y);
-                return;
+                var xVelocity = Mathf.Lerp(body.velocity.x, targetSpeed, timeSinceSpeedChange / timeToChange);
+                body.velocity = new Vector2(xVelocity, body.velocity.y);
             }
 
             float slopeGradient = player.GetPlayerState().GetFloat(StateLabels.SlopeGradient);
@@ -91,6 +93,11 @@ namespace Aspekt.PlayerController
                 if (Mathf.Abs(slopeGradient) < 0.5f && Mathf.Abs(slopeGradient) > 0.05f)
                 {
                     body.velocity = new Vector2(body.velocity.x - slopeGradient, body.velocity.y + Mathf.Abs(slopeGradient));
+                }
+
+                if (timeSinceSpeedChange > timeToChange)
+                {
+                    body.velocity = Vector2.zero;
                 }
             }
 

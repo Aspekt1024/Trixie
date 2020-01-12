@@ -21,15 +21,26 @@ namespace Aspekt.IO.Edit
         private int bindingIndex;
 
         private int getKeycodeIndex = -1;
+
+        // Allows the user to select the same button for multiple abilities in the inspector
+        private bool canHaveDuplicateButtons = true;
         
         public override void OnInspectorGUI()
         {
             controller = (PlayerController)target;
 
             CheckKeypresses(Event.current);
+
+            ShowHeader();
+            EditorGUILayout.Space();
             ShowExistingBindings();
             EditorGUILayout.Space();
             ShowAddUI();
+        }
+
+        private void ShowHeader()
+        {
+            canHaveDuplicateButtons = EditorGUILayout.Toggle("Allow duplicate buttons", canHaveDuplicateButtons);
         }
 
         private void CheckKeypresses(Event e)
@@ -96,8 +107,12 @@ namespace Aspekt.IO.Edit
                 }
 
                 var selectedBindings = controller.KeyBindings.Select(b => b.ControllerBinding.ToString()).ToList();
-                var availableBindings = Enum.GetNames(typeof(BindableButtons)).Where(b => controller.KeyBindings[i].ControllerBinding.ToString().Equals(b) || !selectedBindings.Contains(b)).ToArray();
-
+                var availableBindings = Enum.GetNames(typeof(BindableButtons));
+                
+                if (!canHaveDuplicateButtons)
+                {
+                    availableBindings = availableBindings.Where(b => controller.KeyBindings[i].ControllerBinding.ToString().Equals(b) || !selectedBindings.Contains(b)).ToArray();
+                }
                 int currentIndex = Array.IndexOf(availableBindings, controller.KeyBindings[i].ControllerBinding.ToString());
                 if (currentIndex < 0) currentIndex = 0;
 

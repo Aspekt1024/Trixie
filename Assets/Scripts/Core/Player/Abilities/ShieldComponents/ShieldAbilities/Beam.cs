@@ -9,7 +9,6 @@ namespace TrixieCore
     {
         public ShieldPositioner ShieldObject;
 
-        private LineRenderer lineRenderer;
         private BeamStats beamStats;
         private Collider2D beamCollider;
 
@@ -29,7 +28,6 @@ namespace TrixieCore
 
         private void Awake()
         {
-            lineRenderer = GetComponent<LineRenderer>();
             enemiesInBeam = new List<HitTarget>();
             beamCollider = GetComponent<Collider2D>();
         }
@@ -74,7 +72,6 @@ namespace TrixieCore
                 dist = Vector2.Distance(transform.position, result.point);
             }
 
-            lineRenderer.SetPosition(1, Vector2.right * dist);
             ((BoxCollider2D)beamCollider).size = new Vector2(dist, ((BoxCollider2D)beamCollider).size.y);
 
             beamCollider.offset = Vector2.right * dist / 2;

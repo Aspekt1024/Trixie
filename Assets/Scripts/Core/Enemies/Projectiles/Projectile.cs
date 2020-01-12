@@ -156,7 +156,11 @@ namespace TrixieCore
 
             if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Enemy))
             {
-                collision.gameObject.GetComponent<BaseEnemy>().TakeDamage(1, collision.transform.position - transform.position, GetColour());
+                var enemy = collision.gameObject.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(1, collision.transform.position - transform.position, GetColour());
+                }
                 ShowImpact();
             }
             else if (collision.gameObject.layer == TrixieLayers.GetMask(Layers.Player))
