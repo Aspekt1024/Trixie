@@ -1,11 +1,15 @@
 fileFormatVersion: 2
 guid: 04735ce9ac9ec814e9636a561f2aaa6e
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Land_0
-    21300002: Land_1
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Land_0
+  - first:
+      213: 21300002
+    second: Land_1
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -59,8 +63,9 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -71,7 +76,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -82,6 +88,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -101,6 +108,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0d050bf738ba7154fa55c67d86e6e548
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -121,6 +129,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c00ad7064948ee4478c814159e1e8da9
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -129,10 +138,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: bfb147c3b773ed8418d6511d626b772a
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
