@@ -118,7 +118,6 @@ namespace TrixieCore
 
         public void Moved()
         {
-            Debug.Log("moved");
             if (abilities[currentAbilityIndex].CancelOnMove)
             {
                 abilities[currentAbilityIndex].DisableAbility();

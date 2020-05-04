@@ -44,8 +44,17 @@ namespace Aspekt.IO
         private const KeyCode START_BUTTON = KeyCode.JoystickButton7;
         private const KeyCode L_STICK = KeyCode.JoystickButton8;
         private const KeyCode R_STICK = KeyCode.JoystickButton9;
-#else
-        // TODO define other platforms
+#elif UNITY_STANDALONE_OSX
+        private const KeyCode A_BUTTON = KeyCode.Z;
+        private const KeyCode B_BUTTON = KeyCode.X;
+        private const KeyCode X_BUTTON = KeyCode.N;
+        private const KeyCode Y_BUTTON = KeyCode.M;
+        private const KeyCode L_BUMPER = KeyCode.J;
+        private const KeyCode R_BUMPER = KeyCode.K;
+        private const KeyCode BACK_BUTTON = KeyCode.JoystickButton6;
+        private const KeyCode START_BUTTON = KeyCode.JoystickButton7;
+        private const KeyCode L_STICK = KeyCode.JoystickButton8;
+        private const KeyCode R_STICK = KeyCode.JoystickButton9;
 #endif
 
         private readonly Dictionary<KeyCode, PlayerControllerButtonHandler> getKeyDownBindings = new Dictionary<KeyCode, PlayerControllerButtonHandler>();

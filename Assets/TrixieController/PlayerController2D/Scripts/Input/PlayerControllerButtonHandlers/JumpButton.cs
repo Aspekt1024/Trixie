@@ -89,36 +89,36 @@ namespace Aspekt.PlayerController
             {
                 jumpComponent.Jump();
             }
-            else if (isAttachedToWall)
-            {
-                wallJump.JumpFromWall();
-                jumpComponent.Jump();
-            }
-            else
-            {
-                if (player.CheckState(StateLabels.IsInGravityField))
-                {
-                    jumpComponent.Jump();
-                }
-                else if (controller.GetMoveDirection().y < -0.5f && player.HasTrait(PlayerTraits.Traits.CanStomp))
-                {
-                    stomped = true;
-                    jumpComponent.Stomp();
-                }
-                else if (Time.time < timeNotGrounded + lateButtonGrace)
-                {
-                    jumpComponent.Jump();
-                }
-                else if (Time.time < timeDetachedFromWall + wallDetachGrace)
-                {
-                    jumpComponent.Jump();
-                    wallJump.JumpFromWall();
-                }
-                else
-                {
-                    checkDoubleJump = true;
-                }
-            }
+            //else if (isAttachedToWall)
+            //{
+            //    wallJump.JumpFromWall();
+            //    jumpComponent.Jump();
+            //}
+            //else
+            //{
+            //    if (player.CheckState(StateLabels.IsInGravityField))
+            //    {
+            //        jumpComponent.Jump();
+            //    }
+            //    else if (controller.GetMoveDirection().y < -0.5f && player.HasTrait(PlayerTraits.Traits.CanStomp))
+            //    {
+            //        stomped = true;
+            //        jumpComponent.Stomp();
+            //    }
+            //    else if (Time.time < timeNotGrounded + lateButtonGrace)
+            //    {
+            //        jumpComponent.Jump();
+            //    }
+            //    else if (Time.time < timeDetachedFromWall + wallDetachGrace)
+            //    {
+            //        jumpComponent.Jump();
+            //        wallJump.JumpFromWall();
+            //    }
+            //    else
+            //    {
+            //        checkDoubleJump = true;
+            //    }
+            //}
         }
 
         public override void Released()

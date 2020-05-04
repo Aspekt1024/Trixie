@@ -15,6 +15,7 @@ namespace Aspekt.PlayerController
         private float targetSpeed;
         private float timeSinceSpeedChange;
         private const float timeToChange = 0.3f;
+        private const float slopeClimbMax = 0.5f;
         
         private float forceMoveTimer;
         private bool propelFromWall;
@@ -45,6 +46,7 @@ namespace Aspekt.PlayerController
 
         private void FixedUpdate()
         {
+
             if (player.IsIncapacitated)
             {
                 MoveReleased();
@@ -75,7 +77,8 @@ namespace Aspekt.PlayerController
             }
             
             timeSinceSpeedChange += Time.fixedDeltaTime * Acceleration;
-            
+            var xVelocity = Mathf.Lerp(body.velocity.x, targetSpeed, timeSinceSpeedChange / timeToChange);
+
             if (player.CheckState(StateLabels.IsAttachedToWall) && !player.CheckState(StateLabels.IsGrounded))
             {
                 body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, 0, Time.fixedDeltaTime * Acceleration), body.velocity.y);
@@ -83,31 +86,42 @@ namespace Aspekt.PlayerController
             else
             {
                 // Normal move logic
-                var xVelocity = Mathf.Lerp(body.velocity.x, targetSpeed, timeSinceSpeedChange / timeToChange);
                 body.velocity = new Vector2(xVelocity, body.velocity.y);
             }
 
+            // Slope move logic
             float slopeGradient = player.GetPlayerState().GetFloat(StateLabels.SlopeGradient);
-            if (player.CheckState(StateLabels.IsGrounded) && targetSpeed == 0f)
+            if (slopeGradient < slopeClimbMax && player.CheckState(StateLabels.IsGrounded) && !player.CheckState(StateLabels.IsJumping))
             {
-                if (Mathf.Abs(slopeGradient) < 0.5f && Mathf.Abs(slopeGradient) > 0.05f)
-                {
-                    body.velocity = new Vector2(body.velocity.x - slopeGradient, body.velocity.y + Mathf.Abs(slopeGradient));
-                }
+                // We are allowed to climb.
+                var layerMask = 1 << 8;
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, layerMask);
+                float climbSpeedY = xVelocity * -slopeGradient;;
+                body.velocity = new Vector2(body.velocity.x, climbSpeedY);
+                
 
-                if (timeSinceSpeedChange > timeToChange)
-                {
-                    body.velocity = Vector2.zero;
-                }
             }
 
-            if (player.CheckState(StateLabels.IsOnSlope) && targetSpeed > 0f)
-            {
-                if (Mathf.Abs(slopeGradient) > 0.5f)
-                {
-                    body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, 0, Time.fixedDeltaTime * Acceleration), Mathf.Lerp(body.velocity.y, -15, Time.fixedDeltaTime * Acceleration));
-                }
-            }
+            //if (player.CheckState(StateLabels.IsGrounded) && targetSpeed == 0f)
+            //{
+            //    if (Mathf.Abs(slopeGradient) < 0.5f && Mathf.Abs(slopeGradient) > 0.05f)
+            //    {
+            //        body.velocity = new Vector2(body.velocity.x - slopeGradient, body.velocity.y + Mathf.Abs(slopeGradient));
+            //    }
+
+            //    if (timeSinceSpeedChange > timeToChange)
+            //    {
+            //        body.velocity = Vector2.zero;
+            //    }
+            //}
+
+            //if (player.CheckState(StateLabels.IsOnSlope) && targetSpeed > 0f)
+            //{
+            //    if (Mathf.Abs(slopeGradient) > 0.5f)
+            //    {
+            //        body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, 0, Time.fixedDeltaTime * Acceleration), Mathf.Lerp(body.velocity.y, -15, Time.fixedDeltaTime * Acceleration));
+            //    }
+            //}
         }
 
         public void PropelJump(float direction)

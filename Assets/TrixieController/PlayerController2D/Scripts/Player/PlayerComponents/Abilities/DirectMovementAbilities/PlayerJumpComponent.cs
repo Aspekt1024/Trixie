@@ -91,12 +91,12 @@ namespace Aspekt.PlayerController
 
         public void Stomp()
         {
-            state = States.StompMode;
-            player.SetState(StateLabels.IsJumping, false);
-            player.SetState(StateLabels.IsStomping, true);
-            doubleJumped = true;
-            body.velocity = new Vector2(body.velocity.x, -40f);
-            gravity.SetTargetVelocity(-40f);
+            //state = States.StompMode;
+            //player.SetState(StateLabels.IsJumping, false);
+            //player.SetState(StateLabels.IsStomping, true);
+            //doubleJumped = true;
+            //body.velocity = new Vector2(body.velocity.x, -40f);
+            //gravity.SetTargetVelocity(-40f);
         }
 
         public void DoubleJump()
