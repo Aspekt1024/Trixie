@@ -136,7 +136,8 @@ namespace Aspekt.PlayerController
             if (state == States.Grounded) return;
             state = States.Grounded;
             groundDetectedTimer = 0f;
-            targetVerticalVelocity = -MaxFallVelocity;
+            //targetVerticalVelocity = -MaxFallVelocity;
+            targetVerticalVelocity = 0f;
             player.AnimationHandler.SetBool(AnimationBools.Falling, false);
             player.AnimationHandler.SetBool(AnimationBools.Grounded, true);
         }

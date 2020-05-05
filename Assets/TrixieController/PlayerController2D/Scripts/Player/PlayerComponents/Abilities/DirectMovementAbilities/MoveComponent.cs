@@ -15,7 +15,7 @@ namespace Aspekt.PlayerController
         private float targetSpeed;
         private float timeSinceSpeedChange;
         private const float timeToChange = 0.3f;
-        private const float slopeClimbMax = 0.5f;
+        private const float slopeClimbMax = 0.7f;
         
         private float forceMoveTimer;
         private bool propelFromWall;
@@ -91,37 +91,29 @@ namespace Aspekt.PlayerController
 
             // Slope move logic
             float slopeGradient = player.GetPlayerState().GetFloat(StateLabels.SlopeGradient);
-            if (slopeGradient < slopeClimbMax && player.CheckState(StateLabels.IsGrounded) && !player.CheckState(StateLabels.IsJumping))
+            if (Mathf.Abs(slopeGradient) < slopeClimbMax && player.CheckState(StateLabels.IsGrounded) && !player.CheckState(StateLabels.IsJumping))
             {
                 // We are allowed to climb.
+
+                // Determine whether or not we are climbing.
+                bool climbing = xVelocity < 0 && slopeGradient > 0 || xVelocity > 0 && slopeGradient < 0;
+
+                // Find the slope angle and how far we should move along it.
                 var layerMask = 1 << 8;
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, layerMask);
-                float climbSpeedY = xVelocity * -slopeGradient;;
-                body.velocity = new Vector2(body.velocity.x, climbSpeedY);
-                
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, Mathf.Infinity, layerMask);
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+                float slopeMoveDist = Mathf.Abs(xVelocity);
+                float yDist = slopeMoveDist * Mathf.Sin(Mathf.Deg2Rad * slopeAngle);
+                float xDist = slopeMoveDist * Mathf.Cos(Mathf.Deg2Rad * slopeAngle) * Mathf.Sign(xVelocity);
 
+                if (!climbing)
+                {
+                    // We are descending.
+                    yDist = -yDist;
+                }
+
+                body.velocity = new Vector2(xDist, yDist);
             }
-
-            //if (player.CheckState(StateLabels.IsGrounded) && targetSpeed == 0f)
-            //{
-            //    if (Mathf.Abs(slopeGradient) < 0.5f && Mathf.Abs(slopeGradient) > 0.05f)
-            //    {
-            //        body.velocity = new Vector2(body.velocity.x - slopeGradient, body.velocity.y + Mathf.Abs(slopeGradient));
-            //    }
-
-            //    if (timeSinceSpeedChange > timeToChange)
-            //    {
-            //        body.velocity = Vector2.zero;
-            //    }
-            //}
-
-            //if (player.CheckState(StateLabels.IsOnSlope) && targetSpeed > 0f)
-            //{
-            //    if (Mathf.Abs(slopeGradient) > 0.5f)
-            //    {
-            //        body.velocity = new Vector2(Mathf.Lerp(body.velocity.x, 0, Time.fixedDeltaTime * Acceleration), Mathf.Lerp(body.velocity.y, -15, Time.fixedDeltaTime * Acceleration));
-            //    }
-            //}
         }
 
         public void PropelJump(float direction)
