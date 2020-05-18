@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TrixieCore.UI;
 using Aspekt.PlayerController;
+using Spine.Unity;
 
 namespace TrixieCore
 {
@@ -23,7 +24,7 @@ namespace TrixieCore
 
         private Rigidbody2D body;
         private Animator anim;
-        private Animator playerAnim;
+        private SkeletonAnimation playerAnim;
 
         private float shieldDisabledTimer;
         private bool activateButtonHeld;
@@ -49,7 +50,7 @@ namespace TrixieCore
             body = ShieldObject.GetComponent<Rigidbody2D>();
             ShieldObject.SetActive(false);
 
-            playerAnim = Trixie.Instance.GetComponent<Animator>();
+           // playerAnim = Trixie.Instance.GetComponent<Animator>();
 
             SetShieldColour(EnergyTypes.Colours.Blue);
             positioner.Setup(CenterPoint);

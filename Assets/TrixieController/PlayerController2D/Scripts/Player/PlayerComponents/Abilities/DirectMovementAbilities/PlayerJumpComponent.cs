@@ -66,7 +66,7 @@ namespace Aspekt.PlayerController
             player.SetState(StateLabels.IsJumping, true);
             player.SetState(StateLabels.IsStomping, false);
             state = States.JumpMode;
-            player.AnimationHandler.Play(AnimationNames.Jump);
+            //player.AnimationHandler.Play(AnimationNames.Jump);
             jumpTimer = 0f;
             
             float velocity = JumpVelocity * player.GetPlayerState().GetFloat(StateLabels.TerrainBounciness);

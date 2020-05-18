@@ -138,8 +138,8 @@ namespace Aspekt.PlayerController
             groundDetectedTimer = 0f;
             //targetVerticalVelocity = -MaxFallVelocity;
             targetVerticalVelocity = 0f;
-            player.AnimationHandler.SetBool(AnimationBools.Falling, false);
-            player.AnimationHandler.SetBool(AnimationBools.Grounded, true);
+            //player.AnimationHandler.SetBool(AnimationBools.Falling, false);
+            //player.AnimationHandler.SetBool(AnimationBools.Grounded, true);
         }
 
         private void SetFalling()
@@ -148,8 +148,8 @@ namespace Aspekt.PlayerController
             state = States.Falling;
             groundDetectedTimer = 0f;
             targetVerticalVelocity = -MaxFallVelocity;
-            player.AnimationHandler.SetBool(AnimationBools.Falling, true);
-            player.AnimationHandler.SetBool(AnimationBools.Grounded, false);
+            //player.AnimationHandler.SetBool(AnimationBools.Falling, true);
+            //player.AnimationHandler.SetBool(AnimationBools.Grounded, false);
         }
 
         private void SetJumping()
@@ -157,8 +157,8 @@ namespace Aspekt.PlayerController
             if (state == States.Jumping) return;
             state = States.Jumping;
             groundDetectedTimer = 0f;
-            player.AnimationHandler.SetBool(AnimationBools.Falling, false);
-            player.AnimationHandler.SetBool(AnimationBools.Grounded, false);
+            //player.AnimationHandler.SetBool(AnimationBools.Falling, false);
+            //player.AnimationHandler.SetBool(AnimationBools.Grounded, false);
         }
     }
 }

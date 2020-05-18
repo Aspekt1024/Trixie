@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Spine.Unity;
 using UnityEngine;
 
 namespace Aspekt.PlayerController
@@ -29,7 +30,7 @@ namespace Aspekt.PlayerController
                 Instance = this;
                 GetPlayerComponents();
                 spriteColor = model.GetComponentInChildren<SpriteRenderer>().color;
-                AnimationHandler = new AnimationHandler(GetComponent<Animator>());
+                AnimationHandler = new AnimationHandler(GetComponentInChildren<SkeletonAnimation>());
                 Startup();
             }
         }

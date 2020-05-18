@@ -52,7 +52,6 @@ namespace Aspekt.PlayerController
                 MoveReleased();
             }
 
-            player.AnimationHandler.SetFloat(AnimationFloats.MoveSpeed, Mathf.Abs(body.velocity.x));
 
             if (forceMoveTimer > 0)
             {
@@ -139,7 +138,8 @@ namespace Aspekt.PlayerController
 
         public void MoveReleased()
         {
-            player.AnimationHandler.SetBool(AnimationBools.IsRunning, false);
+            // Maybe want to play an idle animation here.
+
             timeSinceSpeedChange = 0f;
             targetSpeed = 0f;
         }
@@ -150,7 +150,9 @@ namespace Aspekt.PlayerController
             {
                 propelFromWall = false;
             }
-            player.AnimationHandler.SetBool(AnimationBools.IsRunning, true);
+            player.AnimationHandler.SetFacing(Mathf.Sign(targetSpeed));
+            player.AnimationHandler.SetAnimation("Run");
+
             timeSinceSpeedChange = 0f;
         }
     }

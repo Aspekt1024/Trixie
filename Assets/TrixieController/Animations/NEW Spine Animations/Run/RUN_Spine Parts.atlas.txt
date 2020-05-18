@@ -1,0 +1,223 @@
+
+RUN_Spine Parts.png
+size: 2028,1666
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Back Hand F6
+  rotate: false
+  xy: 698, 186
+  size: 282, 155
+  orig: 282, 155
+  offset: 0, 0
+  index: -1
+Back Knee
+  rotate: false
+  xy: 425, 1462
+  size: 210, 121
+  orig: 210, 121
+  offset: 0, 0
+  index: -1
+Back Low Leg
+  rotate: true
+  xy: 987, 809
+  size: 642, 550
+  orig: 642, 550
+  offset: 0, 0
+  index: -1
+Back Lower Arm
+  rotate: true
+  xy: 698, 343
+  size: 142, 288
+  orig: 142, 288
+  offset: 0, 0
+  index: -1
+Back Lower Arm02
+  rotate: true
+  xy: 1539, 1043
+  size: 190, 232
+  orig: 190, 232
+  offset: 0, 0
+  index: -1
+Back Lower Leg Cover
+  rotate: false
+  xy: 1805, 1173
+  size: 89, 410
+  orig: 89, 410
+  offset: 0, 0
+  index: -1
+Back Tie
+  rotate: true
+  xy: 1280, 1469
+  size: 114, 220
+  orig: 114, 220
+  offset: 0, 0
+  index: -1
+Back Upper Arm
+  rotate: false
+  xy: 1502, 1474
+  size: 301, 109
+  orig: 301, 109
+  offset: 0, 0
+  index: -1
+Back Upper Leg
+  rotate: false
+  xy: 2, 1461
+  size: 421, 122
+  orig: 421, 122
+  offset: 0, 0
+  index: -1
+Boot
+  rotate: true
+  xy: 401, 807
+  size: 644, 584
+  orig: 644, 584
+  offset: 0, 0
+  index: -1
+Eye01
+  rotate: true
+  xy: 1896, 1380
+  size: 71, 109
+  orig: 71, 109
+  offset: 0, 0
+  index: -1
+Front Knee
+  rotate: false
+  xy: 637, 1462
+  size: 209, 121
+  orig: 209, 121
+  offset: 0, 0
+  index: -1
+Front Knee_Side
+  rotate: false
+  xy: 1067, 1466
+  size: 211, 117
+  orig: 211, 117
+  offset: 0, 0
+  index: -1
+Front Low Leg
+  rotate: false
+  xy: 2, 2
+  size: 694, 475
+  orig: 694, 475
+  offset: 0, 0
+  index: -1
+Front Lower Arm
+  rotate: true
+  xy: 1773, 988
+  size: 183, 218
+  orig: 183, 218
+  offset: 0, 0
+  index: -1
+Front Lower Arm02
+  rotate: false
+  xy: 686, 487
+  size: 300, 318
+  orig: 300, 318
+  offset: 0, 0
+  index: -1
+Front Tie
+  rotate: false
+  xy: 1896, 1453
+  size: 128, 211
+  orig: 128, 211
+  offset: 0, 0
+  index: -1
+Front Upper Arm
+  rotate: false
+  xy: 1754, 786
+  size: 272, 200
+  orig: 272, 200
+  offset: 0, 0
+  index: -1
+Front Upper Arm02
+  rotate: true
+  xy: 1539, 1235
+  size: 237, 261
+  orig: 237, 261
+  offset: 0, 0
+  index: -1
+Front Upper Leg
+  rotate: false
+  xy: 1678, 68
+  size: 316, 302
+  orig: 316, 302
+  offset: 0, 0
+  index: -1
+GROUND
+  rotate: false
+  xy: 2, 1585
+  size: 1892, 79
+  orig: 1892, 79
+  offset: 0, 0
+  index: -1
+Ground Low Leg01
+  rotate: false
+  xy: 988, 200
+  size: 533, 607
+  orig: 533, 607
+  offset: 0, 0
+  index: -1
+Hair
+  rotate: true
+  xy: 2, 479
+  size: 972, 397
+  orig: 972, 397
+  offset: 0, 0
+  index: -1
+Head
+  rotate: false
+  xy: 401, 486
+  size: 283, 319
+  orig: 283, 319
+  offset: 0, 0
+  index: -1
+Mid Body
+  rotate: false
+  xy: 1539, 735
+  size: 213, 306
+  orig: 213, 306
+  offset: 0, 0
+  index: -1
+Mid Tie
+  rotate: true
+  xy: 848, 1465
+  size: 118, 217
+  orig: 118, 217
+  offset: 0, 0
+  index: -1
+Squashed Toes01
+  rotate: false
+  xy: 1754, 372
+  size: 267, 412
+  orig: 267, 412
+  offset: 0, 0
+  index: -1
+Squashed Toes02
+  rotate: false
+  xy: 1523, 42
+  size: 153, 328
+  orig: 153, 328
+  offset: 0, 0
+  index: -1
+Upper Body
+  rotate: true
+  xy: 698, 3
+  size: 181, 298
+  orig: 181, 298
+  offset: 0, 0
+  index: -1
+Upper Body02
+  rotate: true
+  xy: 998, 17
+  size: 181, 298
+  orig: 181, 298
+  offset: 0, 0
+  index: -1
+mouth01
+  rotate: true
+  xy: 1773, 1201
+  size: 32, 29
+  orig: 32, 29
+  offset: 0, 0
+  index: -1

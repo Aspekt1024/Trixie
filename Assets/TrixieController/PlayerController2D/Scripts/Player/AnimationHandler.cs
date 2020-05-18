@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spine.Unity;
 using UnityEngine;
 
 namespace Aspekt.PlayerController
@@ -29,26 +30,27 @@ namespace Aspekt.PlayerController
 
     public class AnimationHandler
     {
-        Animator animator;
+        SkeletonAnimation skeletonAnimation;
 
-        public AnimationHandler(Animator animator)
+        public AnimationHandler(SkeletonAnimation animator)
         {
-            this.animator = animator;
+            this.skeletonAnimation = animator;
         }
 
-        internal void SetFloat(AnimationFloats name, float value)
+        public void SetAnimation (string animation, int track=0)
         {
-            animator?.SetFloat(name.ToString(), value);
+            if (skeletonAnimation.AnimationName == animation) return;
+            skeletonAnimation.AnimationState.SetAnimation(track, animation, false);
         }
 
-        internal void SetBool(AnimationBools name, bool value)
+        public void PlayAnimationOneShot(string animation, int track=0)
         {
-            animator?.SetBool(name.ToString(), value);
+            skeletonAnimation.AnimationState.SetAnimation(track, animation, true);
         }
 
-        internal void Play(AnimationNames name)
+        public void SetFacing(float direction)
         {
-            animator?.Play(name.ToString(), 0, 0f);
+            skeletonAnimation.Skeleton.ScaleX = direction;
         }
     }
 }
